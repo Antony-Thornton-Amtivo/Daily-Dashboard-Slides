@@ -22,12 +22,14 @@ def add_csp_header(response):
     csp = (
         "default-src 'self'; "
         "style-src 'self' 'unsafe-inline'; "
-        "frame-src 'self' https://bab.eu.qlikcloud.com https://login.qlik.com; "
+        "frame-src 'self' https://bab.eu.qlikcloud.com https://login.qlik.com https://myqlik.qlik.com/'; "
         "connect-src 'self' https://bab.eu.qlikcloud.com; "
-        "frame-ancestors 'self' https://myqlik.qlik.com;"
+        "frame-ancestors 'self' https://bab.eu.qlikcloud.com https://login.qlik.com https://myqlik.qlik.com https://myqlik.qlik.com/tenants/;"
     )
     response.headers['Content-Security-Policy'] = csp
     return response
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)  # No debug=True for production
+
+
