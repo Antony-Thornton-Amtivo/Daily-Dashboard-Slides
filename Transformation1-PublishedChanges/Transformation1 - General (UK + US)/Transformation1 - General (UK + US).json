@@ -1,6 +1,6 @@
 
 SHEETS
-{"qInfo":{"qId":"zzrqaJ","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"zzrqaJ","approved":true,"published":true,"publishTime":"2024-05-31T14:58:48.376Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T09:11:54.481Z","modifiedDate":"2026-03-27T11:25:25.239Z","encrypted":true,"privileges":["read","change_owner"],"title":"Bab Advisor Emails","description":""},"qData":[]}
+{"qInfo":{"qId":"zzrqaJ","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"zzrqaJ","approved":true,"published":true,"publishTime":"2024-05-31T14:58:48.376Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T09:11:54.481Z","modifiedDate":"2026-03-27T11:48:38.460Z","encrypted":true,"privileges":["read","change_owner"],"title":"Bab Advisor Emails","description":""},"qData":[]}
 
 OBJECTS ON SHEETS
 {"name":"ZDQeL","type":"table","col":0,"row":1,"colspan":24,"rowspan":11,"bounds":{"y":8.333333333333332,"x":0,"width":100,"height":91.66666666666666}}
@@ -95,7 +95,7 @@ FIELDS
 {"qName":"Au_Notes","qCardinal":3,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Auditors"]}
 {"qName":"Agency_ID","qCardinal":46,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Auditors"]}
 {"qName":"Au_SecurityID","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Auditors"]}
-{"qName":"Au_IsFullyActiveStatus","qCardinal":2,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_IsFullyActiveStatus","qCardinal":3,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Auditors"]}
 {"qName":"Au_GeoPoint","qCardinal":359,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Auditors"]}
 {"qName":"Au_Country","qCardinal":4,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Auditors"]}
 {"qName":"Au_Name","qCardinal":2120,"qTags":["$text"],"qSrcTables":["Transformation1_Auditors"]}
