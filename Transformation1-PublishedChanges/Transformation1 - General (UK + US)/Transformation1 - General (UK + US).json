@@ -1,0 +1,104 @@
+
+SHEETS
+{"qInfo":{"qId":"zzrqaJ","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"zzrqaJ","approved":true,"published":true,"publishTime":"2024-05-31T14:58:48.376Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T09:11:54.481Z","modifiedDate":"2026-03-27T11:25:25.239Z","encrypted":true,"privileges":["read","change_owner"],"title":"Bab Advisor Emails","description":""},"qData":[]}
+
+OBJECTS ON SHEETS
+{"name":"ZDQeL","type":"table","col":0,"row":1,"colspan":24,"rowspan":11,"bounds":{"y":8.333333333333332,"x":0,"width":100,"height":91.66666666666666}}
+
+DIMENSIONS
+
+MASTER OBJECTS
+
+VARIABLES
+{"qName":"vDataFiles","qDefinition":"QVD Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"074f71cc-4ecd-4980-b595-8de8c4f469f3","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"TableColumn","qDefinition":"Postcodes","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"13dcd23e-2bf4-4d55-8ad2-558d3a0ac7c4","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"TableName","qDefinition":"Transformation1_AuditorNACECodes","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"b2cfe6df-946b-4b73-8b5f-a34f9aff7d7c","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vDataStore","qDefinition":"QVD Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"bfed2e83-4a03-415c-8506-d57724f00d82","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vDataStoreTest","qDefinition":"QVD Test Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"1060a9c3-b01d-4da9-b927-6235d821aef6","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vDataFilesTest","qDefinition":"QVD Test Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"7095651b-a9c1-4ef6-8dbe-87c119551e49","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vTableName2","qDefinition":"Transformation1_Postcodes_RetentionAndBacklogMapPostcodes","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"b85ada37-9d86-4ccf-99ae-39a0ae49bd5b","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vExtractQVDLocation","qDefinition":"QVD Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"2a0b4cac-b655-43b2-bcd1-162d2c44ad01","qType":"variable"},"qData":[]}
+{"qName":"vTrans1QVDLocation","qDefinition":"QVD Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"a8f18595-6bac-4d07-a4f0-75a7aab2b7a9","qType":"variable"},"qData":[]}
+{"qName":"vTrans2QVDLocation","qDefinition":"QVD Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"8b70d345-71e9-4b82-ae7e-1b6daa5496d8","qType":"variable"},"qData":[]}
+{"qName":"vSourceSpreadsheets","qDefinition":"QVD Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"2b86c736-0195-46c2-8af5-f97c6433359e","qType":"variable"},"qData":[]}
+
+FIELDS
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Field","qCardinal":73,"qTags":["$ascii","$text","$hidden","$system","$key"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Table","qCardinal":4,"qTags":["$ascii","$text","$hidden","$system","$key"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Rows","qCardinal":4,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Fields","qCardinal":4,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$FieldNo","qCardinal":47,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Info","qCardinal":1,"qTags":["$ascii","$text","$hidden","$system"],"qSrcTables":[]}
+{"qName":"DataType","qCardinal":4,"qTags":["$ascii","$text","$key"],"qSrcTables":["Transformation1_AuditorWorkingDays","Transformation1_Auditors"]}
+{"qName":"AuditorWD AuditorID","qCardinal":212,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_AuditorWorkingDays"]}
+{"qName":"AuditorWD AuditorStartDate","qCardinal":142,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_AuditorWorkingDays"]}
+{"qName":"AuditorWD AuditorEndDate","qCardinal":83,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_AuditorWorkingDays"]}
+{"qName":"AuditorWD Non Working Days","qCardinal":12,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_AuditorWorkingDays"]}
+{"qName":"AuditorWD Sub Contractor?","qCardinal":1,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_AuditorWorkingDays"]}
+{"qName":"AuditorWD Subby Days","qCardinal":5,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_AuditorWorkingDays"]}
+{"qName":"AuditorWD Leaving Date","qCardinal":74,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_AuditorWorkingDays"]}
+{"qName":"AuditorWD Formula End Date","qCardinal":75,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_AuditorWorkingDays"]}
+{"qName":"AuditorWD Auditor Category","qCardinal":8,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_AuditorWorkingDays"]}
+{"qName":"AuditorWD Auditor Date","qCardinal":7513,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_AuditorWorkingDays"]}
+{"qName":"AuditorWD Counter","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_AuditorWorkingDays"]}
+{"qName":"AuditorWD AuditorIsCompetentFlag","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_AuditorWorkingDays"]}
+{"qName":"AuditorWD Counter Exc Bank Holidays","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_AuditorWorkingDays"]}
+{"qName":"AuditorWD Auditor Status","qCardinal":3,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_AuditorWorkingDays"]}
+{"qName":"AuditorWD PAS Daily Inspections Target","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_AuditorWorkingDays"]}
+{"qName":"Postcodes Outcome","qCardinal":2854,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Postcodes_RetentionAndBacklogMapPostcodes"]}
+{"qName":"eastings","qCardinal":2111,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Postcodes_RetentionAndBacklogMapPostcodes"]}
+{"qName":"northings","qCardinal":2213,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Postcodes_RetentionAndBacklogMapPostcodes"]}
+{"qName":"latitude","qCardinal":2836,"qTags":["$numeric"],"qSrcTables":["Transformation1_Postcodes_RetentionAndBacklogMapPostcodes"]}
+{"qName":"longitude","qCardinal":2842,"qTags":["$numeric"],"qSrcTables":["Transformation1_Postcodes_RetentionAndBacklogMapPostcodes"]}
+{"qName":"town","qCardinal":1609,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Postcodes_RetentionAndBacklogMapPostcodes"]}
+{"qName":"region","qCardinal":204,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Postcodes_RetentionAndBacklogMapPostcodes"]}
+{"qName":"country","qCardinal":7,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Postcodes_RetentionAndBacklogMapPostcodes"]}
+{"qName":"country_string","qCardinal":7,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Postcodes_RetentionAndBacklogMapPostcodes"]}
+{"qName":"Auditor_ID","qCardinal":4014,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_Title","qCardinal":23,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_Gender","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_First","qCardinal":1213,"qTags":["$text"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_Surname","qCardinal":1723,"qTags":["$text"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"SSIP","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_SignedOffFor","qCardinal":6,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_IsFullyActive","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_ST1","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_NACECompetence","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_Map","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_Competence_QMS","qCardinal":1441,"qTags":[],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_Competence_EMS","qCardinal":923,"qTags":[],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_Competence_ISMS","qCardinal":351,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_Competence_HSMS","qCardinal":665,"qTags":[],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_Type","qCardinal":3,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_BigTicket","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_DiaryDisplay","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_VisitDiaryDisplay","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_Competence","qCardinal":17,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_AssessorOverviewDisplay","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_NonConform","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_SubContract","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_Grouping","qCardinal":9,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_Remove","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_Address1","qCardinal":622,"qTags":["$text"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_Address2","qCardinal":166,"qTags":["$text"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_Village","qCardinal":29,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_Town","qCardinal":478,"qTags":["$text"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_County","qCardinal":237,"qTags":["$text"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_Postcode","qCardinal":663,"qTags":[],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_location","qCardinal":554,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_Tel","qCardinal":786,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_Fax","qCardinal":3,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_Email","qCardinal":1998,"qTags":["$text"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Region(s)","qCardinal":2,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_Password","qCardinal":12,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_Username","qCardinal":497,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_Notes","qCardinal":3,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Agency_ID","qCardinal":46,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_SecurityID","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_IsFullyActiveStatus","qCardinal":2,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_GeoPoint","qCardinal":359,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_Country","qCardinal":4,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Au_Name","qCardinal":2120,"qTags":["$text"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"AuditorType","qCardinal":3,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Auditors"]}
+{"qName":"Name","qCardinal":8,"qTags":["$ascii","$text"],"qSrcTables":["BabAdvisorEmails"]}
+{"qName":"Email address","qCardinal":8,"qTags":["$ascii","$text"],"qSrcTables":["BabAdvisorEmails"]}
