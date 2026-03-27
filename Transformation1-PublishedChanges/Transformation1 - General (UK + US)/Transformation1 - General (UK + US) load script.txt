@@ -1,0 +1,550 @@
+///$tab Main
+SET ThousandSep=',';
+SET DecimalSep='.';
+SET MoneyThousandSep=',';
+SET MoneyDecimalSep='.';
+SET MoneyFormat='£#,##0.00;-£#,##0.00';
+SET TimeFormat='hh:mm:ss';
+SET DateFormat='DD/MM/YYYY';
+SET TimestampFormat='DD/MM/YYYY hh:mm:ss[.fff]';
+SET FirstWeekDay=0;
+SET BrokenWeeks=0;
+SET ReferenceDay=4;
+SET FirstMonthOfYear=1;
+SET CollationLocale='en-GB';
+SET CreateSearchIndexOnReload=1;
+SET MonthNames='Jan;Feb;Mar;Apr;May;Jun;Jul;Aug;Sep;Oct;Nov;Dec';
+SET LongMonthNames='January;February;March;April;May;June;July;August;September;October;November;December';
+SET DayNames='Mon;Tue;Wed;Thu;Fri;Sat;Sun';
+SET LongDayNames='Monday;Tuesday;Wednesday;Thursday;Friday;Saturday;Sunday';
+SET NumericalAbbreviation='3:k;6:M;9:G;12:T;15:P;18:E;21:Z;24:Y;-3:m;-6:μ;-9:n;-12:p;-15:f;-18:a;-21:z;-24:y';
+
+
+// **************************************LIVE STORE LOCATIONS******************************************
+LET vDataFiles = 'QVD Files:DataFiles';
+LET vDataStore = 'QVD Files:DataFiles';
+
+
+// **************************************TEST APP STORE LOCATIONS**************************************
+LET vDataFilesTest = 'QVD Test Files:DataFiles';
+LET vDataStoreTest = 'QVD Test Files:DataFiles';
+
+
+///$tab Mapping
+Distict_Region_Map:
+Mapping
+LOAD
+    Postcode,
+    Region
+FROM [lib://$(vDataFiles)/Extract_PostcodeDistricts.qvd]
+// FROM [lib://$(vDataFilesTest)/Extract_PostcodeDistricts.qvd]
+
+(qvd);
+
+Bank_Holiday_Map:
+Mapping
+LOAD
+    Date("Date",'YYYYMMDD') as BankHolidayDate,
+    WorkingDay
+FROM [lib://Development:Office_365_Sharepoint - FP&A Folder/Shared Documents/Private/Spreadsheets for Qlik/Auditor Working Days.xlsx]
+(ooxml, embedded labels, table is BankHolidays);
+
+
+
+Auditor_Status_Map:
+Mapping
+LOAD
+    Auditor_ID,
+    Au_IsFullyActiveStatus
+FROM [lib://$(vDataFiles)/Transformation1_Auditors.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_Auditors.qvd]
+(qvd);
+
+AuditorIsPASFlag:
+Mapping
+LOAD
+    Auditor_ID,
+    PAS2030
+FROM [lib://$(vDataFiles)/Extract_tblAuditors.qvd]
+// FROM [lib://$(vDataFilesTest)/Extract_tblAuditors.qvd]
+(qvd);
+
+
+PAS_Auditor:
+Mapping
+load * Inline [
+	AuditorID, PasAuditor
+    324, 'PAS'
+	509, 'PAS'
+	453, 'PAS'
+	334, 'PAS'
+	338	, 'PAS'
+	483, 'PAS'
+	337, 'PAS'
+	535, 'PAS'
+
+
+];
+
+
+///$tab Auditor Working Days
+Let TableName = 'Transformation1_AuditorWorkingDays';
+Let TableColumn = 'AuditorWD';
+
+$(TableName)_Temp1:
+
+LOAD
+	DataType,
+    AuditorID 								as [$(TableColumn) AuditorID],
+    //"Auditor Name" 						as [$(TableColumn)],
+    Date(AuditorStartDate,'YYYYMMDD') 		as [$(TableColumn) AuditorStartDate],
+    Date(AuditorEndDate,'YYYYMMDD') 		as [$(TableColumn) AuditorEndDate],
+    "Non Working Days" 						as [$(TableColumn) Non Working Days],
+    "Sub Contractor?" 						as [$(TableColumn) Sub Contractor?],
+    "Subby Days" 							as [$(TableColumn) Subby Days],
+    "Leaving Date" 							as [$(TableColumn) Leaving Date],
+    "Formula End Date" 						as [$(TableColumn) Formula End Date],
+    "Auditor Category"						as [$(TableColumn) Auditor Category]
+    
+FROM [lib://$(vDataFiles)/Extract_AuditorWorkingDays.qvd]
+// FROM [lib://$(vDataFilesTest)/Extract_AuditorWorkingDays.qvd]
+(qvd);
+
+
+
+$(TableName):
+
+Load
+	*,
+	If([$(TableColumn) AuditorIsCompetentFlag] = 1, 4 * [$(TableColumn) Counter Exc Bank Holidays], 0) as [$(TableColumn) PAS Daily Inspections Target]
+    ;
+    
+
+Load*,
+	Applymap('Bank_Holiday_Map',[$(TableColumn) Auditor Date],[$(TableColumn) Counter]) as [$(TableColumn) Counter Exc Bank Holidays],
+    ApplyMap('Auditor_Status_Map',[$(TableColumn) AuditorID],'<missing>') as [$(TableColumn) Auditor Status]
+    //NetWorkDays([$(TableColumn) AuditorStartDate],[$(TableColumn) AuditorStartDate]) as [$(TableColumn) Working Day Flag]
+;
+
+
+Load*,
+	If(SubStringCount([$(TableColumn) Non Working Days], WeekDay_Temp1) >= 1, 0,1) as [$(TableColumn) Counter],
+    ApplyMap('AuditorIsPASFlag',[$(TableColumn) AuditorID],'<missing>') as [$(TableColumn) AuditorIsCompetentFlag]
+;
+
+
+Load
+	*,
+    WeekDay([$(TableColumn) Auditor Date]) as WeekDay_Temp1,
+    ;
+
+Load
+	DataType,
+	[$(TableColumn) AuditorID],
+    [$(TableColumn) AuditorStartDate],
+    [$(TableColumn) AuditorEndDate],
+    [$(TableColumn) Non Working Days],
+    [$(TableColumn) Sub Contractor?],
+    [$(TableColumn) Subby Days],
+    [$(TableColumn) Leaving Date],
+    [$(TableColumn) Formula End Date],
+    [$(TableColumn) Auditor Category],
+    Date(([$(TableColumn) AuditorStartDate] + IterNo() - 1),'YYYYMMDD')      as [$(TableColumn) Auditor Date]
+Resident $(TableName)_Temp1
+
+
+While Date(([$(TableColumn) AuditorStartDate] + IterNo() - 1),'YYYYMMDD') <= [$(TableColumn) AuditorEndDate];
+
+Drop Table $(TableName)_Temp1;
+
+
+Drop field WeekDay_Temp1;
+
+
+Store $(TableName) INTO [lib://$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://$(vDataFilesTest)/$(TableName).qvd] (qvd);
+
+
+// Drop Table $(TableName);
+
+///$tab Postcodes
+Let TableName = 'Transformation1_Postcodes';
+Let TableColumn = 'Postcodes';
+
+$(TableName):
+Load
+	*,
+	[$(TableColumn) Postcode_no_space] as PostCodeNoSpace_Key,
+    Applymap('Distict_Region_Map',[$(TableColumn) Postcode_district],'<missing>') as [$(TableColumn) Region]
+    ;
+
+
+LOAD
+    Postcode 						as [$(TableColumn) Postcode],
+    Status 							as [$(TableColumn) Status],
+    Usertype 						as [$(TableColumn) Usertype],
+    Easting 						as [$(TableColumn) Easting],
+    Northing 						as [$(TableColumn) Northing],
+    Positional_quality_indicator 	as [$(TableColumn) Positional_quality_indicator],
+    Country 						as [$(TableColumn) Country],
+    Latitude 						as [$(TableColumn) Latitude],
+    Longitude 						as [$(TableColumn) Longitude],
+    GeoMakePoint(Latitude,Longitude) 	as [$(TableColumn) GeoPoint],
+    Postcode_no_space 				as [$(TableColumn) Postcode_no_space],
+    Postcode_fixed_width_seven 		as [$(TableColumn) Postcode_fixed_width_seven],
+    Postcode_fixed_width_eight 		as [$(TableColumn) Postcode_fixed_width_eight],
+    Postcode_area 					as [$(TableColumn) Postcode_area],
+    Postcode_district 				as [$(TableColumn) Postcode_district],
+    Postcode_sector 				as [$(TableColumn) Postcode_sector],
+    Outcome 						as [$(TableColumn) Outcome],
+    Incode 							as [$(TableColumn) Incode]
+FROM [lib://$(vDataFiles)/Extract_Postcodes.qvd] (qvd);
+// FROM [lib://$(vDataFilesTest)/Extract_Postcodes.qvd] (qvd);
+
+Store $(TableName) INTO [lib://$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://$(vDataFilesTest)/$(TableName).qvd] (qvd);
+
+
+Drop Table $(TableName);
+
+
+// LOAD
+//     Postcode,
+//     Status,
+//     Usertype,
+//     Easting,
+//     Northing,
+//     Positional_quality_indicator,
+//     Country,
+//     Latitude,
+//     Longitude,
+//     Postcode_no_space,
+//     Postcode_fixed_width_seven,
+//     Postcode_fixed_width_eight,
+//     Postcode_area,
+//     Postcode_district,
+//     Postcode_sector,
+//     Outcome,
+//     Incode
+// FROM [lib://DataFiles/Extract_Postcodes.qvd] (qvd);
+
+
+
+
+
+///$tab Postcodes - Alternative
+Let vTableName2 = 'Transformation1_Postcodes_RetentionAndBacklogMapPostcodes';
+$(vTableName2):
+LOAD
+    postcode as "Postcodes Outcome",
+    eastings,
+    northings,
+    latitude,
+    longitude,
+    town,
+    region,
+    country,
+    country_string
+FROM [lib://Development:Office_365_Sharepoint - FP&A Folder/Shared Documents/Private/Spreadsheets for Qlik/My post codes 2.xlsx]
+(ooxml, embedded labels, table is [My post codes]);
+
+Store $(vTableName2) INTO [lib://$(vDataFiles)/$(vTableName2).qvd] (qvd);
+Store $(vTableName2) INTO [lib://$(vDataFilesTest)/$(vTableName2).qvd] (qvd);
+
+///$tab Average Value Buckets
+Let TableName = 'Transformation1_AverageValueBuckets';
+
+$(TableName):
+
+LOAD
+    AverageValueStart,
+    AverageValueEnd,
+    AverageValueDescription,
+    AverageValueSort,
+    (AverageValueStart + Iterno()-1) as AverageValue
+FROM [lib://$(vDataFiles)/Extract_AverageValueBuckets.qvd]
+// FROM [lib://$(vDataFilesTest)/Extract_AverageValueBuckets.qvd]
+(qvd)
+While (AverageValueStart + Iterno()-1) <=AverageValueEnd
+;
+
+Store $(TableName) INTO [lib://$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://$(vDataFilesTest)/$(TableName).qvd] (qvd);
+
+
+Drop Table $(TableName);
+
+///$tab Mapping for Auditors
+Postcode_Temp:
+LOAD
+    "Postcodes Country",
+    "Postcodes GeoPoint",
+    "Postcodes Postcode_no_space"
+FROM [lib://$(vDataFiles)/Transformation1_Postcodes.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_Postcodes.qvd]
+(qvd);
+
+
+Postcode_GeoPoint_Map:
+Mapping
+Load
+	"Postcodes Postcode_no_space",
+    "Postcodes GeoPoint"    
+Resident Postcode_Temp;
+
+Postcode_Country_Map:
+Mapping
+Load
+	"Postcodes Postcode_no_space",
+    "Postcodes Country"    
+Resident Postcode_Temp;
+
+Drop table Postcode_Temp;
+
+
+///$tab Auditors
+Let TableName = 'Transformation1_Auditors';
+
+$(TableName):
+
+Load
+	*,
+    If(Au_SubContract = 1,'Subcontractor',
+    If(Au_IsFullyActive =1 and Au_SubContract = 0,'FTE Fully Active',
+    	If(Au_IsFullyActive =0 and Au_SubContract = 0,'FTE Trainee','Other'))) as Au_IsFullyActiveStatus,
+    Applymap('Postcode_GeoPoint_Map',Au_Postcode,'<missing>') as Au_GeoPoint,
+    Applymap('Postcode_Country_Map',Au_Postcode,'<missing>') as Au_Country,
+    Au_First &' '& Au_Surname as Au_Name,
+    if(Au_SecurityID = 1,'Security',
+    If(Match(Auditor_ID, 
+//     '324', // Claire Trusty
+//     '509', // Ellie Pinto
+//     '453', // Natalie Cummings
+//     '334', // Natalie Sewell
+//     '338', // Paul Guthrie
+//     '483', // Pawel Kesicki
+//     '337', // Sarah Brown
+//     '535'  // Silvana McAuley,,
+	'356_UK', // Mark Crozier (FTE)
+    '405_UK', // Jamie Peterson
+	'457_UK', // Matt Byrne
+    '447_UK'  // Seb Kliche
+    
+    ), 'PAS',
+    'Management Systems')) as AuditorType,
+//     If(Match(Au_SecurityID, 
+//     '324', // Claire Trusty
+//     '509', // Ellie Pinto
+//     '453', // Natalie Cummings
+//     '334', // Natalie Sewell
+//     '338', // Paul Guthrie
+//     '483', // Pawel Kesicki
+//     '337', // Sarah Brown
+//     '535'  // Silvana McAuley
+//     ), 'PAS','Not Found') as AuditorTypeTest
+;
+
+LOAD
+	DataType,
+    Auditor_ID,
+    Au_Title,
+    Au_Gender,
+    Au_First,
+    Au_Surname,
+    SSIP,
+    Au_SignedOffFor,
+    if(isnull(Au_SignedOffFor)or Au_SignedOffFor =' ',0,1) as Au_IsFullyActive,
+    Au_ST1,
+    Au_NACECompetence,
+    Au_Map,
+    Replace(Au_Competence_QMS,' ','') as Au_Competence_QMS,
+    Replace(Au_Competence_EMS,' ','') as Au_Competence_EMS,
+    Replace(Au_Competence_ISMS,' ','') as Au_Competence_ISMS,
+    Replace(Au_Competence_HSMS,' ','') as Au_Competence_HSMS,
+    Au_Type,
+    Au_BigTicket,
+    Au_DiaryDisplay,
+    Au_VisitDiaryDisplay,
+    Au_Competence,
+    Au_AssessorOverviewDisplay,
+    Au_NonConform,
+// 	Au_SubContract,
+	if(isnull(Au_SubContract),0,1) as Au_SubContract,
+    Au_Grouping,
+    Au_Remove,
+    Au_Address1,
+    Au_Address2,
+    Au_Village,
+    Au_Town,
+    Au_County,
+    Replace(Upper(Au_Postcode),' ','') as Au_Postcode,
+    Au_location,
+    Au_Tel,
+    Au_Fax,
+    Au_Email,
+    "Region(s)",
+    Au_Password,
+    Au_Username,
+    Au_Notes,
+    Agency_ID,
+    Security as Au_SecurityID
+FROM [lib://$(vDataFiles)/Extract_tblAuditors.qvd]
+// FROM [lib://$(vDataFilesTest)/Extract_tblAuditors.qvd]
+(qvd);
+
+Store $(TableName) INTO [lib://$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://$(vDataFilesTest)/$(TableName).qvd] (qvd);
+
+//Drop Table $(TableName);
+
+
+///$tab Auditor NACE Codes
+/*
+<<< Flattening comma seperated auditor NACE codes => https://community.qlik.com/t5/QlikView-App-Development/How-to-convert-comma-separated-values-to-row-values/td-p/1073063 >>>
+<<< Load 1 = QMS Data Load >>>
+<<< Load 2 = QMS Data Load >>>
+<<< Load 3 = ISMS Data Load >>>
+<<< Load 4 = HSMS Data Load >>>
+<<< Load 5 = Creating a single row for each NACE code >>>
+<<< Load 6 = xx >>>
+
+*/
+
+Let TableName = 'Transformation1_AuditorNACECodes';
+
+$(TableName)_Temp1:
+//Load 1 = QMS Data Load
+LOAD
+    Auditor_ID,
+    Au_First,
+    Au_Surname,
+    Au_SubContract,
+    Au_IsFullyActive,
+    Au_IsFullyActiveStatus,
+    Au_County,
+    Au_location,
+    Au_Remove,
+    Au_GeoPoint,
+    Au_Country,
+    Au_Name,
+    Replace(Upper(Au_Postcode),' ','') as Au_Postcode,
+    Au_Competence_QMS 	as [Auditor NACE Code],
+    'QMS' 				as [Auditor Competency Flag]
+FROM [lib://$(vDataFiles)/Transformation1_Auditors.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_Auditors.qvd]
+(qvd)
+Where Len(Au_Competence_QMS)>0
+;
+
+
+Concatenate($(TableName)_Temp1)
+//Load 2 = QMS Data Load
+LOAD
+    Auditor_ID,
+    Au_First,
+    Au_Surname,
+    Au_SubContract,
+    Au_IsFullyActive,
+    Au_IsFullyActiveStatus,
+    Au_County,
+    Au_location,
+    Au_Remove,
+    Au_GeoPoint,
+    Au_Country,
+    Au_Name,
+    Replace(Upper(Au_Postcode),' ','') as Au_Postcode,
+    Au_Competence_EMS 	as [Auditor NACE Code],
+    'EMS' 				as [Auditor Competency Flag]
+FROM [lib://$(vDataFiles)/Transformation1_Auditors.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_Auditors.qvd]
+(qvd)
+Where Len(Au_Competence_EMS)>0
+;
+
+Concatenate($(TableName)_Temp1)
+//Load 3 = ISMS Data Load
+LOAD
+    Auditor_ID,
+    Au_First,
+    Au_Surname,
+    Au_SubContract,
+    Au_IsFullyActive,
+    Au_IsFullyActiveStatus,
+    Au_County,
+    Au_location,
+    Au_Remove,
+    Au_GeoPoint,
+    Au_Country,
+    Au_Name,
+    Replace(Upper(Au_Postcode),' ','') as Au_Postcode,
+    Au_Competence_ISMS 	as [Auditor NACE Code],
+    'ISMS' 				as [Auditor Competency Flag]
+FROM [lib://$(vDataFiles)/Transformation1_Auditors.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_Auditors.qvd]
+(qvd)
+Where Len(Au_Competence_ISMS)>0
+;
+
+Concatenate($(TableName)_Temp1)
+//Load 4 = HSMS Data Load
+LOAD
+    Auditor_ID,
+    Au_First,
+    Au_Surname,
+    Au_SubContract,
+    Au_IsFullyActive,
+    Au_IsFullyActiveStatus,
+    Au_County,
+    Au_location,
+    Au_Remove,
+    Au_GeoPoint,
+    Au_Country,
+    Au_Name,
+    Replace(Upper(Au_Postcode),' ','') as Au_Postcode,
+    Au_Competence_HSMS 	as [Auditor NACE Code],
+    'HSMS' 				as [Auditor Competency Flag]
+FROM [lib://$(vDataFiles)/Transformation1_Auditors.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_Auditors.qvd]
+(qvd)
+Where Len(Au_Competence_HSMS)>0
+;
+
+
+NoConcatenate
+//Load 5 = Creating a single row for each NACE code via Subfield
+$(TableName):
+Load
+    Auditor_ID,
+    Au_First,
+    Au_Surname,
+    Au_Postcode,
+    Au_SubContract,
+    Au_IsFullyActive,
+    Au_IsFullyActiveStatus,
+    Au_County,
+    Au_location,
+    Au_Remove,
+    Au_GeoPoint,
+    Au_Country,
+    Au_Name,
+    [Auditor NACE Code] as [Auditor Original NACE Code],
+    Subfield([Auditor NACE Code],',') as [Auditor NACE Code],
+    [Auditor Competency Flag]
+Resident  $(TableName)_Temp1;  
+
+Drop table $(TableName)_Temp1;
+
+Store $(TableName) INTO [lib://$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://$(vDataFilesTest)/$(TableName).qvd] (qvd);
+
+Drop table $(TableName);
+
+///$tab Bab Advisor Emails
+BabAdvisorEmails:
+LOAD
+    Name,
+    "Email address"
+FROM [lib://$(vDataFiles)/Extract_BabAdvisorEmails.qvd]
+// FROM [lib://$(vDataFilesTest)/Extract_BabAdvisorEmails.qvd]
+(qvd);
+
