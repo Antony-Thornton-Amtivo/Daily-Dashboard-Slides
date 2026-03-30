@@ -873,7 +873,7 @@ Load *,
 if(isnull(BookingErrorFlag1),'OK',BookingErrorFlag1) as BookingErrorFlag,
 ApplyMap('Map_IATFFlag',Customer_ID,'Ok') as IATFFlag,
 
-if(left(Customer_ID,1)=0,'Keep',applymap('FranchiseToKeepQAICLintoIRE',Customer_ID,'Hide')) as FranchiseToKeepQAICLintoIRE
+applymap('FranchiseToKeepQAICLintoIRE',Customer_ID,'Hide') as FranchiseToKeepQAICLintoIRE
 resident $(TableName)_Temp4
 ;
 
@@ -904,7 +904,7 @@ NoConcatenate
 
 $(TableName):
 load *
-// where FranchiseToKeepQAICLintoIRE='Keep'
+where FranchiseToKeepQAICLintoIRE='Keep'
 ;
 
 load *
