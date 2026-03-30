@@ -1,0 +1,101 @@
+
+SHEETS
+{"qInfo":{"qId":"ae0c5992-5bf4-4e57-a719-f31a7d4e3a74","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"ae0c5992-5bf4-4e57-a719-f31a7d4e3a74","approved":true,"published":true,"publishTime":"2019-11-27T13:55:47.813Z","owner":"auth0|63a23e335ff880d32e012f1b5b4c4bf6548aeacd187c28cbc39cfd15a507bc4e","ownerId":"9ScizHsZXotdvXGNu6iGPVKNFboJUgeq","createdDate":"2025-10-13T09:24:30.002Z","modifiedDate":"2026-03-30T09:14:33.887Z","encrypted":true,"privileges":["read"],"title":"My new sheet","description":""},"qData":[]}
+
+OBJECTS ON SHEETS
+
+DIMENSIONS
+
+MASTER OBJECTS
+
+VARIABLES
+{"qName":"vCurrentYear","qDefinition":"2026","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"d42ee19c-f37b-4c4e-adad-03486b9f66eb","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vDataFiles","qDefinition":"QVD Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"3bb17b27-d09a-4c7e-9a7d-6adca36b9f19","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vCurrentMonth","qDefinition":"03","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"4e343989-ff43-4b62-af00-f3790cf95f80","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"TableName","qDefinition":"Transformation2_AuditorVisits","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"ebdf2b5c-34c3-4477-8d5e-a91223d2c1ba","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vDataFilesTest","qDefinition":"QVD Test Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"d8be7fbf-1670-484d-a1cf-35a3b2773c29","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vDataStoreTest","qDefinition":"QVD Test Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"d27adf9e-c20b-477d-a8ef-6bef456a3dd6","qType":"variable"},"qData":[]}
+{"qName":"vDataStore","qDefinition":"QVD Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"862c2da1-68a6-4e85-b6f8-fadf915f2003","qType":"variable"},"qData":[]}
+
+FIELDS
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Field","qCardinal":75,"qTags":["$ascii","$text","$hidden","$system","$key"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Table","qCardinal":1,"qTags":["$ascii","$text","$hidden","$system","$key"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Rows","qCardinal":1,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Fields","qCardinal":1,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$FieldNo","qCardinal":75,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Info","qCardinal":1,"qTags":["$ascii","$text","$hidden","$system"],"qSrcTables":[]}
+{"qName":"DataType","qCardinal":3,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Row Counter","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Source","qCardinal":5,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Audit Day Counter","qCardinal":1353063,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"VisitsID","qCardinal":1500397,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Customer_ID","qCardinal":47123,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits RegionID","qCardinal":42,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Calendar_Key","qCardinal":972310,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"AuditorID","qCardinal":1679,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"VisitTypeIDSort","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits SiteVisit_ID","qCardinal":8,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Address_ID","qCardinal":19713,"qTags":[],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Visit Date Booked","qCardinal":5190,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Visit Date Originally Booked","qCardinal":5201,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Visit Reason","qCardinal":5617,"qTags":["$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Visit Confirmed","qCardinal":38937,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits BABCOMAuditor","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Post Code","qCardinal":29101,"qTags":[],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Proposal_ID","qCardinal":87885,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Proposal Net Amount","qCardinal":6346,"qTags":["$numeric"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Proposal Days","qCardinal":196,"qTags":["$numeric"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Proposal Day Rate","qCardinal":4778,"qTags":["$numeric"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Invoice Paid Date","qCardinal":1850,"qTags":[],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Invoice Raised Date","qCardinal":1790,"qTags":[],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Invoice Cancelled","qCardinal":3,"qTags":[],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Invoice Number","qCardinal":45416,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Half Day Flag","qCardinal":7,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Half Day Factor","qCardinal":4,"qTags":["$numeric"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"FranchiseIDFilter","qCardinal":28,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Contracted Customer ID","qCardinal":31187,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Customer_ID (Old)","qCardinal":46914,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Client_ID","qCardinal":10096,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Client_ID Temp","qCardinal":10011,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Actual Flag","qCardinal":1,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits New Business Contract Date","qCardinal":2288,"qTags":[],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Original Enquiry Date","qCardinal":4967,"qTags":[],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Customer CBIntegrated","qCardinal":21,"qTags":[],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Day Is In Future","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"VisitType_ID","qCardinal":74,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits # Days Booked Before EoM","qCardinal":33785,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Arrival Include Flag","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits # Days Booked Before Visit","qCardinal":965961,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits New Business Contract Flag","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Days from Visit to Contract","qCardinal":1857,"qTags":[],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Days from Visit to Enquiry","qCardinal":972952,"qTags":[],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Original Enquiry Date valid","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Auditor Day Counter1","qCardinal":5,"qTags":["$numeric"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Auditor Day Counter Overstated Flag","qCardinal":2,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Audit Report Submitted","qCardinal":3798,"qTags":[],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Audit Report Signed Off","qCardinal":13035,"qTags":[],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Test Data Database (delete)","qCardinal":1,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Day_Key","qCardinal":1517489,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Proposal Day Revenue1","qCardinal":7639,"qTags":["$numeric"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Rowno()","qCardinal":1561746,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Auditor Day Counter (New)","qCardinal":5,"qTags":["$numeric"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"VisitTypeID","qCardinal":141,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"DataType Sub Region","qCardinal":8,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":" Audit Frequency","qCardinal":5,"qTags":[],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"BookingErrorCheck","qCardinal":2,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"VisitFoundin365","qCardinal":2,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"VisitDescriptionin365","qCardinal":50,"qTags":["$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"VisitDescription","qCardinal":97,"qTags":["$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"ProvisionalDayBookedCheck","qCardinal":2,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"VisitBookedCheck","qCardinal":4,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"BookingErrorFlag1","qCardinal":1,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"BookingErrorFlag","qCardinal":2,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"IATFFlag","qCardinal":2,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"FranchiseToKeepQAICLintoIRE","qCardinal":2,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Proposal Day Revenue","qCardinal":7639,"qTags":["$numeric"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Auditor Day Counter","qCardinal":5,"qTags":["$numeric"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Proposal Day Revenue (Corrected)","qCardinal":7639,"qTags":["$numeric"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Visits Auditor Day Counter (Corrected)","qCardinal":5,"qTags":["$numeric"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"Proposal RetentionYear","qCardinal":8,"qTags":[],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"TotalDaysByAuditorAndCustomer","qCardinal":10,"qTags":["$numeric"],"qSrcTables":["Transformation2_AuditorVisits"]}
+{"qName":"CheckForBookingError","qCardinal":2,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AuditorVisits"]}
