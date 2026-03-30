@@ -1,0 +1,1340 @@
+///$tab Main
+SET ThousandSep=',';
+SET DecimalSep='.';
+SET MoneyThousandSep=',';
+SET MoneyDecimalSep='.';
+SET MoneyFormat='£ #,##0.00;-£ #,##0.00';
+SET TimeFormat='hh:mm:ss TT';
+SET DateFormat='DD/MM/YYYY';
+SET TimestampFormat='DD/MM/YYYY h:mm:ss[.fff] TT';
+SET FirstWeekDay=6;
+SET BrokenWeeks=1;
+SET ReferenceDay=0;
+SET FirstMonthOfYear=1;
+SET CollationLocale='en-GB';
+SET CreateSearchIndexOnReload=1;
+SET MonthNames='Jan;Feb;Mar;Apr;May;Jun;Jul;Aug;Sep;Oct;Nov;Dec';
+SET LongMonthNames='January;February;March;April;May;June;July;August;September;October;November;December';
+SET DayNames='Mon;Tue;Wed;Thu;Fri;Sat;Sun';
+SET LongDayNames='Monday;Tuesday;Wednesday;Thursday;Friday;Saturday;Sunday';
+SET NumericalAbbreviation='3:k;6:M;9:G;12:T;15:P;18:E;21:Z;24:Y;-3:m;-6:μ;-9:n;-12:p;-15:f;-18:a;-21:z;-24:y';
+
+// **************************************LIVE STORE LOCATIONS******************************************
+LET vDataFiles = 'QVD Files:DataFiles';
+
+
+
+// **************************************TEST APP STORE LOCATIONS**************************************
+LET vDataFilesTest = 'QVD Test Files:DataFiles';
+
+
+Let vCurrentMonth = num(Month(today()),'00');
+Let vCurrentYear = Year(today());
+///$tab Mapping - tblProposals
+Load_tblProposals:
+LOAD
+//     *,
+    "ProposalID",
+//     "Proposal Customer ID",
+    "Proposal RetentionYear"
+FROM [lib://QVD Files:DataFiles/Transformation1_Proposals.qvd]
+(qvd);
+
+
+Map_ProposalRetentionYear:
+Mapping load
+ProposalID,
+"Proposal RetentionYear"
+Resident Load_tblProposals;
+
+
+drop table Load_tblProposals;
+// exit Script;
+
+///$tab Mapping - Audit Frequency
+Map_AuditFrequency:
+mapping LOAD
+    Customer_ID,
+    "Customer Audit Frequency"
+FROM [lib://QVD Files:DataFiles/Transformation1_Customers.qvd]
+(qvd);
+///$tab Mapping
+Map_CBIntegrated:
+Mapping
+LOAD
+    Customer_ID,
+    CBIntegrated
+FROM [lib://$(vDataFiles)/Transformation1_Customers.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_Customers.qvd]
+(qvd);
+
+Map_NB_Contract_Date:
+Mapping
+LOAD
+    "UnknownDates_Consolidated CustomerID",
+    "UnknownDates_Consolidated Date"
+FROM [lib://$(vDataFiles)/Transformation1_UnknownDates_Consolidated.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_UnknownDates_Consolidated.qvd]
+(qvd)
+Where "UnknownDates_Consolidated Date Type" = 'New Business'
+and "UnknownDates_Consolidated Proposal Type" = 0
+and "UnknownDates_Consolidated ProposalID" > 0
+and "UnknownDates_Consolidated Contract Value" > 0
+;
+
+Map_Original_Enquiry_Date:
+Mapping
+LOAD
+    "Dates CustomerID",
+    Date("Dates Enquiry Date",'YYYYMMDD') as "Dates Enquiry Date"
+FROM [lib://$(vDataFiles)/Transformation1_tblDates.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_tblDates.qvd]
+(qvd)
+//Where Date("Dates Enquiry Date",'YYYYMMDD') > 20000101
+Where Date("Dates Enquiry Date",'DD/MM/YYYY') >= '01/01/2005'
+;
+
+
+
+// Mapping the franchise id so that we can split out orion and advantage
+// 10024 = Orion
+// 10025 = Advantage
+US_Franchise_ID:
+Mapping LOAD
+    Client_ID,
+    FranchiseID
+FROM [lib://$(vDataFiles)/Extract_tblClients.qvd]
+ // FROM [lib://$(vDataFilesTest)/Extract_tblClients.qvd]
+(qvd);
+
+Audit_Report_Load:
+LOAD
+    DateSubmitted,
+    DateSignedOff,
+    Visits_ID
+FROM [lib://$(vDataFiles)/Extract_tblAuditReport.qvd]
+// FROM [lib://$(vDataFilesTest)/Extract_tblAuditReport.qvd]
+(qvd);
+
+
+Audit_Report_Submitted:
+Mapping Load
+Visits_ID,
+DateSubmitted
+Resident Audit_Report_Load;
+
+Audit_Report_SignedOff:
+Mapping Load
+Visits_ID,
+DateSignedOff
+Resident Audit_Report_Load;
+
+Drop Table Audit_Report_Load;
+///$tab Mapping - DataType Sub Region
+DataTypeSubRegionMap:
+mapping LOAD
+    Customer_ID,
+    "DataType Sub Region"
+FROM [lib://$(vDataFiles)/Transformation1_Customers.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_Customers.qvd]
+(qvd);
+
+
+///$tab Test Data Mapping
+TestDataBase_AuditorID:
+Mapping
+LOAD
+    ID&DataType,
+    'Yes'
+FROM [lib://$(vDataFiles)/Extract_TestRecords_AuditorID.qvd]
+// FROM [lib://$(vDataFilesTest)/Extract_TestRecords_AuditorID.qvd]
+(qvd);
+
+
+///$tab Mapping - IATF
+Map_IATFFlag:
+mapping lOAD
+    Customer_ID,
+    IATFFlag
+FROM [lib://QVD Files:DataFiles/Transformation1_Customers.qvd]
+(qvd);
+
+
+///$tab Mapping - Provisional Days
+// Mapping - ProvisionalDays Check
+Map_VisitDescription:
+mapping LOAD
+    VisitType_ID,
+    VisitType
+    
+FROM [lib://QVD Files:DataFiles/Extract_tblVisitTypes.qvd]
+(qvd);
+
+
+
+
+// Get visits in the next 12 months for each customer.
+// If the visit date is in the next 12 months we want to keep it. 
+
+Load_Visits:
+LOAD
+    Customer_ID,
+    Calendar_Key,
+    VisitType_ID,
+    VisitTypeID,
+    ApplyMap('Map_VisitDescription',VisitTypeID,'<missing>') as VisitDescription,
+    if(Calendar_Key>=Date(today(),'YYYYMMDD') and Calendar_Key<Date(today()+365,'YYYYMMDD'),'Keep','Delete') as KeepVisits
+    
+FROM [lib://QVD Files:DataFiles/Transformation2_AuditorVisits.qvd]
+(qvd)
+;
+
+
+// For each customer ID we need to get the first visit date in the next 12 months
+// When the applymap happens in the main table it should find a visit for the customer ID in question.
+Map_Visitin365:
+mapping load
+Customer_ID,
+KeepVisits
+resident Load_Visits
+where KeepVisits='Keep'
+order by Calendar_Key asc;
+
+// We then need to map the description so we can apply further logic in an if statement.
+Map_VisitDescriptionin365:
+Mapping Load
+Customer_ID,
+VisitDescription
+resident Load_Visits
+where KeepVisits='Keep'
+order by Calendar_Key asc;
+
+drop table Load_Visits;
+///$tab Mapping - Franchises to keep (QAICL AC into IRE instance)
+FranchiseToKeepQAICLintoIRE:
+Mapping 
+LOAD
+    Customer_ID,
+    "Customer RealFranchiseNameToKeep"
+FROM [lib://QVD Files:DataFiles/Transformation1_Customers.qvd]
+(qvd);
+
+
+///$tab Auditor Days
+/*
+<<< Chargeable auditor days can be for AuditorID, ModeratorID, SecondAuditorID, Observer_ID, Mentor_ID >>>
+<<< Load 1 = AuditorID >>>
+<<< Load 2 = ModeratorID >>>
+<<< Load 3 = SecondAuditorID >>>
+<<< Load 4 = Mentor_ID >>>
+<<< Load 5 = Replacing client site visits with the previous visit type if it is the same auditor >>>
+<<< Load 6 = Creating field to count on >>>
+*/
+
+Let TableName = 'Transformation2_AuditorVisits';
+
+CustomerVisits_Temp1:
+
+//Load 1 = where AuditorID >0
+LOAD
+	DataType,
+    1 as [Row Counter],
+    'Auditor' as Source,
+    "Visits Auditor_ID" &'-'& "Visits Date" &'-'& "Visits Half Day Flag" as [Visits Audit Day Counter],    
+    VisitsID,
+    "Visits Customer_ID" as Customer_ID,
+    "Visits RegionID",
+    "Visits Date" as Calendar_Key,
+    "Visits Time",
+//    VisitsAuditorID,
+    //"Visits AuditorID",
+    "Visits Auditor_ID" as AuditorID,
+//    "Visits Moderator_ID",
+//     "Visits SecondAuditor_ID",
+//     If("Visits SecondAuditor_ID">0,"Visits SecondAuditor_ID" &'-'& "Visits Date") as [Visits 2nd Audit Day Counter],
+//     "Visits Observer_ID",
+//     If("Visits Observer_ID">0,"Visits Observer_ID" &'-'& "Visits Date") as [Visits Observer Audit Day Counter],
+//     "Visits Mentor_ID",
+//     If("Visits Mentor_ID">0,"Visits Mentor_ID" &'-'& "Visits Date") as [Visits Mentor Audit Day Counter],
+//     "Visits MentorNotes",
+    "Visits VisitType_ID" as VisitTypeID,
+    //If("Visits VisitType_ID" = 3,2,1) as VisitTypeIDSort,
+    //If("Visits VisitType_ID" = 3 or "Visits VisitType_ID" = 512,2,1) as VisitTypeIDSort,
+    If(Match("Visits VisitType_ID",3,524288,32,512),2,1) as VisitTypeIDSort,
+    "Visits Confirmation Letter Sent",
+    "Visits SiteVisit_ID",
+    "Visits Follow Up Letter Sent",
+    "Visits Address_ID",
+    "Visits Visit Date Booked",
+    "Visits Visit Date Originally Booked",
+    "Visits Visit Reason",
+    "Visits Visit Confirmed",
+    "Visits AP Produced",
+    "Visits UKAS Rep",
+    "Visits Over Auditor",
+    "Visits Is Pipeline",
+    "Visits BABCOMAuditor",
+    "Visits Post Code",
+    "Visits Proposal_ID",
+    "Visits Proposal Net Amount",
+    "Visits Proposal Days",
+    "Visits Proposal Day Rate",
+    "Visits Invoice Paid Date",
+    "Visits Invoice Raised Date",
+    "Visits Invoice Cancelled",
+    "Visits Invoice Number",
+    "Visits Half Day Flag",
+    "Visits Half Day Factor",
+    FranchiseIDFilter,
+    "Visits Contracted Customer ID",
+      "Visits Customer_ID (Old)"
+FROM [lib://$(vDataFiles)/Transformation1_Visits.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_Visits.qvd]
+(qvd)
+
+//Where Not isnull("Visits Auditor_ID") and "Visits Auditor_ID" >0
+Where Not isnull("Visits Auditor_ID") and SubField("Visits Auditor_ID",'_',1) >0
+;
+
+
+
+//Load 2 = Load where Moderator >0
+Concatenate(CustomerVisits_Temp1)
+LOAD
+	DataType,
+    1 as [Row Counter],
+    'Moderator' as Source,
+    "Visits Moderator_ID" &'-'& "Visits Date" &'-'& "Visits Half Day Flag" as [Visits Audit Day Counter],    
+    VisitsID,
+    "Visits Customer_ID" as Customer_ID,
+    "Visits RegionID",
+    "Visits Date" as Calendar_Key,
+    "Visits Time",
+//    VisitsAuditorID,
+    //"Visits AuditorID",
+//    "Visits AuditorID" as AuditorID,
+    "Visits Moderator_ID" as AuditorID,
+//     "Visits SecondAuditor_ID",
+//     If("Visits SecondAuditor_ID">0,"Visits SecondAuditor_ID" &'-'& "Visits Date") as [Visits 2nd Audit Day Counter],
+//     "Visits Observer_ID",
+//     If("Visits Observer_ID">0,"Visits Observer_ID" &'-'& "Visits Date") as [Visits Observer Audit Day Counter],
+//     "Visits Mentor_ID",
+//     If("Visits Mentor_ID">0,"Visits Mentor_ID" &'-'& "Visits Date") as [Visits Mentor Audit Day Counter],
+//     "Visits MentorNotes",
+    "Visits VisitType_ID" as VisitTypeID,
+    //If("Visits VisitType_ID" = 3,2,1) as VisitTypeIDSort,
+    //If("Visits VisitType_ID" = 3 or "Visits VisitType_ID" = 512,2,1) as VisitTypeIDSort,
+    If(Match("Visits VisitType_ID",3,524288,32,512),2,1) as VisitTypeIDSort,
+    "Visits Confirmation Letter Sent",
+    "Visits SiteVisit_ID",
+    "Visits Follow Up Letter Sent",
+    "Visits Address_ID",
+    "Visits Visit Date Booked",
+    "Visits Visit Date Originally Booked",
+    "Visits Visit Reason",
+    "Visits Visit Confirmed",
+    "Visits AP Produced",
+    "Visits UKAS Rep",
+    "Visits Over Auditor",
+    "Visits Is Pipeline",
+    "Visits BABCOMAuditor",
+    "Visits Post Code",
+	"Visits Proposal_ID",
+    "Visits Proposal Net Amount",
+    "Visits Proposal Days",
+    "Visits Proposal Day Rate",
+    "Visits Invoice Paid Date",
+    "Visits Invoice Raised Date",
+    "Visits Invoice Cancelled",
+    "Visits Invoice Number",
+    "Visits Half Day Flag",
+    "Visits Half Day Factor",
+    "Visits Client_ID",
+    "Visits Client_ID Temp",
+    FranchiseIDFilter,
+    "Visits Contracted Customer ID",
+    "Visits Customer_ID (Old)"
+FROM [lib://$(vDataFiles)/Transformation1_Visits.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_Visits.qvd]
+(qvd)
+//Where Not isnull("Visits Moderator_ID") and "Visits Moderator_ID" >0
+Where Not isnull("Visits Moderator_ID") and SubField("Visits Moderator_ID",'_',1) >0
+;
+
+//Load 3 = where SecondAuditor >0
+Concatenate(CustomerVisits_Temp1)
+LOAD
+	DataType,
+    1 as [Row Counter],
+    'SecondAuditor' as Source,
+    "Visits SecondAuditor_ID" &'-'& "Visits Date" &'-'& "Visits Half Day Flag" as [Visits Audit Day Counter],    
+    VisitsID,
+    "Visits Customer_ID" as Customer_ID,
+    "Visits RegionID",
+    "Visits Date" as Calendar_Key,
+    "Visits Time",
+//    VisitsAuditorID,
+    //"Visits AuditorID",
+//    "Visits AuditorID" as AuditorID,
+//    "Visits Moderator_ID" as AuditorID,
+     "Visits SecondAuditor_ID" as AuditorID,
+//     If("Visits SecondAuditor_ID">0,"Visits SecondAuditor_ID" &'-'& "Visits Date") as [Visits 2nd Audit Day Counter],
+//     "Visits Observer_ID",
+//     If("Visits Observer_ID">0,"Visits Observer_ID" &'-'& "Visits Date") as [Visits Observer Audit Day Counter],
+//     "Visits Mentor_ID",
+//     If("Visits Mentor_ID">0,"Visits Mentor_ID" &'-'& "Visits Date") as [Visits Mentor Audit Day Counter],
+//     "Visits MentorNotes",
+    "Visits VisitType_ID" as VisitTypeID,
+    //If("Visits VisitType_ID" = 3 or "Visits VisitType_ID" = 512,2,1) as VisitTypeIDSort,
+    If(Match("Visits VisitType_ID",3,524288,32,512),2,1) as VisitTypeIDSort,
+    //If("Visits VisitType_ID" = 3,2,1) as VisitTypeIDSort,
+    "Visits Confirmation Letter Sent",
+    "Visits SiteVisit_ID",
+    "Visits Follow Up Letter Sent",
+    "Visits Address_ID",
+    "Visits Visit Date Booked",
+    "Visits Visit Date Originally Booked",
+    "Visits Visit Reason",
+    "Visits Visit Confirmed",
+    "Visits AP Produced",
+    "Visits UKAS Rep",
+    "Visits Over Auditor",
+    "Visits Is Pipeline",
+    "Visits BABCOMAuditor",
+    "Visits Post Code",
+	"Visits Proposal_ID",
+    "Visits Proposal Net Amount",
+    "Visits Proposal Days",
+    "Visits Proposal Day Rate",
+    "Visits Invoice Paid Date",
+    "Visits Invoice Raised Date",
+    "Visits Invoice Cancelled",
+    "Visits Invoice Number",
+    "Visits Half Day Flag",
+    "Visits Half Day Factor",
+    "Visits Client_ID",
+    "Visits Client_ID Temp",
+    FranchiseIDFilter,
+    "Visits Contracted Customer ID",
+    "Visits Customer_ID (Old)"
+FROM [lib://$(vDataFiles)/Transformation1_Visits.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_Visits.qvd]
+(qvd)
+//Where Not isnull("Visits SecondAuditor_ID") and "Visits SecondAuditor_ID" >0
+Where Not isnull("Visits SecondAuditor_ID") and SubField("Visits SecondAuditor_ID",'_',1) >0
+;
+
+//Load 4 = where Observer >0
+Concatenate(CustomerVisits_Temp1)
+LOAD
+	DataType,
+    1 as [Row Counter],
+    'Observer' as Source,
+    "Visits Observer_ID" &'-'& "Visits Date" &'-'& "Visits Half Day Flag" as [Visits Audit Day Counter],    
+    VisitsID,
+    "Visits Customer_ID" as Customer_ID,
+    "Visits RegionID",
+    "Visits Date" as Calendar_Key,
+    "Visits Time",
+//    VisitsAuditorID,
+    //"Visits AuditorID",
+//    "Visits AuditorID" as AuditorID,
+//    "Visits Moderator_ID" as AuditorID,
+//     "Visits SecondAuditor_ID" as AuditorID,
+//     If("Visits SecondAuditor_ID">0,"Visits SecondAuditor_ID" &'-'& "Visits Date") as [Visits 2nd Audit Day Counter],
+     "Visits Observer_ID" as AuditorID,
+//     If("Visits Observer_ID">0,"Visits Observer_ID" &'-'& "Visits Date") as [Visits Observer Audit Day Counter],
+//     "Visits Mentor_ID",
+//     If("Visits Mentor_ID">0,"Visits Mentor_ID" &'-'& "Visits Date") as [Visits Mentor Audit Day Counter],
+//     "Visits MentorNotes",
+    "Visits VisitType_ID" as VisitTypeID,
+    //If("Visits VisitType_ID" = 3 or "Visits VisitType_ID" = 512,2,1) as VisitTypeIDSort,
+    If(Match("Visits VisitType_ID",3,524288,32,512),2,1) as VisitTypeIDSort,
+    //If("Visits VisitType_ID" = 3,2,1) as VisitTypeIDSort,
+    "Visits Confirmation Letter Sent",
+    "Visits SiteVisit_ID",
+    "Visits Follow Up Letter Sent",
+    "Visits Address_ID",
+    "Visits Visit Date Booked",
+    "Visits Visit Date Originally Booked",
+    "Visits Visit Reason",
+    "Visits Visit Confirmed",
+    "Visits AP Produced",
+    "Visits UKAS Rep",
+    "Visits Over Auditor",
+    "Visits Is Pipeline",
+    "Visits BABCOMAuditor",
+    "Visits Post Code",
+	"Visits Proposal_ID",
+    "Visits Proposal Net Amount",
+    "Visits Proposal Days",
+    "Visits Proposal Day Rate",
+    "Visits Invoice Paid Date",
+    "Visits Invoice Raised Date",
+    "Visits Invoice Cancelled",
+    "Visits Invoice Number",
+    "Visits Half Day Flag",
+    "Visits Half Day Factor",
+    "Visits Client_ID",
+    "Visits Client_ID Temp",
+    FranchiseIDFilter,
+    "Visits Contracted Customer ID",
+    "Visits Customer_ID (Old)"
+FROM [lib://$(vDataFiles)/Transformation1_Visits.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_Visits.qvd]
+(qvd)
+//Where Not isnull("Visits Observer_ID") and "Visits Observer_ID" >0
+Where Not isnull("Visits Observer_ID") and SubField("Visits Observer_ID",'_',1) >0
+;
+
+
+//Load 5 =  where Mentor >0
+Concatenate(CustomerVisits_Temp1)
+LOAD
+	DataType,
+    1 as [Row Counter],
+    'Mentor' as Source,
+    "Visits Mentor_ID" &'-'& "Visits Date" &'-'& "Visits Half Day Flag" as [Visits Audit Day Counter],    
+    VisitsID,
+    "Visits Customer_ID" as Customer_ID,
+    "Visits RegionID",
+    "Visits Date" as Calendar_Key,
+    "Visits Time",
+//    VisitsAuditorID,
+    //"Visits AuditorID",
+//    "Visits AuditorID" as AuditorID,
+//    "Visits Moderator_ID" as AuditorID,
+//     "Visits SecondAuditor_ID" as AuditorID,
+//     If("Visits SecondAuditor_ID">0,"Visits SecondAuditor_ID" &'-'& "Visits Date") as [Visits 2nd Audit Day Counter],
+//     "Visits Observer_ID" as AuditorID,
+//     If("Visits Observer_ID">0,"Visits Observer_ID" &'-'& "Visits Date") as [Visits Observer Audit Day Counter],
+     "Visits Mentor_ID" as AuditorID,
+//     If("Visits Mentor_ID">0,"Visits Mentor_ID" &'-'& "Visits Date") as [Visits Mentor Audit Day Counter],
+//     "Visits MentorNotes",
+    "Visits VisitType_ID" as VisitTypeID,
+    //If("Visits VisitType_ID" = 3,2,1) as VisitTypeIDSort,
+    //If("Visits VisitType_ID" = 3 or "Visits VisitType_ID" = 512,2,1) as VisitTypeIDSort,
+    If(Match("Visits VisitType_ID",3,524288,32,512),2,1) as VisitTypeIDSort,
+    "Visits Confirmation Letter Sent",
+    "Visits SiteVisit_ID",
+    "Visits Follow Up Letter Sent",
+    "Visits Address_ID",
+    "Visits Visit Date Booked",
+    "Visits Visit Date Originally Booked",
+    "Visits Visit Reason",
+    "Visits Visit Confirmed",
+    "Visits AP Produced",
+    "Visits UKAS Rep",
+    "Visits Over Auditor",
+    "Visits Is Pipeline",
+    "Visits BABCOMAuditor",
+    "Visits Post Code",
+	"Visits Proposal_ID",
+    "Visits Proposal Net Amount",
+    "Visits Proposal Days",
+    "Visits Proposal Day Rate",
+    "Visits Invoice Paid Date",
+    "Visits Invoice Raised Date",
+    "Visits Invoice Cancelled",
+    "Visits Invoice Number",
+    "Visits Half Day Flag",
+    "Visits Half Day Factor",
+    "Visits Client_ID",
+    "Visits Client_ID Temp",
+    FranchiseIDFilter,
+    "Visits Contracted Customer ID",
+    "Visits Customer_ID (Old)"
+FROM [lib://$(vDataFiles)/Transformation1_Visits.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_Visits.qvd]
+(qvd)
+//Where Not isnull("Visits Mentor_ID") and "Visits Mentor_ID">0
+Where Not isnull("Visits Mentor_ID") and SubField("Visits Mentor_ID",'_',1) >0
+;
+
+
+//Load 6 = loading visits 2030 data
+Concatenate(CustomerVisits_Temp1)
+LOAD
+    DataType,
+    'Auditor' as Source,
+    "Visits2030 Visits2030_ID"												 							as VisitsID,
+    
+//     "Visits2030 Customer_ID" ,
+    Customer_ID 																						as Customer_ID,
+    "Visits2030 CB Integrated" 																			as "Visits Customer CBIntegrated",
+    Calendar_Key,
+    "Visits2030 Auditor_ID" 																			as AuditorID,
+    "Visits2030 Auditor" 																				as "Visits Auditor",
+    "Visits2030 AuditorIsCompetentFlag" 																as "Visits AuditorIsCompetentFlag",
+//     "Visits2030 Moderator_ID",
+//     "Visits2030 SecondAuditor_ID",
+//     "Visits2030 Observer_ID",
+//     "Visits2030 Mentor_ID",
+	"Visits2030 VisitType"	 																			as VisitTypeID,
+    If(Match("Visits2030 VisitType",3,524288,32,512),2,1) 												as VisitTypeIDSort,
+//     "Visits2030 SiteVisit_ID",
+    "Visits2030 AddressID"																				as "Visits Address_ID", 
+    "Visits2030 VisitDateBooked" 																		as "Visits Visit Date Booked",
+//     "Visits2030 VisitReason",
+//     "Visits2030 VisitConfirmed",
+//     "Visits2030 UKASRep",
+    "Visits2030 Proposal_ID"																			as "Visits Proposal_ID",
+    "Visits2030 HalfDay"								   												as "Visits Half Day Flag",
+    "Visits2030 DateOriginallyBooked"												 					as "Visits Visit Date Originally Booked",
+//     "Visits2030 BoltOn_ID",
+//     "Visits2030 BoltOn",
+//     "Visits2030 InstallType",
+//     "Visits2030 VisitRemote",
+    "Visits2030 Row Counter"																as "Visits Row Counter",
+    "Visits2030 # Days Booked Before EoM" 													as "Visits # Days Booked Before EoM",
+    "Visits2030 # Days Booked Before Visit"													as "Visits # Days Booked Before Visit",
+    "Visits2030 Installation Type" 															as "Visits Installation Type",
+    FranchiseIDFilter,
+    "Visits2030 BABCOMAuditor"																as "Visits BABCOMAuditor",
+    "Visits2030 Auditor_ID" &'-'& Calendar_Key&'_'&"Visits2030 HalfDay"						as [Visits Audit Day Counter],
+    "Visits2030 Half Day Factor" as "Visits Half Day Factor"
+FROM [lib://$(vDataFiles)/Transformation1_Visits2030.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_Visits2030.qvd]
+(qvd)
+where not IsNull("Visits2030 Auditor_ID") and SubField("Visits2030 Auditor_ID",'_',1)>0 and DataType = 'US'
+;
+
+//Load 5 = replacing client visit with the previous visit type
+NoConcatenate
+CustomerVisits_Temp2:
+Load
+	DataType,
+    'Actual' as [Actual Flag],
+    [Row Counter],
+    Source,
+    [Visits Audit Day Counter],    
+    VisitsID,
+    Customer_ID,
+    "Visits RegionID",
+    Calendar_Key,
+    "Visits Time",
+    AuditorID,
+    VisitTypeID as VisitTypeID_Original,
+//     If(VisitTypeID = 3 and AuditorID = Previous(AuditorID) and Calendar_Key = Previous(Calendar_Key),
+//     	Peek(VisitTypeID),VisitTypeID ) as VisitTypeID, // Amended to the below row to include remove client site visits
+    If(Match(VisitTypeID,3,524288) and AuditorID = Previous(AuditorID) and Calendar_Key = Previous(Calendar_Key),
+    	Peek(VisitTypeID),VisitTypeID ) as VisitTypeID,    
+    VisitTypeIDSort,
+    "Visits Confirmation Letter Sent",
+    "Visits SiteVisit_ID",
+    "Visits Follow Up Letter Sent",
+    "Visits Address_ID",
+    "Visits Visit Date Booked",
+    "Visits Visit Date Originally Booked",
+    "Visits Visit Reason",
+    "Visits Visit Confirmed",
+    "Visits AP Produced",
+    "Visits UKAS Rep",
+    "Visits Over Auditor",
+    "Visits Is Pipeline",
+    "Visits BABCOMAuditor",
+    "Visits Post Code",
+	"Visits Proposal_ID",
+    "Visits Proposal Net Amount",
+    "Visits Proposal Days",
+    "Visits Proposal Day Rate",
+    "Visits Invoice Paid Date",
+    "Visits Invoice Raised Date",
+    "Visits Invoice Cancelled",
+    "Visits Invoice Number",
+    "Visits Half Day Flag",
+    "Visits Half Day Factor",
+    "Visits Client_ID",
+    "Visits Client_ID Temp",    
+	If(Match(VisitTypeID,2,4,262144,268435456,4096,64),    
+    	ApplyMap('Map_NB_Contract_Date',Customer_ID,'No contract date'),'Not a new business visit') as "Visits New Business Contract Date",
+    Applymap('Map_Original_Enquiry_Date',Customer_ID,'No enquiy date') as "Visits Original Enquiry Date",
+    
+    FranchiseIDFilter,
+    "Visits Contracted Customer ID",
+    "Visits Customer_ID (Old)"
+
+Resident CustomerVisits_Temp1
+Order by AuditorID, Calendar_Key, VisitTypeIDSort ASC 
+;
+
+Drop table CustomerVisits_Temp1;
+
+NoConcatenate
+
+CustomerVisits_Temp3:
+Load *
+resident CustomerVisits_Temp2
+//where FranchiseID <> '10032' and FranchiseID <> '10033' and FranchiseID <> '10001' and FranchiseID <> '10002'
+where not Match(FranchiseIDFilter,'Test Record (Delete)'
+)
+//,'<missing>')
+;
+
+Drop table CustomerVisits_Temp2;
+
+//Load 6 = Creating field to count on
+NoConcatenate
+//$(TableName):
+Temp:
+Load
+	*,
+    ([Visits Auditor Day Counter1] * "Visits Proposal Day Rate") as "Visits Proposal Day Revenue1",
+    Rowno()
+	;
+
+Load
+	DataType,
+    [Actual Flag],
+    [Row Counter],
+    Source,
+    [Visits Audit Day Counter],    
+    VisitsID,
+    Customer_ID,
+    Applymap('Map_CBIntegrated',Customer_ID,'<missing>') as "Visits Customer CBIntegrated",
+    "Visits RegionID",
+    Calendar_Key,
+    If(Calendar_Key > Date(Today(),'YYYYMMDD'),1,0) as "Visits Day Is In Future",
+    //"Visits Time",
+    AuditorID,
+    //VisitTypeID_Original,
+    VisitTypeID as VisitType_ID,
+    VisitTypeIDSort,
+    //"Visits Confirmation Letter Sent",
+    "Visits SiteVisit_ID",
+    //"Visits Follow Up Letter Sent",
+    "Visits Address_ID",
+    "Visits Visit Date Booked",
+    "Visits Visit Date Originally Booked",
+    //Date(Floor(MonthEnd(Calendar_Key)),'YYYYMMDD') - "Visits Visit Date Booked" as "Visits # Days Booked Before EoM",
+    Date(Floor(MonthEnd(Calendar_Key)),'YYYYMMDD') - "Visits Visit Date Originally Booked" as "Visits # Days Booked Before EoM",
+    If(Date(MonthStart(Calendar_Key),'YYYYMMDD') < Date(Floor(MonthStart(today())),'YYYYMMDD'),0,1) as "Visits Arrival Include Flag",
+    
+    If("Visits Visit Date Booked" > Calendar_Key,0,Calendar_Key - "Visits Visit Date Booked") as "Visits # Days Booked Before Visit",
+    "Visits Visit Reason",
+    "Visits Visit Confirmed",
+    //"Visits AP Produced",
+    //"Visits UKAS Rep",
+    //"Visits Over Auditor",
+    //"Visits Is Pipeline",
+    "Visits BABCOMAuditor",
+    "Visits Post Code",
+	"Visits Proposal_ID",
+    "Visits Proposal Net Amount",
+    "Visits Proposal Days",
+    "Visits Proposal Day Rate",
+    "Visits Invoice Paid Date",
+    "Visits Invoice Raised Date",
+    "Visits Invoice Cancelled",
+    "Visits Invoice Number",
+    "Visits Half Day Flag",
+    "Visits Half Day Factor",
+    "Visits Client_ID",
+    "Visits Client_ID Temp",    
+    "Visits New Business Contract Date",
+
+    If("Visits New Business Contract Date" = 'Not a new business visit',0,
+        If("Visits New Business Contract Date" = 'No contract date',0,
+        1)) as "Visits New Business Contract Flag",      
+    
+    If("Visits New Business Contract Date" > 1 and Match(VisitTypeID,2,4,262144,268435456,4096,64), Calendar_Key - "Visits New Business Contract Date", 'Exclude') as "Visits Days from Visit to Contract",
+    "Visits Original Enquiry Date",
+    
+    If("Visits Original Enquiry Date"  = 'No enquiy date','No enquiy date',Calendar_Key - "Visits Original Enquiry Date") as "Visits Days from Visit to Enquiry", 
+    If("Visits Original Enquiry Date"  = 'No enquiy date',0,1) as "Visits Original Enquiry Date valid",
+    
+    //if(If([Visits Audit Day Counter] = Previous([Visits Audit Day Counter]),0,1*"Visits Half Day Factor")>1,1,
+    	//If(
+        if([Visits Audit Day Counter] = Previous([Visits Audit Day Counter]),0,1*"Visits Half Day Factor")
+//         )) 
+      as  [Visits Auditor Day Counter1],
+      
+	if([Visits Audit Day Counter] <> Previous([Visits Audit Day Counter]) and 
+    Calendar_Key = Previous(Calendar_Key) and 
+    AuditorID = previous(AuditorID) and
+    match("Visits Half Day Flag",1,2) 
+    
+    ,'True','False')
+    
+    as  [Visits Auditor Day Counter Overstated Flag],
+         
+    
+    
+    FranchiseIDFilter,
+    "Visits Contracted Customer ID",
+    
+    ApplyMap('Audit_Report_Submitted',VisitsID,'<missing>') as [Visits Audit Report Submitted],
+    ApplyMap('Audit_Report_SignedOff',VisitsID,'<missing>') as [Visits Audit Report Signed Off],
+    ApplyMap('TestDataBase_AuditorID',AuditorID&DataType,'Keep') as [Test Data Database (delete)],
+    "Visits Customer_ID (Old)",
+    Customer_ID&Calendar_Key&AuditorID&Source as Day_Key
+    
+        
+    
+Resident CustomerVisits_Temp3
+Order by AuditorID, Calendar_Key, [Visits Audit Day Counter] ASC 
+;
+
+
+
+Drop table CustomerVisits_Temp3;
+
+
+
+NoConcatenate
+$(TableName)_Temp4:
+load *,
+if(ProvisionalDayBookedCheck='Visit within 365 days' and VisitDescriptionin365='Provisional Date','PD Booked',
+	if(ProvisionalDayBookedCheck='Visit within 365 days','Different Day Booked',
+		if(VisitDescriptionin365=VisitDescription,'Next visit not matching current','No visit booked in the next 365 days'))) as VisitBookedCheck
+  ;
+
+load
+*,
+	// We are only concerned with specific visit types so we map the description of the visit that has been booked in the table. 
+    // I.e. if someone booked onsite surv we then want to check if a provisional date was booked for the next year.
+    // If the visit desctiption matches what we are looking for and the customer has a visit in the next 365 days then we need to look at these
+    if(match(VisitDescription,
+    'Surveillance - Onsite',
+    'Surveillance - Remote',
+	'3rd Year Recertification - Onsite',
+	'3rd Year Recertification - Remote',
+	'GWO Audit')
+    and 
+    VisitFoundin365='Keep'    
+    
+    ,'Visit within 365 days','No visit within 365') as ProvisionalDayBookedCheck,
+    
+    ;
+
+load
+*,
+
+Applymap('Map_Visitin365',Customer_ID,'Not visit Found') as VisitFoundin365, // Bring in a list of customer ID's where a visit was found in the next 365 days.
+applymap('Map_VisitDescriptionin365',Customer_ID,'<missing>') as VisitDescriptionin365, // Bring in the visit Description
+Applymap('Map_VisitDescription',VisitTypeID,'Check This Lookup') as VisitDescription,
+
+
+;
+
+Load 
+	*
+    ,
+    
+    if(Previous(Customer_ID)=Customer_ID and Previous(Calendar_Key)=Calendar_Key,0,1*"Visits Half Day Factor") as [Visits Auditor Day Counter (New)],
+    If(DataType = 'UK',VisitType_ID&'_UK',
+    	if(DataType = 'US',VisitType_ID&'_US',
+        	if(DataType= 'IRE', VisitType_ID&'_IRE',
+            	if(DataType='ITA',VisitType_ID&'_ITA',
+                if(DataType='AGT',VisitType_ID&'_AGT'
+            	,'Other'
+    ))))) as VisitTypeID,
+
+    applymap('DataTypeSubRegionMap',Customer_ID,DataType) as [DataType Sub Region],
+    ApplyMap('Map_AuditFrequency',Customer_ID,'<missing>') as [$(TableColumn) Audit Frequency],
+    If([Visits Audit Day Counter]=Previous([Visits Audit Day Counter]) and 
+       Source='Moderator' and 
+       Previous(match(Source,'Auditor','SecondAuditor')),'Booked as Moderator and Auditor on the same day','Ok') as BookingErrorCheck
+    
+    
+Resident Temp
+where [Test Data Database (delete)] = 'Keep'
+;
+
+
+Left join($(TableName)_Temp4)
+
+
+load
+[Visits Audit Day Counter],
+BookingErrorCheck as BookingErrorFlag1
+resident $(TableName)_Temp4
+Where not BookingErrorCheck = 'Ok'
+;
+
+
+
+
+NoConcatenate
+
+$(TableName)_Temp5:
+load *,
+"Visits Proposal Day Revenue1" 								as "Visits Proposal Day Revenue",
+"Visits Auditor Day Counter1"								as "Visits Auditor Day Counter",
+
+if(BookingErrorFlag='OK',"Visits Proposal Day Revenue1",0) 	as "Visits Proposal Day Revenue (Corrected)",
+if(BookingErrorFlag='OK',"Visits Auditor Day Counter1",0)	as "Visits Auditor Day Counter (Corrected)",
+
+ApplyMap('Map_ProposalRetentionYear',"Visits Proposal_ID",'') as "Proposal RetentionYear",
+;
+
+
+Load *,
+if(isnull(BookingErrorFlag1),'OK',BookingErrorFlag1) as BookingErrorFlag,
+ApplyMap('Map_IATFFlag',Customer_ID,'Ok') as IATFFlag,
+
+if(left(Customer_ID,1)=0,'Keep',applymap('FranchiseToKeepQAICLintoIRE',Customer_ID,'Hide')) as FranchiseToKeepQAICLintoIRE
+resident $(TableName)_Temp4
+;
+
+NoConcatenate
+
+$(TableName)_Temp6:
+Load
+*
+Resident $(TableName)_Temp5;
+
+Left Join($(TableName)_Temp6)
+
+load *,
+if(TotalDaysByAuditorAndCustomer>1,'Check','Ok') as CheckForBookingError
+;
+
+load
+Day_Key,
+Sum([Visits Auditor Day Counter (Corrected)]) as TotalDaysByAuditorAndCustomer
+Resident $(TableName)_Temp5
+group by Day_Key
+;
+
+
+
+
+NoConcatenate
+
+$(TableName):
+load *
+// where FranchiseToKeepQAICLintoIRE='Keep'
+;
+
+load *
+resident $(TableName)_Temp6
+Where NOT Match(DataType,'AGT')
+;
+
+NoConcatenate
+
+$(TableName)_Agency:
+load *
+resident $(TableName)_Temp5
+;
+
+
+Store $(TableName) INTO [lib://$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://$(vDataFilesTest)/$(TableName).qvd] (qvd);
+
+
+Store $(TableName)_Agency INTO [lib://$(vDataFiles)/$(TableName)_Agency.qvd] (qvd);
+Store $(TableName)_Agency INTO [lib://$(vDataFilesTest)/$(TableName)_Agency.qvd] (qvd);
+
+Drop Table Temp, $(TableName)_Temp4, $(TableName)_Temp5, $(TableName)_Temp6;
+
+
+
+
+///$tab GWO Inspections
+GWOInspections:
+Load 
+	AuditorID as AuditorID1,
+    Calendar_Key as Calendar_Key1,
+    "Visits Proposal_ID" as "Visits Proposal_ID1",
+    AuditorID&Calendar_Key&"Visits Proposal_ID"&"VisitTypeID" as Key,
+    RowNo() as recordNum,
+    if(AuditorID =Previous(AuditorID) and Calendar_Key=Previous(Calendar_Key) and "Visits Proposal_ID"=Previous("Visits Proposal_ID"),0,1) as [GWO Days]
+resident $(TableName)
+where DataType = 'US'
+order by AuditorID, Calendar_Key, "Visits Proposal_ID"
+;
+
+
+
+Store GWOInspections INTO [lib://$(vDataFiles)/Transformation2_AuditorVisits_GWOInspections.qvd] (qvd);
+Store GWOInspections INTO [lib://$(vDataFilesTest)/Transformation2_AuditorVisits_GWOInspections.qvd] (qvd);
+
+
+///$tab Drop Tables
+drop table 
+//$(TableName),
+GWOInspections
+;
+
+Drop Table 
+// $(TableName),
+$(TableName)_Agency,
+
+;
+///$tab Exit script
+Exit script;
+///$tab Logic before half days
+// /*
+// <<< Chargeable auditor days can be for AuditorID, ModeratorID, SecondAuditorID, Observer_ID, Mentor_ID >>>
+// <<< Load 1 = AuditorID >>>
+// <<< Load 2 = ModeratorID >>>
+// <<< Load 3 = SecondAuditorID >>>
+// <<< Load 4 = Mentor_ID >>>
+// <<< Load 5 = Replacing client site visits with the previous visit type if it is the same auditor >>>
+// <<< Load 6 = xx >>>
+
+// */
+
+// Let TableName = 'Transformation2_AuditorVisits';
+
+// CustomerVisits_Temp1:
+
+// //Load 1 = where AuditorID >0
+// LOAD
+//     1 as [Row Counter],
+//     'Auditor' as Source,
+//     "Visits Auditor_ID" &'-'& "Visits Date" as [Visits Audit Day Counter],    
+//     VisitsID,
+//     "Visits Customer_ID" as Customer_ID,
+//     "Visits RegionID",
+//     "Visits Date" as Calendar_Key,
+//     "Visits Time",
+// //    VisitsAuditorID,
+//     //"Visits AuditorID",
+//     "Visits Auditor_ID" as AuditorID,
+// //    "Visits Moderator_ID",
+// //     "Visits SecondAuditor_ID",
+// //     If("Visits SecondAuditor_ID">0,"Visits SecondAuditor_ID" &'-'& "Visits Date") as [Visits 2nd Audit Day Counter],
+// //     "Visits Observer_ID",
+// //     If("Visits Observer_ID">0,"Visits Observer_ID" &'-'& "Visits Date") as [Visits Observer Audit Day Counter],
+// //     "Visits Mentor_ID",
+// //     If("Visits Mentor_ID">0,"Visits Mentor_ID" &'-'& "Visits Date") as [Visits Mentor Audit Day Counter],
+// //     "Visits MentorNotes",
+//     "Visits VisitType_ID" as VisitTypeID,
+//     //If("Visits VisitType_ID" = 3,2,1) as VisitTypeIDSort,
+//     //If("Visits VisitType_ID" = 3 or "Visits VisitType_ID" = 512,2,1) as VisitTypeIDSort,
+//     If(Match("Visits VisitType_ID",3,524288,32,512),2,1) as VisitTypeIDSort,
+//     "Visits Confirmation Letter Sent",
+//     "Visits SiteVisit_ID",
+//     "Visits Follow Up Letter Sent",
+//     "Visits Address_ID",
+//     "Visits Visit Date Booked",
+//     "Visits Visit Reason",
+//     "Visits Visit Confirmed",
+//     "Visits AP Produced",
+//     "Visits UKAS Rep",
+//     "Visits Over Auditor",
+//     "Visits Is Pipeline",
+//     "Visits BABCOMAuditor",
+//     "Visits Post Code",
+//     "Visits Proposal_ID",
+//     "Visits Proposal Net Amount",
+//     "Visits Proposal Days",
+//     "Visits Invoice Paid Date",
+//     "Visits Invoice Raised Date",
+//     "Visits Half Day Flag",
+//     "Visits Half Day Factor"
+// FROM [lib://$(vDataFiles)/Transformation1_Visits.qvd]
+// (qvd)
+// Where Not isnull("Visits Auditor_ID") and "Visits Auditor_ID" >0
+// ;
+
+// //Load 2 = Load where Moderator >0
+// Concatenate(CustomerVisits_Temp1)
+// LOAD
+//     1 as [Row Counter],
+//     'Moderator' as Source,
+//     "Visits Moderator_ID" &'-'& "Visits Date" as [Visits Audit Day Counter],    
+//     VisitsID,
+//     "Visits Customer_ID" as Customer_ID,
+//     "Visits RegionID",
+//     "Visits Date" as Calendar_Key,
+//     "Visits Time",
+// //    VisitsAuditorID,
+//     //"Visits AuditorID",
+// //    "Visits AuditorID" as AuditorID,
+//     "Visits Moderator_ID" as AuditorID,
+// //     "Visits SecondAuditor_ID",
+// //     If("Visits SecondAuditor_ID">0,"Visits SecondAuditor_ID" &'-'& "Visits Date") as [Visits 2nd Audit Day Counter],
+// //     "Visits Observer_ID",
+// //     If("Visits Observer_ID">0,"Visits Observer_ID" &'-'& "Visits Date") as [Visits Observer Audit Day Counter],
+// //     "Visits Mentor_ID",
+// //     If("Visits Mentor_ID">0,"Visits Mentor_ID" &'-'& "Visits Date") as [Visits Mentor Audit Day Counter],
+// //     "Visits MentorNotes",
+//     "Visits VisitType_ID" as VisitTypeID,
+//     //If("Visits VisitType_ID" = 3,2,1) as VisitTypeIDSort,
+//     //If("Visits VisitType_ID" = 3 or "Visits VisitType_ID" = 512,2,1) as VisitTypeIDSort,
+//     If(Match("Visits VisitType_ID",3,524288,32,512),2,1) as VisitTypeIDSort,
+//     "Visits Confirmation Letter Sent",
+//     "Visits SiteVisit_ID",
+//     "Visits Follow Up Letter Sent",
+//     "Visits Address_ID",
+//     "Visits Visit Date Booked",
+//     "Visits Visit Reason",
+//     "Visits Visit Confirmed",
+//     "Visits AP Produced",
+//     "Visits UKAS Rep",
+//     "Visits Over Auditor",
+//     "Visits Is Pipeline",
+//     "Visits BABCOMAuditor",
+//     "Visits Post Code",
+// 	"Visits Proposal_ID",
+//     "Visits Proposal Net Amount",
+//     "Visits Proposal Days",
+//     "Visits Invoice Paid Date",
+//     "Visits Invoice Raised Date",
+//     "Visits Half Day Flag",
+//     "Visits Half Day Factor"    
+// FROM [lib://$(vDataFiles)/Transformation1_Visits.qvd]
+// (qvd)
+// Where Not isnull("Visits Moderator_ID") and "Visits Moderator_ID" >0
+// ;
+
+// //Load 3 = where SecondAuditor >0
+// Concatenate(CustomerVisits_Temp1)
+// LOAD
+//     1 as [Row Counter],
+//     'SecondAuditor' as Source,
+//     "Visits SecondAuditor_ID" &'-'& "Visits Date" as [Visits Audit Day Counter],    
+//     VisitsID,
+//     "Visits Customer_ID" as Customer_ID,
+//     "Visits RegionID",
+//     "Visits Date" as Calendar_Key,
+//     "Visits Time",
+// //    VisitsAuditorID,
+// //  	"Visits AuditorID",
+// //    "Visits AuditorID" as AuditorID,
+// //    "Visits Moderator_ID" as AuditorID,
+//      "Visits SecondAuditor_ID" as AuditorID,
+// //     If("Visits SecondAuditor_ID">0,"Visits SecondAuditor_ID" &'-'& "Visits Date") as [Visits 2nd Audit Day Counter],
+// //     "Visits Observer_ID",
+// //     If("Visits Observer_ID">0,"Visits Observer_ID" &'-'& "Visits Date") as [Visits Observer Audit Day Counter],
+// //     "Visits Mentor_ID",
+// //     If("Visits Mentor_ID">0,"Visits Mentor_ID" &'-'& "Visits Date") as [Visits Mentor Audit Day Counter],
+// //     "Visits MentorNotes",
+//     "Visits VisitType_ID" as VisitTypeID,
+//     //If("Visits VisitType_ID" = 3 or "Visits VisitType_ID" = 512,2,1) as VisitTypeIDSort,
+//     If(Match("Visits VisitType_ID",3,524288,32,512),2,1) as VisitTypeIDSort,
+//     //If("Visits VisitType_ID" = 3,2,1) as VisitTypeIDSort,
+//     "Visits Confirmation Letter Sent",
+//     "Visits SiteVisit_ID",
+//     "Visits Follow Up Letter Sent",
+//     "Visits Address_ID",
+//     "Visits Visit Date Booked",
+//     "Visits Visit Reason",
+//     "Visits Visit Confirmed",
+//     "Visits AP Produced",
+//     "Visits UKAS Rep",
+//     "Visits Over Auditor",
+//     "Visits Is Pipeline",
+//     "Visits BABCOMAuditor",
+//     "Visits Post Code",
+// 	"Visits Proposal_ID",
+//     "Visits Proposal Net Amount",
+//     "Visits Proposal Days",
+//     "Visits Invoice Paid Date",
+//     "Visits Invoice Raised Date",
+//     "Visits Half Day Flag",
+//     "Visits Half Day Factor"    
+// FROM [lib://$(vDataFiles)/Transformation1_Visits.qvd]
+// (qvd)
+// Where Not isnull("Visits SecondAuditor_ID") and "Visits SecondAuditor_ID" >0
+// ;
+
+// //Load 4 = where Observer >0
+// Concatenate(CustomerVisits_Temp1)
+// LOAD
+//     1 as [Row Counter],
+//     'Observer' as Source,
+//     "Visits Observer_ID" &'-'& "Visits Date" as [Visits Audit Day Counter],    
+//     VisitsID,
+//     "Visits Customer_ID" as Customer_ID,
+//     "Visits RegionID",
+//     "Visits Date" as Calendar_Key,
+//     "Visits Time",
+// //    VisitsAuditorID,
+//     //"Visits AuditorID",
+// //    "Visits AuditorID" as AuditorID,
+// //    "Visits Moderator_ID" as AuditorID,
+// //     "Visits SecondAuditor_ID" as AuditorID,
+// //     If("Visits SecondAuditor_ID">0,"Visits SecondAuditor_ID" &'-'& "Visits Date") as [Visits 2nd Audit Day Counter],
+//      "Visits Observer_ID" as AuditorID,
+// //     If("Visits Observer_ID">0,"Visits Observer_ID" &'-'& "Visits Date") as [Visits Observer Audit Day Counter],
+// //     "Visits Mentor_ID",
+// //     If("Visits Mentor_ID">0,"Visits Mentor_ID" &'-'& "Visits Date") as [Visits Mentor Audit Day Counter],
+// //     "Visits MentorNotes",
+//     "Visits VisitType_ID" as VisitTypeID,
+//     //If("Visits VisitType_ID" = 3 or "Visits VisitType_ID" = 512,2,1) as VisitTypeIDSort,
+//     If(Match("Visits VisitType_ID",3,524288,32,512),2,1) as VisitTypeIDSort,
+//     //If("Visits VisitType_ID" = 3,2,1) as VisitTypeIDSort,
+//     "Visits Confirmation Letter Sent",
+//     "Visits SiteVisit_ID",
+//     "Visits Follow Up Letter Sent",
+//     "Visits Address_ID",
+//     "Visits Visit Date Booked",
+//     "Visits Visit Reason",
+//     "Visits Visit Confirmed",
+//     "Visits AP Produced",
+//     "Visits UKAS Rep",
+//     "Visits Over Auditor",
+//     "Visits Is Pipeline",
+//     "Visits BABCOMAuditor",
+//     "Visits Post Code",
+// 	"Visits Proposal_ID",
+//     "Visits Proposal Net Amount",
+//     "Visits Proposal Days",
+//     "Visits Invoice Paid Date",
+//     "Visits Invoice Raised Date",
+//     "Visits Half Day Flag",
+//     "Visits Half Day Factor"    
+// FROM [lib://$(vDataFiles)/Transformation1_Visits.qvd]
+// (qvd)
+// Where Not isnull("Visits Observer_ID") and "Visits Observer_ID" >0
+// ;
+
+
+// //Load 5 =  where Mentor >0
+// Concatenate(CustomerVisits_Temp1)
+// LOAD
+//     1 as [Row Counter],
+//     'Mentor' as Source,
+//     "Visits Mentor_ID" &'-'& "Visits Date" as [Visits Audit Day Counter],    
+//     VisitsID,
+//     "Visits Customer_ID" as Customer_ID,
+//     "Visits RegionID",
+//     "Visits Date" as Calendar_Key,
+//     "Visits Time",
+// //    VisitsAuditorID,
+//     //"Visits AuditorID",
+// //    "Visits AuditorID" as AuditorID,
+// //    "Visits Moderator_ID" as AuditorID,
+// //     "Visits SecondAuditor_ID" as AuditorID,
+// //     If("Visits SecondAuditor_ID">0,"Visits SecondAuditor_ID" &'-'& "Visits Date") as [Visits 2nd Audit Day Counter],
+// //     "Visits Observer_ID" as AuditorID,
+// //     If("Visits Observer_ID">0,"Visits Observer_ID" &'-'& "Visits Date") as [Visits Observer Audit Day Counter],
+//      "Visits Mentor_ID" as AuditorID,
+// //     If("Visits Mentor_ID">0,"Visits Mentor_ID" &'-'& "Visits Date") as [Visits Mentor Audit Day Counter],
+// //     "Visits MentorNotes",
+//     "Visits VisitType_ID" as VisitTypeID,
+//     //If("Visits VisitType_ID" = 3,2,1) as VisitTypeIDSort,
+//     //If("Visits VisitType_ID" = 3 or "Visits VisitType_ID" = 512,2,1) as VisitTypeIDSort,
+//     If(Match("Visits VisitType_ID",3,524288,32,512),2,1) as VisitTypeIDSort,
+//     "Visits Confirmation Letter Sent",
+//     "Visits SiteVisit_ID",
+//     "Visits Follow Up Letter Sent",
+//     "Visits Address_ID",
+//     "Visits Visit Date Booked",
+//     "Visits Visit Reason",
+//     "Visits Visit Confirmed",
+//     "Visits AP Produced",
+//     "Visits UKAS Rep",
+//     "Visits Over Auditor",
+//     "Visits Is Pipeline",
+//     "Visits BABCOMAuditor",
+//     "Visits Post Code",
+// 	"Visits Proposal_ID",
+//     "Visits Proposal Net Amount",
+//     "Visits Proposal Days",
+//     "Visits Invoice Paid Date",
+//     "Visits Invoice Raised Date",
+//     "Visits Half Day Flag",
+//     "Visits Half Day Factor"   
+// FROM [lib://$(vDataFiles)/Transformation1_Visits.qvd]
+// (qvd)
+// Where Not isnull("Visits Mentor_ID") and "Visits Mentor_ID">0
+// ;
+
+// //Load 5 = replacing client visit with the previous visit type
+// NoConcatenate
+// CustomerVisits_Temp2:
+// Load
+//     'Actual' as [Actual Flag],
+//     [Row Counter],
+//     Source,
+//     [Visits Audit Day Counter],    
+//     VisitsID,
+//     Customer_ID,
+//     "Visits RegionID",
+//     Calendar_Key,
+//     "Visits Time",
+//     AuditorID,
+//     VisitTypeID as VisitTypeID_Original,
+// //     If(VisitTypeID = 3 and AuditorID = Previous(AuditorID) and Calendar_Key = Previous(Calendar_Key),
+// //     	Peek(VisitTypeID),VisitTypeID ) as VisitTypeID, // Amended to the below row to include remove client site visits
+//     If(Match(VisitTypeID,3,524288) and AuditorID = Previous(AuditorID) and Calendar_Key = Previous(Calendar_Key),
+//     	Peek(VisitTypeID),VisitTypeID ) as VisitTypeID,    
+//     VisitTypeIDSort,
+//     "Visits Confirmation Letter Sent",
+//     "Visits SiteVisit_ID",
+//     "Visits Follow Up Letter Sent",
+//     "Visits Address_ID",
+//     "Visits Visit Date Booked",
+//     "Visits Visit Reason",
+//     "Visits Visit Confirmed",
+//     "Visits AP Produced",
+//     "Visits UKAS Rep",
+//     "Visits Over Auditor",
+//     "Visits Is Pipeline",
+//     "Visits BABCOMAuditor",
+//     "Visits Post Code",
+// 	"Visits Proposal_ID",
+//     "Visits Proposal Net Amount",
+//     "Visits Proposal Days",
+//     "Visits Invoice Paid Date",
+//     "Visits Invoice Raised Date",
+//     "Visits Half Day Flag",
+//     "Visits Half Day Factor"    
+// Resident CustomerVisits_Temp1
+// Order by AuditorID, Calendar_Key, VisitTypeIDSort ASC 
+// ;
+
+// Drop table CustomerVisits_Temp1;
+
+// //Load 6 = Creating field to count on
+// NoConcatenate
+// $(TableName):
+// Load
+//     [Actual Flag],
+//     [Row Counter],
+//     Source,
+//     [Visits Audit Day Counter],    
+//     VisitsID,
+//     Customer_ID,
+//     Applymap('Map_CBIntegrated',Customer_ID,'<missing>') as "Visits Customer CBIntegrated",
+//     "Visits RegionID",
+//     Calendar_Key,
+//     If(Calendar_Key > Date(Today(),'YYYYMMDD'),1,0) as "Visits Day Is In Future",
+//     //"Visits Time",
+//     AuditorID,
+//     //VisitTypeID_Original,
+//     VisitTypeID,
+//     VisitTypeIDSort,
+//     //"Visits Confirmation Letter Sent",
+//     "Visits SiteVisit_ID",
+//     //"Visits Follow Up Letter Sent",
+//     "Visits Address_ID",
+//     "Visits Visit Date Booked",
+//     Date(Floor(MonthEnd(Calendar_Key)),'YYYYMMDD') - "Visits Visit Date Booked" as "Visits # Days Booked Before EoM",
+    
+//     If(Date(MonthStart(Calendar_Key),'YYYYMMDD') < Date(Floor(MonthStart(today())),'YYYYMMDD'),0,1) as "Visits Arrival Include Flag",
+    
+//     If("Visits Visit Date Booked" > Calendar_Key,0,Calendar_Key - "Visits Visit Date Booked") as "Visits # Days Booked Before Visit",
+//     "Visits Visit Reason",
+//     "Visits Visit Confirmed",
+//     //"Visits AP Produced",
+//     //"Visits UKAS Rep",
+//     //"Visits Over Auditor",
+//     //"Visits Is Pipeline",
+//     "Visits BABCOMAuditor",
+//     "Visits Post Code",
+// 	"Visits Proposal_ID",
+//     "Visits Proposal Net Amount",
+//     "Visits Proposal Days",
+//     "Visits Invoice Paid Date",
+//     "Visits Invoice Raised Date",
+//     "Visits Half Day Flag",
+//     "Visits Half Day Factor",
+//     If([Visits Audit Day Counter] = Previous([Visits Audit Day Counter]),0,1) as  [Visits Auditor Day Counter]
+// Resident CustomerVisits_Temp2
+// Order by AuditorID, Calendar_Key, [Visits Audit Day Counter] ASC 
+// ;
+
+// Drop table CustomerVisits_Temp2;
+
+// Store $(TableName) INTO [lib://$(vDataFiles)/$(TableName).qvd] (qvd);
+// // //Monthly file
+// Store $(TableName) INTO [lib://$(vDataFiles)/$(TableName)_$(vCurrentYear)-$(vCurrentMonth).qvd] (qvd);
+
+// Drop table $(TableName);
