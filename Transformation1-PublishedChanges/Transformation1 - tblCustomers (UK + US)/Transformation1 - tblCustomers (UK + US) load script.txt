@@ -1838,7 +1838,7 @@ drop table Load_tblProposals;
 ///$tab Mapping - Certification Structure
 Map_CertStructure:
 Mapping load * inline [
-
+'Code','Description
 '1', 'Single Facility'
 '2', 'Campus'
 '3', 'Shared Facilties'
