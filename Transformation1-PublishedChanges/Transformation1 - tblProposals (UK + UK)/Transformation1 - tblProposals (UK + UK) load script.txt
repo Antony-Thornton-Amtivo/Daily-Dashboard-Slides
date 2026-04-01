@@ -1,0 +1,1689 @@
+///$tab Main
+SET ThousandSep=',';
+SET DecimalSep='.';
+SET MoneyThousandSep=',';
+SET MoneyDecimalSep='.';
+SET MoneyFormat='£#,##0.00;-£#,##0.00';
+SET TimeFormat='hh:mm:ss';
+SET DateFormat='DD/MM/YYYY';
+SET TimestampFormat='DD/MM/YYYY hh:mm:ss[.fff]';
+SET FirstWeekDay=0;
+SET BrokenWeeks=0;
+SET ReferenceDay=4;
+SET FirstMonthOfYear=1;
+SET CollationLocale='en-GB';
+SET CreateSearchIndexOnReload=1;
+SET MonthNames='Jan;Feb;Mar;Apr;May;Jun;Jul;Aug;Sep;Oct;Nov;Dec';
+SET LongMonthNames='January;February;March;April;May;June;July;August;September;October;November;December';
+SET DayNames='Mon;Tue;Wed;Thu;Fri;Sat;Sun';
+SET LongDayNames='Monday;Tuesday;Wednesday;Thursday;Friday;Saturday;Sunday';
+SET NumericalAbbreviation='3:k;6:M;9:G;12:T;15:P;18:E;21:Z;24:Y;-3:m;-6:μ;-9:n;-12:p;-15:f;-18:a;-21:z;-24:y';
+
+
+// **************************************LIVE STORE LOCATIONS**************************************
+let vDataFiles = 'QVD Files:DataFiles';
+
+
+// **************************************TEST APP STORE LOCATIONS**************************************
+let vDataFilesTest = 'QVD Test Files:DataFiles';
+
+
+
+
+Let vCurrentMonth = num(Month(today()),'00');
+Let vCurrentYear = Year(today());
+
+
+
+///$tab Mapping Loads
+Curr_Map_EUUS:
+LOAD
+   // "Fixed Data Date",
+   Date(Floor(Fixed_Calendar_Key),'YYYYMMDD'),
+    [UStoEU]
+FROM [lib://Development:DataFiles/Fixed_Currency_Data.qvd]
+(qvd);
+
+
+Prop_Type_Map:
+Mapping
+LOAD
+    Prop_Type,
+    Prop_Type_Description
+FROM [lib://Development:Office_365_Sharepoint - FP&A Folder/Shared Documents/Private/Spreadsheets for Qlik/tblProposals.Prop_Type.xlsx]
+(ooxml, embedded labels, table is Sheet1);
+
+
+Prop_Type_Summary_Map:
+Mapping
+LOAD
+    Prop_Type,
+    Prop_Type_Summary
+FROM [lib://Development:Office_365_Sharepoint - FP&A Folder/Shared Documents/Private/Spreadsheets for Qlik/tblProposals.Prop_Type.xlsx]
+(ooxml, embedded labels, table is Sheet1);
+
+CBIntegrated_Map:
+Mapping
+LOAD
+    Customer_ID,
+    CBIntegrated
+FROM [lib://$(vDataFiles)/Transformation1_Customers.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_Customers.qvd]
+(qvd);
+
+UnknownDates_ContractDate_Map:
+Mapping
+LOAD
+    "UnknownDates_Consolidated ProposalID",
+    "UnknownDates_Consolidated Date"    
+FROM [lib://$(vDataFiles)/Transformation1_UnknownDates_Consolidated.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_UnknownDates_Consolidated.qvd]
+(qvd)
+Where "UnknownDates_Consolidated ProposalID" >=1
+;
+
+UnknownDates_ContractDate_table_delete_later:
+LOAD
+    "UnknownDates_Consolidated ProposalID",
+    "UnknownDates_Consolidated Date"    
+FROM [lib://$(vDataFiles)/Transformation1_UnknownDates_Consolidated.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_UnknownDates_Consolidated.qvd]
+(qvd)
+Where "UnknownDates_Consolidated ProposalID" >=1
+;
+
+
+Standard_Map:
+Mapping
+LOAD
+    Standard_Type,
+    DescriptionShort
+FROM [lib://$(vDataFiles)/Extract_tblStandardTypes.qvd]
+// FROM [lib://$(vDataFilesTest)/Extract_tblStandardTypes.qvd]
+(qvd);
+
+Curr_Map_US:
+Mapping LOAD
+   // "Fixed Data Date",
+   Date(Floor(Fixed_Calendar_Key),'YYYYMMDD'),
+    GBPtoUSD
+    //"GBP>EUR",
+FROM [lib://Development:DataFiles/Fixed_Currency_Data.qvd]
+(qvd);
+
+Curr_Map_IRE:
+Mapping LOAD
+   // "Fixed Data Date",
+   Date(Floor(Fixed_Calendar_Key),'YYYYMMDD'),
+    [GBP>EUR]
+FROM [lib://Development:DataFiles/Fixed_Currency_Data.qvd]
+(qvd);
+
+Curr_Map_EUUS:
+Mapping LOAD
+   // "Fixed Data Date",
+   Date(Floor(Fixed_Calendar_Key),'YYYYMMDD'),
+    [UStoEU]
+FROM [lib://Development:DataFiles/Fixed_Currency_Data.qvd]
+(qvd);
+
+//Applied in wrong table. Should have been T1 - Date Tables
+PreviousAppliedDayRateLoad:
+load
+ Customer_ID,
+ Proposal_ID,
+ Applymap('UnknownDates_ContractDate_Map',[Proposal_ID],'Unsigned') as [Proposals Contract Signed Date],
+ Proposal_ID&Applymap('UnknownDates_ContractDate_Map',[Proposal_ID],'Unsigned') as ConcatLookup,
+ DayRateApplied
+FROM [lib://$(vDataFiles)/Extract_tblProposals.qvd]
+// FROM [lib://$(vDataFilesTest)/Extract_tblProposals.qvd]
+(qvd);
+
+NoConcatenate
+
+PreviousAppliedDayRateOrder:
+Load *,
+if([Proposals Contract Signed Date]='Unsigned','Delete','Keep') as DataToKeep
+Resident PreviousAppliedDayRateLoad
+Order by Customer_ID,Proposal_ID, [Proposals Contract Signed Date];
+
+
+NoConcatenate
+PreviousAppliedDayRateWhere:
+Load *,
+Peek(Customer_ID) as PeekCustomerID,
+if(Peek(Customer_ID)=Customer_ID,peek(DayRateApplied),Null()) as PeekPreviousDayRate,
+Peek(Proposal_ID) as PeekProposalID,
+if(Peek(Proposal_ID)=Proposal_ID,Proposal_ID,'') as PeekProposalIDIFstatement
+
+Resident PreviousAppliedDayRateOrder
+where DataToKeep = 'Keep'
+;
+
+NoConcatenate
+PreviousAppliedDayRate:
+Load
+ConcatLookup,
+PeekPreviousDayRate
+Resident PreviousAppliedDayRateWhere;
+
+
+Drop table PreviousAppliedDayRateLoad,PreviousAppliedDayRateOrder,PreviousAppliedDayRateWhere;
+
+
+Standard_Bundle:
+Mapping
+LOAD
+    "CONTRACT Standard description" as "CONTRACT Standard description",
+    "Bundle Description Short"
+FROM [lib://$(vDataFiles)/Extract_StandardBundles.qvd]
+// FROM [lib://$(vDataFilesTest)/Extract_StandardBundles.qvd]
+(qvd);
+
+
+
+
+BoltOn_Table:
+Mapping load * Inline [
+BoltOnID, Code,
+10122,	AS 9100 D
+10123,	AS 9110 C
+10124,	AS 9120 B
+10125,	R2V3
+10126,	RIOS
+10129,	eStewards
+10127,	R2
+10128,	GWO
+];
+
+
+CustomerIsPasFlag:
+mapping Load
+Customer_ID,
+"Customer Is PAS Flag"
+FROM [lib://$(vDataFiles)/Transformation1_Customers.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_Customers.qvd]
+(qvd);
+
+///$tab Mapping - FranchiseID
+MapFranchiseID:
+Mapping LOAD
+    Customer_ID,
+    FranchiseIDFilter
+FROM [lib://QVD Files:DataFiles/Transformation1_Customers.qvd]
+(qvd);
+
+
+///$tab Mapping - tblClients
+Map_ClientID:
+LOAD
+    Customer_ID,
+    Client_ID
+FROM [lib://QVD Files:DataFiles/Extract_tblCustomers.qvd]
+(qvd);
+
+
+///$tab Mapping - tblCustomers PSA Standard
+Load_tblCustomers:
+LOAD
+    Customer_ID,
+    "Customer Certifying Body",
+    PSAStandardFix,
+    PSABoltOnFix,
+    BoltOnDesc
+FROM [lib://QVD Files:DataFiles/Transformation1_Customers.qvd]
+(qvd);
+
+Map_BoltOnDesc:
+mapping load
+Customer_ID,
+BoltOnDesc
+Resident Load_tblCustomers;
+
+Map_CertBody:
+mapping load
+Customer_ID,
+"Customer Certifying Body"
+Resident Load_tblCustomers;
+
+Map_PSAStandard:
+mapping load
+Customer_ID,
+PSAStandardFix
+Resident Load_tblCustomers;
+
+Map_PSABoltOn:
+mapping load
+Customer_ID,
+PSABoltOnFix
+Resident Load_tblCustomers;
+
+
+
+drop table Load_tblCustomers;
+///$tab Mapping - LeadPin
+Map_tblCustomersLeadPin:
+Mapping LOAD
+    Customer_ID,
+    'Lead Pin'
+FROM [lib://QVD Files:DataFiles/Extract_tblCustomers.qvd]
+(qvd)
+where LeadPIN=1
+;
+
+
+///$tab Proposals
+Let TableName = 'Transformation1_Proposals';
+Let TableColumn = 'Proposal';
+
+//as [$(TableColumn)ID],
+
+$(TableName)_Temp:
+
+Load*,
+	//Applied in wrong table. Should have been T1 - Date Tables
+    //ApplyMap('PreviousAppliedDayRate',ProposalID&[$(TableColumn) Contract Signed Date],Null()) as [$(TableColumn) PreviousDayRateApplied],
+	If([$(TableColumn) NonNativeCurrencyCheck]='GBPinIRE',[$(TableColumn) Total Net Amount (Post Discount)],
+    if(DataType='UK',[$(TableColumn) Total Net Amount (Post Discount)],
+    	If(DataType='US',[$(TableColumn) Total Net Amount (Post Discount)]/ApplyMap('Curr_Map_US',[$(TableColumn) Date Raised]),
+        	If(DataType='IRE',[$(TableColumn) Total Net Amount (Post Discount)]/ApplyMap('Curr_Map_IRE',[$(TableColumn) Date Raised]),
+            	If(DataType='ITA',[$(TableColumn) Total Net Amount (Post Discount)]/ApplyMap('Curr_Map_IRE',[$(TableColumn) Date Raised]),
+            
+            [$(TableColumn) Total Net Amount (Post Discount)]))))) as [$(TableColumn) Total Net Amount_£],
+    
+    If([$(TableColumn) NonNativeCurrencyCheck]='GBPinIRE',[$(TableColumn) Total Net Amount (Post Discount)]*ApplyMap('Curr_Map_US',[$(TableColumn) Date Raised]),
+    If(DataType='US',[$(TableColumn) Total Net Amount (Post Discount)],
+    	If(DataType='UK',[$(TableColumn) Total Net Amount (Post Discount)]*ApplyMap('Curr_Map_US',[$(TableColumn) Date Raised]),
+    		If(DataType='IRE',[$(TableColumn) Total Net Amount (Post Discount)]/ApplyMap('Curr_Map_EUUS',[$(TableColumn) Date Raised]),
+            	If(DataType='ITA',[$(TableColumn) Total Net Amount (Post Discount)]/ApplyMap('Curr_Map_EUUS',[$(TableColumn) Date Raised]),[$(TableColumn) Total Net Amount (Post Discount)]))))) 
+                as [$(TableColumn) Total Net Amount_$],
+    	
+        If([$(TableColumn) NonNativeCurrencyCheck]='GBPinIRE',[$(TableColumn) Total Net Amount (Post Discount)]*ApplyMap('Curr_Map_IRE',[$(TableColumn) Date Raised]),
+        If(Match(DataType,'IRE','ITA'),[$(TableColumn) Total Net Amount (Post Discount)],
+    		If(DataType='UK',[$(TableColumn) Total Net Amount (Post Discount)]*ApplyMap('Curr_Map_IRE',[$(TableColumn) Date Raised]),
+    			If(DataType='US',[$(TableColumn) Total Net Amount (Post Discount)]/ApplyMap('Curr_Map_EUUS',[$(TableColumn) Date Raised]),[$(TableColumn) Total Net Amount (Post Discount)])))) 
+                
+                as [$(TableColumn) Total Net Amount_€],
+
+         
+//          If(isnull(tblFinance.PrefCurr) = 'GBP') as PrimaryCurrency
+                
+                
+       // Prefered Currency check
+       // Add in code here that checks the preffered currency of the customer and update the if statement to reflect that. I.e. the DataType might be UK (BabCom) but they actually like being invoiced in Euro's.
+       
+//     If(DataType='UK',[$(TableColumn) Total Net Amount (Post Discount)],
+//     	If(DataType='US',[$(TableColumn) Total Net Amount (Post Discount)]/ApplyMap('Curr_Map_US',[$(TableColumn) Date Raised]),
+//         	If(DataType='IRE',[$(TableColumn) Total Net Amount (Post Discount)]/ApplyMap('Curr_Map_IRE',[$(TableColumn) Date Raised])))) as [$(TableColumn) Total Net Amount_£],
+    
+//     If(DataType='US',[$(TableColumn) Total Net Amount (Post Discount)],
+//     	If(DataType='UK',[$(TableColumn) Total Net Amount (Post Discount)]*ApplyMap('Curr_Map_US',[$(TableColumn) Date Raised]),
+//     		If(DataType='IRE',[$(TableColumn) Total Net Amount (Post Discount)]/ApplyMap('Curr_Map_EUUS',[$(TableColumn) Date Raised])))) as [$(TableColumn) Total Net Amount_$],
+    
+//         If(DataType='IRE',[$(TableColumn) Total Net Amount (Post Discount)],
+//     		If(DataType='UK',[$(TableColumn) Total Net Amount (Post Discount)]*ApplyMap('Curr_Map_IRE',[$(TableColumn) Date Raised]),
+//     			If(DataType='US',[$(TableColumn) Total Net Amount (Post Discount)]/ApplyMap('Curr_Map_EUUS',[$(TableColumn) Date Raised])))) as [$(TableColumn) Total Net Amount_€],
+                
+                
+                
+                
+  	If(DataType='UK',[$(TableColumn) Total Net Amount (Post Discount with no travel fee or expenses)],
+    	If(DataType='US',[$(TableColumn) Total Net Amount (Post Discount with no travel fee or expenses)]/ApplyMap('Curr_Map_US',[$(TableColumn) Date Raised]),
+        	If(DataType='IRE',[$(TableColumn) Total Net Amount (Post Discount with no travel fee or expenses)]/ApplyMap('Curr_Map_IRE',[$(TableColumn) Date Raised])))) as [$(TableColumn) Total Net Amount1_£],
+    
+    If(DataType='US',[$(TableColumn) Total Net Amount (Post Discount with no travel fee or expenses)],
+    	If(DataType='UK',[$(TableColumn) Total Net Amount (Post Discount with no travel fee or expenses)]*ApplyMap('Curr_Map_US',[$(TableColumn) Date Raised]),
+    		If(DataType='IRE',[$(TableColumn) Total Net Amount (Post Discount with no travel fee or expenses)]/ApplyMap('Curr_Map_EUUS',[$(TableColumn) Date Raised])))) as [$(TableColumn) Total Net Amount1_$],
+    
+        If(DataType='IRE',[$(TableColumn) Total Net Amount (Post Discount with no travel fee or expenses)],
+    		If(DataType='UK',[$(TableColumn) Total Net Amount (Post Discount with no travel fee or expenses)]*ApplyMap('Curr_Map_IRE',[$(TableColumn) Date Raised]),
+    			If(DataType='US',[$(TableColumn) Total Net Amount (Post Discount with no travel fee or expenses)]/ApplyMap('Curr_Map_EUUS',[$(TableColumn) Date Raised])))) as [$(TableColumn) Total Net Amount1_€],
+                
+    
+    If(match([$(TableColumn) Contract Unsigned Bucket],'30 Days & Less','60 Days & Less','90 Days & Less'),1,0) as [$(TableColumn) Contract Unsigned Pipeline Flag],
+    
+// Hari and Antony originally pu the GWO days into stage 1 but Nick Wright and James Butler wanted them in stage 2 days. 
+
+//     if([$(TableColumn) Type]='New Business' and [$(TableColumn) Standard Description] = 'GWO',[$(TableColumn) Total Deliverable Days],
+//     if([$(TableColumn) Type]='Surveillance' and [$(TableColumn) Standard Description] = 'GWO',0,[$(TableColumn) # Stage 1 Days])) as [$(TableColumn) # Stage 1 Days (GWO)],  
+
+//     if([$(TableColumn) Standard Description] = 'GWO',0,[$(TableColumn) # Stage 2 Days]) 											as [$(TableColumn) # Stage 2 Days (GWO)],   
+	
+    if([$(TableColumn) Type]='Surveillance' and [$(TableColumn) Standard Description] = 'GWO',
+    	[$(TableColumn) # Recertification Days]+[$(TableColumn) DaysCount GWO Modules]+[$(TableColumn) # Stage 1 Days],[$(TableColumn) # Recertification Days]) 	as [$(TableColumn) # Recertification Days (GWO)],   
+    
+    //if([$(TableColumn) Standard Description] = 'GWO',0,[$(TableColumn) # Stage 1 Days]) 	as [$(TableColumn) # Stage 1 Days (GWO)],
+    if([$(TableColumn) Type]='Surveillance' and [$(TableColumn) Standard Description] = 'GWO',0,[$(TableColumn) # Stage 1 Days]) 	as [$(TableColumn) # Stage 1 Days (GWO)],
+    
+    
+    if([$(TableColumn) Type]='New Business' and [$(TableColumn) Standard Description] = 'GWO',[$(TableColumn) # Stage 2 Days]+[$(TableColumn) DaysCount GWO Modules],
+    	if([$(TableColumn) Type]='Surveillance' and [$(TableColumn) Standard Description] = 'GWO',0,[$(TableColumn) # Stage 2 Days])) as [$(TableColumn) # Stage 2 Days (GWO)],
+        
+    if([$(TableColumn) Type]='New Business' and [$(TableColumn) Standard Description] = 'GWO',[$(TableColumn) # Stage 2 Days]+[$(TableColumn) DaysCount GWO Modules],
+    	if([$(TableColumn) Type]='Surveillance' and [$(TableColumn) Standard Description] = 'GWO',0,
+        if([$(TableColumn) Type]='Surveillance' and [$(TableColumn) Standard Description] = 'AS 9100 D',0,[$(TableColumn) # Stage 2 Days]))) as [$(TableColumn) # Stage 2 Days (GWO) (Test)],
+        
+    if([$(TableColumn) Type]='Surveillance' and [$(TableColumn) Standard Description]='GWO',
+    	[$(TableColumn) # Recertification Days]+[$(TableColumn) DaysCount GWO Modules]+[$(TableColumn) # Stage 1 Days],
+        	if([$(TableColumn) Type]='New Business' and [$(TableColumn) Standard Description]='AS 9100 D',[$(TableColumn) # Recertification Days]+[$(TableColumn) # Stage 2 Days],[$(TableColumn) # Recertification Days])) 	
+            	as [$(TableColumn) # Recertification Days (GWO) (Test)],  
+        
+    
+   
+	;
+
+Load*,
+	If([$(TableColumn) Contract Is Signed Flag] = 1, [$(TableColumn) Contract Signed Date] - [$(TableColumn) Date Raised],'Unsigned') as [$(TableColumn) # Days to Sign Contract],
+    
+    If([$(TableColumn) Contract Is Signed Flag] = 0, (Date(Floor(Today()),'YYYYMMDD') - [$(TableColumn) Date Raised]),
+    	If([$(TableColumn) Contract Is Signed Flag] = 1, [$(TableColumn) Contract Signed Date] - [$(TableColumn) Date Raised]
+    	)) as [$(TableColumn) # Days Since Quote],
+        
+	If([$(TableColumn) Contract Is Signed Flag]=1,'Signed',
+    	If([$(TableColumn) Contract Is Signed Flag]=0 and (Date(Floor(Today()),'YYYYMMDD') - [$(TableColumn) Date Raised]) <= 30,'30 Days & Less',
+    		If([$(TableColumn) Contract Is Signed Flag]=0 and (Date(Floor(Today()),'YYYYMMDD') - [$(TableColumn) Date Raised]) <= 60,'60 Days & Less',
+    			If([$(TableColumn) Contract Is Signed Flag]=0 and (Date(Floor(Today()),'YYYYMMDD') - [$(TableColumn) Date Raised]) <= 90,'90 Days & Less','Over 90 Days'    
+    )))) as [$(TableColumn) Contract Unsigned Bucket],
+    
+    //ApplyMap('Standard_Bundle',[$(TableColumn) Standard Description (No changes)],'<missing>') 				as [$(TableColumn) Standard Bundle],
+    ApplyMap('Standard_Bundle',[$(TableColumn) Standard Description],'<missing>') 							as [$(TableColumn) Standard Bundle],
+    [$(TableColumn) Standard Description] 																	as [$(TableColumn) Standard Bundle Standard Mapped],
+    
+
+    
+    //If(Match([$(TableColumn) Prop_Type],'1002','100001','100011','100021','100002','100012','100022','100013','100014',[$(TableColumn) Type]),[$(TableColumn) Standard Description Temp]) as [$(TableColumn) Standard Description]
+    
+    ;
+
+Load
+	*,
+    //If([$(TableColumn) CB Integrated Temp] = 1,1,0) as [$(TableColumn) CB Integrated],
+    
+    If(isnull([$(TableColumn) CB Integrated Temp]),0,[$(TableColumn) CB Integrated Temp]) as [$(TableColumn) CB Integrated],
+    
+    If([$(TableColumn) Contract Signed Date] = 'Unsigned',0,1) as [$(TableColumn) Contract Is Signed Flag],
+    
+    If([$(TableColumn) Standard] = 1024, 'PAS2030'&' - '& [$(TableColumn) Type Temp1],
+    	If([$(TableColumn) Standard] = 1025, 'PAS2030'&' - '& [$(TableColumn) Type Temp1],
+    	If([$(TableColumn) Prop_Type] = 268435456, 'Cyber Essentials '&' - '& [$(TableColumn) Type Temp1],
+    	[$(TableColumn) Type Temp1]))) as [$(TableColumn) Type],
+        
+    If([$(TableColumn) Standard] = 1024, 'PAS2030'&' - '& [$(TableColumn) Type Summary Temp1],
+    	If([$(TableColumn) Standard] = 1025, 'PAS2030'&' - '& [$(TableColumn) Type Summary Temp1],
+    	If([$(TableColumn) Prop_Type] = 268435456, 'Cyber Essentials '&' - '& [$(TableColumn) Type Summary Temp1],
+    	[$(TableColumn) Type Summary Temp1]))) as [$(TableColumn) Type Summary],
+
+
+// Updated the if statement to show a 0 for new business. IRE were using fields to be able to future quote for the customer but this was adding 2nd year contract days onto the new business contract.
+	 if(match([$(TableColumn) Prop_Type],'0','131072'),0,   
+		If([$(TableColumn) # Survey Days temp] >0 and [$(TableColumn) # Recertification Days Temp] >0 and Date([$(TableColumn) Date Raised],'DD/MM/YYYY') >= '01/01/2022' 
+    		and match([$(TableColumn) Prop_Type],'1','16384','262144','8'
+    ,'32768' //NEED To test whether adding this will break others. 
+    ), 0,[$(TableColumn) # Recertification Days Temp]))
+    	as [$(TableColumn) # Recertification Days],
+        
+// Updated the if statement to show a 0 for new business. IRE were using fields to be able to future quote for the customer but this was adding 2nd year contract days onto the new business contract.
+    if(match([$(TableColumn) Prop_Type],'0','131072'),0,
+    	if([$(TableColumn) # Survey Days temp] >0 and [$(TableColumn) # Recertification Days Temp] >0 and 
+    		Date([$(TableColumn) Date Raised],'DD/MM/YYYY') >= '01/01/2022' and match([$(TableColumn) Prop_Type],'4'), 0,[$(TableColumn) # Survey Days temp]))
+    as [$(TableColumn) # Survey Days],  
+    
+    
+    
+        
+        
+        
+        
+    
+    ;
+
+Load
+	*,
+	
+    
+    //ApplyMap('Prop_Type_Map',[$(TableColumn) Prop_Type],'<missing>') as [$(TableColumn) Type Temp1],
+      
+    if(DataType='US' and [$(TableColumn) Standard] = 0 and left([$(TableColumn) PAS BoltOnList],5) = '10128',
+    	ApplyMap('Prop_Type_Map',[$(TableColumn) Prop_Type]&'_US','<missing>'),
+    		ApplyMap('Prop_Type_Map',[$(TableColumn) Prop_Type],'<missing>')) as [$(TableColumn) Type Temp1],
+    
+    
+    ApplyMap('Prop_Type_Summary_Map',[$(TableColumn) Prop_Type],'<missing>') as [$(TableColumn) Type Summary Temp1],
+// 	ApplyMap('Prop_Type_Map',[$(TableColumn) Prop_Type],'<missing>') as [$(TableColumn) Type],
+//     ApplyMap('Prop_Type_Summary_Map',[$(TableColumn) Prop_Type],'<missing>') as [$(TableColumn) Type Summary],
+
+    [$(TableColumn) Estimated Close Date] - [$(TableColumn) Date Raised] as [$(TableColumn) Estimated Days to Close],
+    ApplyMap('CBIntegrated_Map',[$(TableColumn) Customer ID],0) as [$(TableColumn) CB Integrated Temp],
+    Applymap('UnknownDates_ContractDate_Map',[$(TableColumn)ID],'Unsigned') as [$(TableColumn) Contract Signed Date],
+    
+    [$(TableColumn)ID] & '-' & [$(TableColumn) Customer ID] as [$(TableColumn) Key],
+    [$(TableColumn) Customer ID] & '-' & [$(TableColumn) Date Raised] as [$(TableColumn) CustomerID - Date Raised Key],
+    [$(TableColumn) Customer ID] & '-' & [$(TableColumn) Date Raised] as EnquiryQuoteContract_Key,
+    
+//    Applymap('Standard_Map',[$(TableColumn) Standard],'<Multiple Standards>') as [$(TableColumn) Standard Description],
+	if([$(TableColumn) Standard] = 0 and left([$(TableColumn) PAS BoltOnList],5) = '10122','AS 9100 D',
+    if([$(TableColumn) Standard] = 0 and left([$(TableColumn) PAS BoltOnList],5) = '10123','AS 9110 C',
+    if([$(TableColumn) Standard] = 0 and left([$(TableColumn) PAS BoltOnList],5) = '10124','AS 9120 B',
+    if([$(TableColumn) Standard] = 0 and left([$(TableColumn) PAS BoltOnList],5) = '10125','R2V3',
+    if([$(TableColumn) Standard] = 0 and left([$(TableColumn) PAS BoltOnList],5) = '10126','RIOS',
+    if([$(TableColumn) Standard] = 0 and left([$(TableColumn) PAS BoltOnList],5) = '10127','R2',
+    if([$(TableColumn) Standard] = 0 and left([$(TableColumn) PAS BoltOnList],5) = '10128','GWO',
+    if([$(TableColumn) Standard] = 0 and left([$(TableColumn) PAS BoltOnList],5) = '10129','eStewards',   
+    if([$(TableColumn) Standard] = 0 and left([$(TableColumn) PAS BoltOnList],5) = '10087','ACS - SIA',   
+    if([$(TableColumn) Certifying Body]='EQA PSA' and PSAStandardFix = 0 and not isnull(PSABoltOnFix) and Left([$(TableColumn) BoltOn Description (New IT table)],3)<>'PSA','PSA',
+    if([$(TableColumn) Standard] = 0,applymap('Map_BoltOnDesc',[$(TableColumn) Customer ID],''),
+    Applymap('Standard_Map',[$(TableColumn) Standard],'<Multiple Standards>')))))))))))) as [$(TableColumn) Standard Description],
+    
+//        Applymap('Standard_Map',[$(TableColumn) Standard],'<Multiple Standards>') as [$(TableColumn) Standard Description],
+	if([$(TableColumn) Standard] = 0 and left([$(TableColumn) PAS BoltOnList],5) = '10122','AS 9100 D',
+    if([$(TableColumn) Standard] = 0 and left([$(TableColumn) PAS BoltOnList],5) = '10123','AS 9110 C',
+    if([$(TableColumn) Standard] = 0 and left([$(TableColumn) PAS BoltOnList],5) = '10124','AS 9120 B',
+    if([$(TableColumn) Standard] = 0 and left([$(TableColumn) PAS BoltOnList],5) = '10125','R2V3',
+    if([$(TableColumn) Standard] = 0 and left([$(TableColumn) PAS BoltOnList],5) = '10126','RIOS',
+    if([$(TableColumn) Standard] = 0 and left([$(TableColumn) PAS BoltOnList],5) = '10127','R2',
+    if([$(TableColumn) Standard] = 0 and left([$(TableColumn) PAS BoltOnList],5) = '10128','GWO',
+    if([$(TableColumn) Standard] = 0 and left([$(TableColumn) PAS BoltOnList],5) = '10129','eStewards',   
+    if([$(TableColumn) Standard] = 0 and left([$(TableColumn) PAS BoltOnList],5) = '10087','ACS - SIA',   
+    Applymap('Standard_Map',[$(TableColumn) Standard],'<Multiple Standards>')))))))))) as [$(TableColumn) Standard Description (NO PSA)],
+    
+    Applymap('Standard_Map',[$(TableColumn) Standard],'<missing>')		as [$(TableColumn) Standard Description (No changes)],
+    
+//     if([$(TableColumn) Standard] = 0 and ApplyMap('BoltOn_Table',left([$(TableColumn) PAS BoltOnList],5),'<missing>')<>'<missing>',ApplyMap('BoltOn_Table',left([$(TableColumn) PAS BoltOnList],5),
+//     Applymap('Standard_Map',[$(TableColumn) Standard],'<Multiple Standards>'))) as [$(TableColumn) Standard Description 2],
+    
+// 		[$(TableColumn) Total Net Amount (Post Discount)] + [$(TableColumn) Discount Amount] 							as [$(TableColumn) Total Net Amount],
+    
+        if(DataType='IRE',
+    		[$(TableColumn) Total Net Amount (Post Discount)] - [$(TableColumn) Application Amount] - [$(TableColumn) Application Amount (Annual Fee)] +[$(TableColumn) Recertification Application Fee],
+    			[$(TableColumn) Total Net Amount (Post Discount)] + [$(TableColumn) Discount Amount])							as [$(TableColumn) Total Net Amount],
+    
+//Old logic of the above. DIscount amount was artificially inflating numbers. See 529758_IRE. Should have been 3100 with a day rate of 1350 but was 3000. See call on the 11/03/2025.
+//     if(DataType='IRE',
+//     [$(TableColumn) Total Net Amount (Post Discount)] + [$(TableColumn) Discount Amount] - [$(TableColumn) Application Amount],
+//     [$(TableColumn) Total Net Amount (Post Discount)] + [$(TableColumn) Discount Amount])									as [$(TableColumn) Total Net Amount (without discount)],
+    
+  
+    [$(TableColumn) Total Net Amount (Post Discount with no travel fee or expenses)] + [$(TableColumn) Discount Amount] 	as [$(TableColumn) Total Net Amount1],
+    Round([$(TableColumn) Total Net Amount (Post Discount)]/1000) as [$(TableColumn) Est # Days],
+//     (DayST2 + DayST2v3)					as [$(TableColumn) # Stage 2 Days],
+//     (DaySurv +  DaySurvv3)				as [$(TableColumn) # Survey Days],
+// 	If(DaySurvv3 > 0,DaySurvv3,DaySurv) as [$(TableColumn) # Survey Days test],
+//     If(DayST2v3 > 0,DayST2v3,DayST2) as [$(TableColumn) # Stage 2 Days test]
+
+//	If(DaySurvv3 > 0,DaySurvv3,DaySurv) 	as [$(TableColumn) # Survey Days],
+
+
+	If(DaySurvv3 > 0,DaySurvv3,DaySurv) 		as [$(TableColumn) # Survey Days temp],
+    If(DayRecertv3 > 0,DayRecertv3,DayRecert) 	as [$(TableColumn) # Recertification Days Temp],
+    
+    If(DayST2v3 > 0,DayST2v3,DayST2) 		as [$(TableColumn) # Stage 2 Days],
+    
+    // UKFC PAackaging operates in IRE but uses GBP so we need to add an additional layer to the currency conversion to ensure that it converts correctly.
+    if(Match([$(TableColumn) FranchiseName],'UKFC & Packaging'),'GBPinIRE','Native Currency') as [$(TableColumn) NonNativeCurrencyCheck]
+   
+
+    //If(DaySurv>0 and DaySurvv3>0,DaySurv,(DaySurv +  DaySurvv3)) as [$(TableColumn) # Survey Days test]
+    ;
+
+LOAD
+	applymap('Map_CertBody',Customer_ID,'Not Found') as [$(TableColumn) Certifying Body],
+    applymap('Map_PSAStandard',Customer_ID,'Not Found') as PSAStandardFix,
+    Applymap('Map_PSABoltOn', Customer_ID,'Not Found') as PSABoltOnFix,
+    StandardsDesc as [$(TableColumn) BoltOn Description (New IT table)],
+	DataType,
+    //Recno() 							as [$(TableColumn) Row No],
+    Proposal_ID 							as [$(TableColumn)ID],
+    BABContact 							as [$(TableColumn) BAB Contact],
+    Customer_ID 							as [$(TableColumn) Customer ID],
+    Customer_ID 							as "Dates CustomerID",
+    Applymap('MapFranchiseID',Customer_ID,'<missing>') as [$(TableColumn) FranchiseName],
+    Date(Floor(DateRaised),'YYYYMMDD')	as [$(TableColumn) Date Raised],
+    Time(Floor(Frac(DateRaised), 1/(24*60)), 'hh:mm') as [$(TableColumn) Time Raised],
+    "Pre-AssessmentFee"  				as [$(TableColumn) Pre Assessment Amount],
+    AuditFee 							as [$(TableColumn) Audit Amount],
+    if(IsNull(PackageFee),0,PackageFee) 							as [$(TableColumn) Package Amount],
+    Stage1Fee 							as [$(TableColumn) Stage 1 Amount],
+    Stage2Fee 							as [$(TableColumn) Stage 2 Amount],
+    SurveillanceFee 					as [$(TableColumn) Surveillance Amount],
+    RecertFee 							as [$(TableColumn) Recertification Fee],
+    RecertAppFee 						as [$(TableColumn) Recertification Application Fee],
+	SSIPFee 							as [$(TableColumn) SSIP Amount],
+    GAFee 								as [$(TableColumn) Gap Amount],
+    TravelFee 							as [$(TableColumn) Travel Amount],    
+    if(isnull(DiscountFee),0,DiscountFee) 						as [$(TableColumn) Discount Amount],
+    GDPRFee 							as [$(TableColumn) GDPR Amount],
+    SimplifiFee 						as [$(TableColumn) Simplifi Amount],
+    if(isnull(ApplicationFee),0,ApplicationFee) 						as [$(TableColumn) Application Amount],
+    if(isnull(AnnualFee),0,AnnualFee) 						as [$(TableColumn) Application Amount (Annual Fee)],
+    
+    SubTotal 							as [$(TableColumn) Total Net Amount (Post Discount)],    
+    SubTotal - if(isnull(TravelFee),0,TravelFee) - if(isnull(Expenses),0,Expenses)		as [$(TableColumn) Total Net Amount (Post Discount with no travel fee or expenses)],
+    
+    if(isnull(OasisFees),0,OasisFees)	 						as [$(TableColumn) OasisFees],
+    
+    
+    //SubTotal 							as [$(TableColumn) Total Net Amount],
+    VATPaid 							as [$(TableColumn) Vat Amount],
+    TotalFeePaid 						as [$(TableColumn) Total Gross Amount],
+    ProcessedBy 						as [$(TableColumn) Processed By],
+    TwoPayments 						as [$(TableColumn) Two Payments],
+    Standard 							as [$(TableColumn) Standard],
+    Date(Floor(accepted),'YYYYMMDD') 	as [$(TableColumn) Accepted],
+    
+    Prop_Type 							as [$(TableColumn) Prop_Type],
+    
+    if(Prop_Type=3,'Yes','No') 			as [$(TableColumn) Ballpark Quote],
+    QMRequired 							as [$(TableColumn) QM RequiProp_Tred],
+    ERRequired 							as [$(TableColumn) ER Required],
+    CertReason 							as [$(TableColumn) Certification Reason],
+    PropReferred 						as [$(TableColumn) Referred],
+    PersonDays 							as [$(TableColumn) Person Days],
+    ActualPersonDays 					as [$(TableColumn) Actual Person Days],
+    ClientSite 							as [$(TableColumn) Client Site],
+    TypicalTime 						as [$(TableColumn) Typical Time],
+    SBScheme 							as [$(TableColumn) SB Scheme],
+    employees 							as [$(TableColumn) # Employees],
+    Date(Floor(Proposal_expiry),'YYYYMMDD')	as [$(TableColumn) Proposal Expiry Date],
+    DayPreAss 							as [$(TableColumn) Day Pre Assessment],
+//     if(Proposal
+//     ,
+    DayST1 								as [$(TableColumn) # Stage 1 Days],
+    If(isnull(DayST2),0,DayST2) 		as DayST2,
+    If(isnull(DayST2v3),0,DayST2v3) 	as DayST2v3,
+    If(isnull(DaySurv),0,DaySurv) 		as DaySurv,
+    If(isnull(DaySurvv3),0,DaySurvv3) 	as DaySurvv3,   
+    
+//     (DayST2 + DayST2v3)					as [$(TableColumn) # Stage 2 Days],
+//     (DaySurv +  DaySurvv3)				as [$(TableColumn) # Survey Days],
+//   DayRecert 							as [$(TableColumn) # Recertification Days],
+	//DayRecert 							as [$(TableColumn) # Recertification Days Temp],
+    If(isnull(DayRecertv3),0,DayRecertv3) 	as DayRecertv3,
+    DayRecert,
+    BookReqd 							as [$(TableColumn) Book Required],
+    LOCReqd 							as [$(TableColumn) LOC Required],
+    LapsedPIN 							as [$(TableColumn) Lapsed PIN],
+    TransGAReqd 						as [$(TableColumn) Trans GA Required],
+    SSIPReqd 							as [$(TableColumn) SSIP Required],
+    RequireSignOff 						as [$(TableColumn) Requires Sign Off],
+    SignedOff 							as [$(TableColumn) Signed Off],
+    Currency 							as [$(TableColumn) Currency],
+    ApplicationFeeUKAS 					as [$(TableColumn) UKAS Application Amount],
+    EarlyPay 							as [$(TableColumn) Early Pay],
+    PropVersion 						as [$(TableColumn) Version],
+    DiscountNEW 						as [$(TableColumn) Discount New Amount],
+    DiscountSURV 						as [$(TableColumn) Discount Surveilance Amount],
+    TermsAccepted 						as [$(TableColumn) Terms Accepted],
+    TermsAcceptName 					as [$(TableColumn) Terms Accepted Name],
+    TermsAcceptJobTitle 				as [$(TableColumn) Terms Accepted Job Title],
+    TermsAcceptIP 						as [$(TableColumn) Terms Accepted IP],
+    GDPRReqd 							as [$(TableColumn) GDPR Required],
+    PropQuantity 						as [$(TableColumn) Quantity],
+    //replace
+    Date(Replace(EstimatedCloseDate,'-',0),'YYYYMMDD') as [$(TableColumn) Estimated Close Date],
+    Probability  						as [$(TableColumn) Probability],
+    Expenses 							as [$(TableColumn) Expenses],
+    PreDiscount 						as [$(TableColumn) PreDiscount],
+    ActivUsers 							as [$(TableColumn) ActivUsers],
+    ActivUsersPre 						as [$(TableColumn) ActivUsersPre],
+    ActivUserFee 						as [$(TableColumn) ActivUserFee],
+    ConsultantLead 						as [$(TableColumn) ConsultantLead],
+    TotalInspections 					as [$(TableColumn) PAS Total Inspections],
+    BoltOnList							as [$(TableColumn) PAS BoltOnList],
+    BoltOnInspections 					as [$(TableColumn) PAS BoltOnInspections],
+    DayRateMin 							as [$(TableColumn) DayRateMin],
+    DayRateTarget 						as [$(TableColumn) DayRateTarget],
+    DayRateApplied 						as [$(TableColumn) DayRateApplied],
+    DeclineReason 						as [$(TableColumn) DeclineReason],
+    DeclineDate 						as [$(TableColumn) DeclineDate],
+    PlanningFee							as [$(TableColumn) PlanningFee],
+    if(isnull(DaysReportWriting),0,DaysReportWriting)		as [$(TableColumn) DaysReportWriting],
+    if(isnull(DaysCount),0,DaysCount)						as [$(TableColumn) DaysCount GWO],
+    DaysGWOModules						as [$(TableColumn) DaysCount GWO Modules],
+    TotalDaysCount						as [$(TableColumn) Total Deliverable Days],
+    hubspot_deal_id 					as [$(TableColumn) HubSpot DealID],
+    RetentionYear						as [$(TableColumn) RetentionYear],
+    AuditorTravelDays					as [$(TableColumn) AuditorTravelDays (Source Value)],
+    AuditorTravelFees					as [$(TableColumn) AuditorTravelFees (Source Value)], 
+    TermsCancelled						as [$(TableColumn) TermsCancelled],
+    CustomerAddresses					as [$(TableColumn) CustomerAddresses ID's],
+    if(isnull(CustomerAddresses) or CustomerAddresses='',0,if(SubStringCount(CustomerAddresses,',')=0,1,SubstringCount(CustomerAddresses,',')+1)) as [$(TableColumn) CustomerAddresses],
+    
+// Jamie Champion - 08/05/2025  
+// Hi Antony - for the FOC Quotes there will be a column in tblProposals called isFOC - 0 = Not FOC, 1 = Is FOC  
+// Yeah NULL is 0 so make sure to account for NULLs  
+ 
+    if(isnull(isFOC),0,isFOC)								as [$(TableColumn) Free Of Charge],
+    
+    
+	if(match(DataType,'UK','US'),0,
+		if(AuditorTravelFees>0 and AuditorTravelDays>0,AuditorTravelDays,0)) as [$(TableColumn) AuditorTravelDays],
+        ApplyMap('Map_tblCustomersLeadPin',Customer_ID,'Sub Pin') as [$(TableColumn) LeadPin],
+        
+    StandardsDesc as [$(TableColumn) Standard Description New] // See ticket 259902
+
+
+    
+FROM [lib://$(vDataFiles)/Extract_tblProposals.qvd]
+// FROM [lib://$(vDataFilesTest)/Extract_tblProposals.qvd]
+(qvd);
+
+
+
+Drop Fields [$(TableColumn) CB Integrated Temp],[$(TableColumn) Type Temp1],[$(TableColumn) Type Summary Temp1];
+
+NoConcatenate
+
+
+//$(TableName):
+temp2:
+Load
+  	*,
+//       If(
+//       [$(TableColumn) Customer ID]&'-'&[$(TableColumn) Contract Unsigned Pipeline Flag] = 
+//       previous([$(TableColumn) Customer ID]&'-'&[$(TableColumn) Contract Unsigned Pipeline Flag]),
+//       1,0	) as [$(TableColumn) Contract Unsigned Multi Quote Flag],
+ //AT Workings
+      [$(TableColumn) Customer ID]&'-'&[$(TableColumn) Contract Unsigned Pipeline Flag] as [current id],
+      previous([$(TableColumn) Customer ID]&'-'&[$(TableColumn) Contract Unsigned Pipeline Flag]) as [previous id],
+      RowNo() as [RowNumber]
+       
+Resident $(TableName)_Temp
+Order by DataType ASC, [$(TableColumn) Customer ID] asc, [$(TableColumn) Contract Unsigned Pipeline Flag] asc, [$(TableColumn) Date Raised] desc
+;
+
+left join(temp2)
+load
+	[$(TableColumn) Customer ID],
+    sum([$(TableColumn) Contract Is Signed Flag]) as [$(TableColumn) First Value Flag (Contract is Signed Flag)]
+resident $(TableName)_Temp
+//where [$(TableColumn) Contract Is Signed Flag]=1
+group by [$(TableColumn) Customer ID]
+;
+
+Test:
+load
+	[$(TableColumn) Customer ID],
+    FirstSortedValue([$(TableColumn) Contract Is Signed Flag],[$(TableColumn) Contract Is Signed Flag],1) as [$(TableColumn) First Value Flag (Contract is Signed Flag) TEST]
+resident $(TableName)_Temp
+//where [$(TableColumn) Contract Is Signed Flag]=1
+group by [$(TableColumn) Customer ID]
+;
+
+
+
+
+/*
+AT Addition - 18/10/2023
+Changed the below table from the final table $(TableName) to a de duplicate temporary table.
+I then ordered specifically by customer ID then Date Raised in preperation for the next table.
+*/
+$(TableName)_DeDupeTemp:
+Load
+	*,
+    if([$(TableColumn) Contract Is Signed Flag]<>[$(TableColumn) First Value Flag (Contract is Signed Flag)],1,0
+    ) as [$(TableColumn) Contract Unsigned Multi Quote Flag]
+    
+Resident temp2
+Order By [$(TableColumn) Customer ID], [$(TableColumn) Date Raised]
+;
+
+/*
+AT Addition - 18/10/2023
+Created the final table below and added an if statement to work out whether a proposal is a "duplicate", where they have had a quote within 180 days of the last date.
+If the Previous row's Customer ID does not equal the current row's Customer ID then put 0 otherwise work out the days between the previous row's Proposal Date Raised and the current row's.
+	i.e. there are 10 days between 18/10/2023 and the 28/10/2023.
+Apply the same logic to the next if statement but create a text based flag field where 0 becomes the "First Quote" for that customer and if the difference in days is less than 180 thats a "Duplicate" quote otherwise its a "New Quote".
+*/
+
+
+$(TableName):
+Load *,
+    if(previous([$(TableColumn) Customer ID])<>[$(TableColumn) Customer ID],0,[$(TableColumn) Date Raised] - Previous([$(TableColumn) Date Raised]))
+    	as [$(TableColumn) Difference Between Date Raised and Previous Date Raised],
+     if(previous([$(TableColumn) Customer ID])<>[$(TableColumn) Customer ID], 'First Quote',
+    	if(([$(TableColumn) Date Raised] - Previous([$(TableColumn) Date Raised]))<=180,'Duplicate Quote','New Quote')
+      ) 
+    	as [$(TableColumn) Duplicate Quote Flag],
+        
+        ApplyMap('CustomerIsPasFlag',[$(TableColumn) Customer ID],'Other') as "Customer Is PAS Flag",
+        
+        if(isnull("Proposal # Stage 1 Days"),0,"Proposal # Stage 1 Days") +
+        	if(isnull("Proposal # Stage 2 Days"),0,"Proposal # Stage 2 Days") +
+        		if(isnull("Proposal # Survey Days"),0,"Proposal # Survey Days") +
+        			if(isnull("Proposal # Recertification Days"),0,"Proposal # Recertification Days") +
+        				if(isnull("Proposal DaysReportWriting"),0,"Proposal DaysReportWriting") +
+        					if(isnull("Proposal DaysCount GWO"),0,"Proposal DaysCount GWO")+
+                            	if(isnull("Proposal AuditorTravelDays"),0,"Proposal AuditorTravelDays"
+                                
+                                )
+		as  "Proposal TotalDays",
+        
+                if(isnull("Proposal # Stage 1 Days"),0,"Proposal # Stage 1 Days") +
+        	if(isnull("Proposal # Stage 2 Days"),0,"Proposal # Stage 2 Days") +
+        		if(isnull("Proposal # Survey Days"),0,"Proposal # Survey Days") +
+        			if(isnull("Proposal # Recertification Days"),0,"Proposal # Recertification Days") +
+        				if(isnull("Proposal DaysReportWriting"),0,"Proposal DaysReportWriting") +
+        					if(isnull("Proposal DaysCount GWO"),0,"Proposal DaysCount GWO")+
+                            	if(isnull("Proposal AuditorTravelDays (Source Value)"),0,"Proposal AuditorTravelDays (Source Value)"
+                                
+                                )
+		as  "Proposal TotalDays (with travel days)",
+        
+        Applymap('Map_ClientID',[$(TableColumn) Customer ID],'Check') as [$(TableColumn) Client_ID]
+
+Resident $(TableName)_DeDupeTemp;
+
+
+
+Drop table $(TableName)_Temp;
+Drop table $(TableName)_DeDupeTemp;
+Drop table temp2;
+drop table Test, Curr_Map_EUUS, UnknownDates_ContractDate_table_delete_later,PreviousAppliedDayRate;
+
+//Drop fields [$(TableColumn) # Recertification Days Temp],[$(TableColumn) # Survey Days temp];
+
+store $(TableName) INTO [lib://$(vDataFiles)/$(TableName).qvd] (qvd);
+// store $(TableName) INTO [lib://$(vDataFilesTest)/$(TableName).qvd] (qvd);
+
+
+// monthly store
+Store $(TableName) INTO [lib://$(vDataFiles)/$(TableName)_$(vCurrentYear)-$(vCurrentMonth).qvd] (qvd);
+// Store $(TableName) INTO [lib://$(vDataFilesTest)/$(TableName)_$(vCurrentYear)-$(vCurrentMonth).qvd] (qvd);
+//Drop table $(TableName);
+///$tab Exit Script
+Exit Script;
+///$tab Proposals Old
+Let TableName = 'Transformation1_Proposals';
+Let TableColumn = 'Proposal';
+
+//as [$(TableColumn)ID],
+
+$(TableName)_Temp:
+
+Load*,
+
+	If(match([$(TableColumn) Contract Unsigned Bucket],'30 Days & Less','60 Days & Less','90 Days & Less'),1,0) as [$(TableColumn) Contract Unsigned Pipeline Flag]
+	;
+
+Load*,
+	If([$(TableColumn) Contract Is Signed Flag] = 1, [$(TableColumn) Contract Signed Date] - [$(TableColumn) Date Raised],'Unsigned') as [$(TableColumn) # Days to Sign Contract],
+    
+    If([$(TableColumn) Contract Is Signed Flag] = 0, (Date(Floor(Today()),'YYYYMMDD') - [$(TableColumn) Date Raised]),
+    	If([$(TableColumn) Contract Is Signed Flag] = 1, [$(TableColumn) Contract Signed Date] - [$(TableColumn) Date Raised]
+    	)) as [$(TableColumn) # Days Since Quote],
+        
+	If([$(TableColumn) Contract Is Signed Flag]=1,'Signed',
+    	If([$(TableColumn) Contract Is Signed Flag]=0 and (Date(Floor(Today()),'YYYYMMDD') - [$(TableColumn) Date Raised]) <= 30,'30 Days & Less',
+    		If([$(TableColumn) Contract Is Signed Flag]=0 and (Date(Floor(Today()),'YYYYMMDD') - [$(TableColumn) Date Raised]) <= 60,'60 Days & Less',
+    			If([$(TableColumn) Contract Is Signed Flag]=0 and (Date(Floor(Today()),'YYYYMMDD') - [$(TableColumn) Date Raised]) <= 90,'90 Days & Less','Over 90 Days'    
+    )))) as [$(TableColumn) Contract Unsigned Bucket]        
+    ;
+
+Load
+	*,
+    //If([$(TableColumn) CB Integrated Temp] = 1,1,0) as [$(TableColumn) CB Integrated],
+    
+    If(isnull([$(TableColumn) CB Integrated Temp]),0,[$(TableColumn) CB Integrated Temp]) as [$(TableColumn) CB Integrated],
+    
+    If([$(TableColumn) Contract Signed Date] = 'Unsigned',0,1) as [$(TableColumn) Contract Is Signed Flag],
+    
+    If([$(TableColumn) Standard] = 1024, 'PAS2030'&' - '& [$(TableColumn) Type Temp1],
+    	If([$(TableColumn) Prop_Type] = 268435456, 'Cyber Essentials '&' - '& [$(TableColumn) Type Temp1],
+    	[$(TableColumn) Type Temp1])) as [$(TableColumn) Type],
+    If([$(TableColumn) Standard] = 1024, 'PAS2030'&' - '& [$(TableColumn) Type Summary Temp1],
+    	If([$(TableColumn) Prop_Type] = 268435456, 'Cyber Essentials '&' - '& [$(TableColumn) Type Summary Temp1],
+    	[$(TableColumn) Type Summary Temp1])) as [$(TableColumn) Type Summary]
+    
+    ;
+
+Load
+	*,
+	ApplyMap('Prop_Type_Map',[$(TableColumn) Prop_Type],'<missing>') as [$(TableColumn) Type Temp1],
+    ApplyMap('Prop_Type_Summary_Map',[$(TableColumn) Prop_Type],'<missing>') as [$(TableColumn) Type Summary Temp1],
+// 	ApplyMap('Prop_Type_Map',[$(TableColumn) Prop_Type],'<missing>') as [$(TableColumn) Type],
+//     ApplyMap('Prop_Type_Summary_Map',[$(TableColumn) Prop_Type],'<missing>') as [$(TableColumn) Type Summary],
+
+    [$(TableColumn) Estimated Close Date] - [$(TableColumn) Date Raised] as [$(TableColumn) Estimated Days to Close],
+    ApplyMap('CBIntegrated_Map',[$(TableColumn) Customer ID],0) as [$(TableColumn) CB Integrated Temp],
+    Applymap('UnknownDates_ContractDate_Map',[$(TableColumn)ID],'Unsigned') as [$(TableColumn) Contract Signed Date],
+    
+    [$(TableColumn)ID] & '-' & [$(TableColumn) Customer ID] as [$(TableColumn) Key],
+    [$(TableColumn) Customer ID] & '-' & [$(TableColumn) Date Raised] as [$(TableColumn) CustomerID - Date Raised Key],
+    [$(TableColumn) Customer ID] & '-' & [$(TableColumn) Date Raised] as EnquiryQuoteContract_Key,
+    Applymap('Standard_Map',[$(TableColumn) Standard],'<Multiple Standards>') as [$(TableColumn) Standard Description],
+    [$(TableColumn) Total Net Amount (Post Discount)] + [$(TableColumn) Discount Amount] as [$(TableColumn) Total Net Amount],
+    Round([$(TableColumn) Total Net Amount (Post Discount)]/1000) as [$(TableColumn) Est # Days],
+//     (DayST2 + DayST2v3)					as [$(TableColumn) # Stage 2 Days],
+//     (DaySurv +  DaySurvv3)				as [$(TableColumn) # Survey Days],
+// 	If(DaySurvv3 > 0,DaySurvv3,DaySurv) as [$(TableColumn) # Survey Days test],
+//     If(DayST2v3 > 0,DayST2v3,DayST2) as [$(TableColumn) # Stage 2 Days test]
+
+//	If(DaySurvv3 > 0,DaySurvv3,DaySurv) 	as [$(TableColumn) # Survey Days],
+	If(DaySurvv3 > 0,DaySurvv3,DaySurv) 	as [$(TableColumn) # Survey Days temp],
+    If(DayST2v3 > 0,DayST2v3,DayST2) 		as [$(TableColumn) # Stage 2 Days]
+
+    //If(DaySurv>0 and DaySurvv3>0,DaySurv,(DaySurv +  DaySurvv3)) as [$(TableColumn) # Survey Days test]
+    ;
+
+LOAD
+    //Recno() 							as [$(TableColumn) Row No],
+    ProposalID 							as [$(TableColumn)ID],
+    BABContact 							as [$(TableColumn) BAB Contact],
+    CustomerID 							as [$(TableColumn) Customer ID],
+    CustomerID 							as "Dates CustomerID",
+    Date(Floor(DateRaised),'YYYYMMDD')	as [$(TableColumn) Date Raised],
+    Time(Floor(Frac(DateRaised), 1/(24*60)), 'hh:mm') as [$(TableColumn) Time Raised],
+    "Pre-AssessmentFee"  				as [$(TableColumn) Pre Assessment Amount],
+    AuditFee 							as [$(TableColumn) Audit Amount],
+    PackageFee 							as [$(TableColumn) Package Amount],
+    Stage1Fee 							as [$(TableColumn) Stage 1 Amount],
+    Stage2Fee 							as [$(TableColumn) Stage 2 Amount],
+    SurveillanceFee 					as [$(TableColumn) Surveillance Amount],
+    RecertFee 							as [$(TableColumn) Recertification Fee],
+	SSIPFee 							as [$(TableColumn) SSIP Amount],
+    GAFee 								as [$(TableColumn) Gap Amount],
+    TravelFee 							as [$(TableColumn) Travel Amount],    
+    if(isnull(DiscountFee),0,DiscountFee) 						as [$(TableColumn) Discount Amount],
+    GDPRFee 							as [$(TableColumn) GDPR Amount],
+    SimplifiFee 						as [$(TableColumn) Simplifi Amount],
+    ApplicationFee 						as [$(TableColumn) Application Amount],
+    SubTotal 							as [$(TableColumn) Total Net Amount (Post Discount)],
+    //SubTotal 							as [$(TableColumn) Total Net Amount],
+    VATPaid 							as [$(TableColumn) Vat Amount],
+    TotalFeePaid 						as [$(TableColumn) Total Gross Amount],
+    ProcessedBy 						as [$(TableColumn) Processed By],
+    TwoPayments 						as [$(TableColumn) Two Payments],
+    Standard 							as [$(TableColumn) Standard],
+    Date(Floor(accepted),'YYYYMMDD') 	as [$(TableColumn) Accepted],
+    Prop_Type 							as [$(TableColumn) Prop_Type],
+    QMRequired 							as [$(TableColumn) QM RequiProp_Tred],
+    ERRequired 							as [$(TableColumn) ER Required],
+    CertReason 							as [$(TableColumn) Certification Reason],
+    PropReferred 						as [$(TableColumn) Referred],
+    PersonDays 							as [$(TableColumn) Person Days],
+    ActualPersonDays 					as [$(TableColumn) Actual Person Days],
+    ClientSite 							as [$(TableColumn) Client Site],
+    TypicalTime 						as [$(TableColumn) Typical Time],
+    SBScheme 							as [$(TableColumn) SB Scheme],
+    employees 							as [$(TableColumn) # Employees],
+    Date(Floor(Proposal_expiry),'YYYYMMDD')	as [$(TableColumn) Proposal Expiry Date],
+    DayPreAss 							as [$(TableColumn) Day Pre Assessment],
+    
+    DayST1 								as [$(TableColumn) # Stage 1 Days],
+    If(isnull(DayST2),0,DayST2) 		as DayST2,
+    If(isnull(DayST2v3),0,DayST2v3) 	as DayST2v3,
+    If(isnull(DaySurv),0,DaySurv) 		as DaySurv,
+    If(isnull(DaySurvv3),0,DaySurvv3) 	as DaySurvv3,   
+    
+//     (DayST2 + DayST2v3)					as [$(TableColumn) # Stage 2 Days],
+//     (DaySurv +  DaySurvv3)				as [$(TableColumn) # Survey Days],
+//   DayRecert 							as [$(TableColumn) # Recertification Days],
+	DayRecert 							as [$(TableColumn) # Recertification Days Temp],
+    BookReqd 							as [$(TableColumn) Book Required],
+    LOCReqd 							as [$(TableColumn) LOC Required],
+    LapsedPIN 							as [$(TableColumn) Lapsed PIN],
+    TransGAReqd 						as [$(TableColumn) Trans GA Required],
+    SSIPReqd 							as [$(TableColumn) SSIP Required],
+    RequireSignOff 						as [$(TableColumn) Requires Sign Off],
+    SignedOff 							as [$(TableColumn) Signed Off],
+    Currency 							as [$(TableColumn) Currency],
+    ApplicationFeeUKAS 					as [$(TableColumn) UKAS Application Amount],
+    EarlyPay 							as [$(TableColumn) Early Pay],
+    PropVersion 						as [$(TableColumn) Version],
+    DiscountNEW 						as [$(TableColumn) Discount New Amount],
+    DiscountSURV 						as [$(TableColumn) Discount Surveilance Amount],
+    TermsAccepted 						as [$(TableColumn) Terms Accepted],
+    TermsAcceptName 					as [$(TableColumn) Terms Accepted Name],
+    TermsAcceptJobTitle 				as [$(TableColumn) Terms Accepted Job Title],
+    TermsAcceptIP 						as [$(TableColumn) Terms Accepted IP],
+    GDPRReqd 							as [$(TableColumn) GDPR Required],
+    PropQuantity 						as [$(TableColumn) Quantity],
+    //replace
+    Date(Replace(EstimatedCloseDate,'-',0),'YYYYMMDD') as [$(TableColumn) Estimated Close Date],
+    Probability  						as [$(TableColumn) Probability],
+    Expenses 							as [$(TableColumn) Expenses],
+    PreDiscount 						as [$(TableColumn) PreDiscount],
+    ActivUsers 							as [$(TableColumn) ActivUsers],
+    ActivUsersPre 						as [$(TableColumn) ActivUsersPre],
+    ActivUserFee 						as [$(TableColumn) ActivUserFee],
+    ConsultantLead 						as [$(TableColumn) ConsultantLead],
+    TotalInspections 					as [$(TableColumn) PAS Total Inspections],
+    BoltOnList							as [$(TableColumn) PAS BoltOnList]
+FROM [lib://$(vDataFiles)/Extract_tblProposals.qvd]
+(qvd);
+
+Drop Fields [$(TableColumn) CB Integrated Temp],[$(TableColumn) Type Temp1],[$(TableColumn) Type Summary Temp1];
+
+NoConcatenate
+
+$(TableName):
+Load
+	*,
+    If([$(TableColumn) Customer ID]&'-'&[$(TableColumn) Contract Unsigned Pipeline Flag] = previous([$(TableColumn) Customer ID]&'-'&[$(TableColumn) Contract Unsigned Pipeline Flag]),1,0) as [$(TableColumn) Contract Unsigned Multi Quote Flag]
+    
+    
+Resident $(TableName)_Temp
+Order by [$(TableColumn) Customer ID] asc, [$(TableColumn) Date Raised] desc, [$(TableColumn) Contract Unsigned Pipeline Flag] desc
+;
+
+
+Drop table $(TableName)_Temp;
+
+//Drop fields [$(TableColumn) # Recertification Days Temp],
+
+//Store $(TableName) INTO [lib://$(vDataFiles)/$(TableName).qvd] (qvd);
+
+//monthly store
+//Store $(TableName) INTO [lib://$(vDataFiles)/$(TableName)_$(vCurrentYear)-$(vCurrentMonth).qvd] (qvd);
+
+//Drop table $(TableName);
+
+
+
+///$tab Auto-generated section
+///$autogenerated
+Set dataManagerTables = '','tblProposals','Extract_tblFinance','Extract_tblProposals';
+//This block renames script tables from non generated section which conflict with the names of managed tables
+
+For each name in $(dataManagerTables) 
+    Let index = 0;
+    Let currentName = name; 
+    Let tableNumber = TableNumber(name); 
+    Let matches = 0; 
+    Do while not IsNull(tableNumber) or (index > 0 and matches > 0)
+        index = index + 1; 
+        currentName = name & '-' & index; 
+        tableNumber = TableNumber(currentName) 
+        matches = Match('$(currentName)', $(dataManagerTables));
+    Loop 
+    If index > 0 then 
+            Rename Table '$(name)' to '$(currentName)'; 
+    EndIf; 
+Next; 
+Set dataManagerTables = ;
+
+
+Unqualify *;
+
+LIB CONNECT TO [Microsoft_SQL_Server_18.130.159.247];
+
+[tblProposals]:
+LOAD
+	[ProposalID] AS [tblProposals.ProposalID],
+	[BABContact] AS [tblProposals.BABContact],
+	[CustomerID] AS [tblProposals.CustomerID],
+	[DateRaised] AS [tblProposals.DateRaised],
+	[Pre-AssessmentFee] AS [tblProposals.Pre-AssessmentFee],
+	[AuditFee] AS [tblProposals.AuditFee],
+	[PackageFee] AS [tblProposals.PackageFee],
+	[Stage1Fee] AS [tblProposals.Stage1Fee],
+	[Stage2Fee] AS [tblProposals.Stage2Fee],
+	[SurveillanceFee] AS [tblProposals.SurveillanceFee],
+	[RecertFee] AS [tblProposals.RecertFee],
+	[DiscountFee] AS [tblProposals.DiscountFee],
+	[SubTotal] AS [tblProposals.SubTotal],
+	[VATPaid] AS [tblProposals.VATPaid],
+	[TotalFeePaid] AS [tblProposals.TotalFeePaid],
+	[ProcessedBy] AS [tblProposals.ProcessedBy],
+	[TwoPayments] AS [tblProposals.TwoPayments],
+	[Standard] AS [tblProposals.Standard],
+	[accepted] AS [tblProposals.accepted],
+	[Prop_Type] AS [tblProposals.Prop_Type],
+	[QMRequired] AS [tblProposals.QMRequired],
+	[ERRequired] AS [tblProposals.ERRequired],
+	[CertReason] AS [tblProposals.CertReason],
+	[PropReferred] AS [tblProposals.PropReferred],
+	[PersonDays] AS [tblProposals.PersonDays],
+	[ActualPersonDays] AS [tblProposals.ActualPersonDays],
+	[ClientSite] AS [tblProposals.ClientSite],
+	[TypicalTime] AS [tblProposals.TypicalTime],
+	[SBScheme] AS [tblProposals.SBScheme],
+	[employees] AS [tblProposals.employees],
+	[Proposal_expiry] AS [tblProposals.Proposal_expiry],
+	[DayPreAss] AS [tblProposals.DayPreAss],
+	[DayST1] AS [tblProposals.DayST1],
+	[DayST2] AS [tblProposals.DayST2],
+	[DaySurv] AS [tblProposals.DaySurv],
+	[DayRecert] AS [tblProposals.DayRecert],
+	[BookReqd] AS [tblProposals.BookReqd],
+	[LOCReqd] AS [tblProposals.LOCReqd],
+	[LapsedPIN] AS [tblProposals.LapsedPIN],
+	[TransGAReqd] AS [tblProposals.TransGAReqd],
+	[GAFee] AS [tblProposals.GAFee],
+	[SSIPReqd] AS [tblProposals.SSIPReqd],
+	[SSIPFee] AS [tblProposals.SSIPFee],
+	[RequireSignOff] AS [tblProposals.RequireSignOff],
+	[SignedOff] AS [tblProposals.SignedOff],
+	[Currency] AS [tblProposals.Currency],
+	[SimplifiFee] AS [tblProposals.SimplifiFee],
+	[ApplicationFee] AS [tblProposals.ApplicationFee],
+	[ApplicationFeeUKAS] AS [tblProposals.ApplicationFeeUKAS],
+	[EarlyPay] AS [tblProposals.EarlyPay],
+	[PropVersion] AS [tblProposals.PropVersion],
+	[DiscountNEW] AS [tblProposals.DiscountNEW],
+	[DiscountSURV] AS [tblProposals.DiscountSURV],
+	[TermsAccepted] AS [tblProposals.TermsAccepted],
+	[TermsAcceptName] AS [tblProposals.TermsAcceptName],
+	[TermsAcceptJobTitle] AS [tblProposals.TermsAcceptJobTitle],
+	[TermsAcceptIP] AS [tblProposals.TermsAcceptIP],
+	[GDPRReqd] AS [tblProposals.GDPRReqd],
+	[GDPRFee] AS [tblProposals.GDPRFee],
+	[PropQuantity] AS [tblProposals.PropQuantity],
+	[TravelFee] AS [tblProposals.TravelFee],
+	[EstimatedCloseDate] AS [tblProposals.EstimatedCloseDate],
+	[Probability] AS [tblProposals.Probability],
+	[Expenses] AS [tblProposals.Expenses],
+	[PreDiscount] AS [tblProposals.PreDiscount],
+	[ActivUsers] AS [tblProposals.ActivUsers],
+	[ActivUsersPre] AS [tblProposals.ActivUsersPre],
+	[ActivUserFee] AS [tblProposals.ActivUserFee],
+	[ConsultantLead] AS [tblProposals.ConsultantLead],
+	[ActivModules] AS [tblProposals.ActivModules],
+	[ActivDiscount] AS [tblProposals.ActivDiscount],
+	[ActivSubTotal] AS [tblProposals.ActivSubTotal],
+	[ActivFee] AS [tblProposals.ActivFee],
+	[CertificationFee] AS [tblProposals.CertificationFee],
+	[EstimatedST2Date] AS [tblProposals.EstimatedST2Date],
+	[CAID] AS [tblProposals.CAID],
+	[DayST2v2] AS [tblProposals.DayST2v2],
+	[DaySurvv2] AS [tblProposals.DaySurvv2],
+	[DayST2v3] AS [tblProposals.DayST2v3],
+	[DaySurvv3] AS [tblProposals.DaySurvv3],
+	[CustomerAddresses] AS [tblProposals.CustomerAddresses],
+	[NHSS2AReqd] AS [tblProposals.NHSS2AReqd],
+	[NHSS2BReqd] AS [tblProposals.NHSS2BReqd],
+	[NHSS2CReqd] AS [tblProposals.NHSS2CReqd],
+	[NHSS7Reqd] AS [tblProposals.NHSS7Reqd],
+	[NHSS16Reqd] AS [tblProposals.NHSS16Reqd],
+	[NHSS23Reqd] AS [tblProposals.NHSS23Reqd],
+	[NHSS9AReqd] AS [tblProposals.NHSS9AReqd],
+	[NHSS12AReqd] AS [tblProposals.NHSS12AReqd],
+	[NHSS12BReqd] AS [tblProposals.NHSS12BReqd],
+	[NHSS12CReqd] AS [tblProposals.NHSS12CReqd],
+	[NHSS12DReqd] AS [tblProposals.NHSS12DReqd],
+	[NHSS18Reqd] AS [tblProposals.NHSS18Reqd],
+	[NHSS20Reqd] AS [tblProposals.NHSS20Reqd],
+	[NHSS2AFee] AS [tblProposals.NHSS2AFee],
+	[NHSS2BFee] AS [tblProposals.NHSS2BFee],
+	[NHSS2CFee] AS [tblProposals.NHSS2CFee],
+	[NHSS7Fee] AS [tblProposals.NHSS7Fee],
+	[NHSS16Fee] AS [tblProposals.NHSS16Fee],
+	[NHSS23Fee] AS [tblProposals.NHSS23Fee],
+	[NHSS9AFee] AS [tblProposals.NHSS9AFee],
+	[NHSS12AFee] AS [tblProposals.NHSS12AFee],
+	[NHSS12BFee] AS [tblProposals.NHSS12BFee],
+	[NHSS12CFee] AS [tblProposals.NHSS12CFee],
+	[NHSS12DFee] AS [tblProposals.NHSS12DFee],
+	[NHSS18Fee] AS [tblProposals.NHSS18Fee],
+	[NHSS20Fee] AS [tblProposals.NHSS20Fee],
+	[BoltOnList] AS [tblProposals.BoltOnList],
+	[NHSS10BReqd] AS [tblProposals.NHSS10BReqd],
+	[NHSS10BFee] AS [tblProposals.NHSS10BFee],
+	[PASTrustMark] AS [tblProposals.PASTrustMark],
+	[TotalInspections] AS [tblProposals.TotalInspections],
+	[CyberEmps],
+	[CyberSites],
+	[CyberScans],
+	[ISO27701Reqd],
+	[ISO27701Fee],
+	[ISO27017Reqd],
+	[ISO27017Fee],
+	[ISO27018Reqd],
+	[ISO27018Fee],
+	[ToolkitReason],
+	[BoltOnInspections] AS [tblProposals.BoltOnInspections],
+	[InspectionCount],
+	[TechExpertFee],
+	[ActivCertFee],
+	[SIAReqd],
+	[SIAFee],
+	[DaysST1Rem],
+	[DaysST1On],
+	[DaysST2Rem],
+	[DaysST2On],
+	[DaysSurvCombRem],
+	[DaysSurvCombOn],
+	[DaysSurv1Rem],
+	[DaysSurv1On],
+	[DaysSurv2Rem],
+	[DaysSurv2On],
+	[DaysRecertRem],
+	[DaysRecertOn],
+	[PSAReqd],
+	[PSAFee],
+	[SSSReqd],
+	[SSSFee],
+	[DaysOffline],
+	[ISO13485Fee],
+	[ISO13485Reqd],
+	[EmployeeCount],
+	[NHSS30Fee],
+	[NHSS30Reqd],
+	[BS10800Fee],
+	[BS10800Reqd],
+	[BS7858Fee],
+	[BS7858Reqd],
+	[BS7499Fee],
+	[BS7499Reqd],
+	[BS7960Fee],
+	[BS7960Reqd],
+	[BS7958Fee],
+	[BS7958Reqd],
+	[BS79841Fee],
+	[BS79841Reqd],
+	[BS79842Fee],
+	[BS79842Reqd],
+	[BS79843Fee],
+	[BS79843Reqd],
+	[Cop119Fee],
+	[Cop119Reqd],
+	[DaysTravel],
+	[DaysReportWriting] AS [tblProposals.DaysReportWriting],
+	[Reqd10092],
+	[Fee10092],
+	[Reqd10107],
+	[Reqd10108],
+	[Reqd10109],
+	[Reqd10110],
+	[Reqd10111],
+	[Reqd10112],
+	[Reqd10113],
+	[Reqd10114],
+	[Reqd10115],
+	[Reqd10116],
+	[Reqd10117],
+	[Reqd10118],
+	[Fee10107],
+	[Fee10108],
+	[Fee10109],
+	[Fee10110],
+	[Fee10111],
+	[Fee10112],
+	[Fee10113],
+	[Fee10114],
+	[Fee10115],
+	[Fee10116],
+	[Fee10117],
+	[Fee10118],
+	[Reqd10119],
+	[Fee10119],
+	[DayRecertv3] AS [tblProposals.DayRecertv3],
+	[10119Reqd],
+	[10119Fee],
+	[NHSS17Reqd],
+	[NHSS17Fee],
+	[NHSS17bReqd],
+	[NHSS17bFee],
+	[TermsAcceptVersion],
+	[DayRateMin] AS [tblProposals.DayRateMin],
+	[DayRateTarget] AS [tblProposals.DayRateTarget],
+	[DayRateApplied] AS [tblProposals.DayRateApplied],
+	[DeclineReason] AS [tblProposals.DeclineReason],
+	[DeclineDate] AS [tblProposals.DeclineDate],
+	[PlanningFee] AS [tblProposals.PlanningFee],
+	[AS9100Reqd],
+	[AS9110Reqd],
+	[AS9120Reqd],
+	[AS9100Fee],
+	[AS9110Fee],
+	[AS9120Fee],
+	[R2Wosp],
+	[R2Wasp],
+	[R2Widsp],
+	[R2Rosp],
+	[R2Rasp],
+	[R2Ridsp],
+	[DBSosp],
+	[DBSasp],
+	[DBSidsp],
+	[R2WidspFee],
+	[R2WospFee],
+	[R2WaspFee],
+	[R2RospFee],
+	[R2RaspFee],
+	[R2RidspFee],
+	[DBSospFee],
+	[DBSaspFee],
+	[DBSidspFee];
+SELECT ProposalID,
+	BABContact,
+	CustomerID,
+	DateRaised,
+	"Pre-AssessmentFee",
+	AuditFee,
+	PackageFee,
+	Stage1Fee,
+	Stage2Fee,
+	SurveillanceFee,
+	RecertFee,
+	DiscountFee,
+	SubTotal,
+	VATPaid,
+	TotalFeePaid,
+	ProcessedBy,
+	TwoPayments,
+	Standard,
+	accepted,
+	"Prop_Type",
+	QMRequired,
+	ERRequired,
+	CertReason,
+	PropReferred,
+	PersonDays,
+	ActualPersonDays,
+	ClientSite,
+	TypicalTime,
+	SBScheme,
+	employees,
+	"Proposal_expiry",
+	DayPreAss,
+	DayST1,
+	DayST2,
+	DaySurv,
+	DayRecert,
+	BookReqd,
+	LOCReqd,
+	LapsedPIN,
+	TransGAReqd,
+	GAFee,
+	SSIPReqd,
+	SSIPFee,
+	RequireSignOff,
+	SignedOff,
+	Currency,
+	SimplifiFee,
+	ApplicationFee,
+	ApplicationFeeUKAS,
+	EarlyPay,
+	PropVersion,
+	DiscountNEW,
+	DiscountSURV,
+	TermsAccepted,
+	TermsAcceptName,
+	TermsAcceptJobTitle,
+	TermsAcceptIP,
+	GDPRReqd,
+	GDPRFee,
+	PropQuantity,
+	TravelFee,
+	EstimatedCloseDate,
+	Probability,
+	Expenses,
+	PreDiscount,
+	ActivUsers,
+	ActivUsersPre,
+	ActivUserFee,
+	ConsultantLead,
+	ActivModules,
+	ActivDiscount,
+	ActivSubTotal,
+	ActivFee,
+	CertificationFee,
+	EstimatedST2Date,
+	CAID,
+	DayST2v2,
+	DaySurvv2,
+	DayST2v3,
+	DaySurvv3,
+	CustomerAddresses,
+	NHSS2AReqd,
+	NHSS2BReqd,
+	NHSS2CReqd,
+	NHSS7Reqd,
+	NHSS16Reqd,
+	NHSS23Reqd,
+	NHSS9AReqd,
+	NHSS12AReqd,
+	NHSS12BReqd,
+	NHSS12CReqd,
+	NHSS12DReqd,
+	NHSS18Reqd,
+	NHSS20Reqd,
+	NHSS2AFee,
+	NHSS2BFee,
+	NHSS2CFee,
+	NHSS7Fee,
+	NHSS16Fee,
+	NHSS23Fee,
+	NHSS9AFee,
+	NHSS12AFee,
+	NHSS12BFee,
+	NHSS12CFee,
+	NHSS12DFee,
+	NHSS18Fee,
+	NHSS20Fee,
+	BoltOnList,
+	NHSS10BReqd,
+	NHSS10BFee,
+	PASTrustMark,
+	TotalInspections,
+	CyberEmps,
+	CyberSites,
+	CyberScans,
+	ISO27701Reqd,
+	ISO27701Fee,
+	ISO27017Reqd,
+	ISO27017Fee,
+	ISO27018Reqd,
+	ISO27018Fee,
+	ToolkitReason,
+	BoltOnInspections,
+	InspectionCount,
+	TechExpertFee,
+	ActivCertFee,
+	SIAReqd,
+	SIAFee,
+	DaysST1Rem,
+	DaysST1On,
+	DaysST2Rem,
+	DaysST2On,
+	DaysSurvCombRem,
+	DaysSurvCombOn,
+	DaysSurv1Rem,
+	DaysSurv1On,
+	DaysSurv2Rem,
+	DaysSurv2On,
+	DaysRecertRem,
+	DaysRecertOn,
+	PSAReqd,
+	PSAFee,
+	SSSReqd,
+	SSSFee,
+	DaysOffline,
+	ISO13485Fee,
+	ISO13485Reqd,
+	EmployeeCount,
+	NHSS30Fee,
+	NHSS30Reqd,
+	BS10800Fee,
+	BS10800Reqd,
+	BS7858Fee,
+	BS7858Reqd,
+	BS7499Fee,
+	BS7499Reqd,
+	BS7960Fee,
+	BS7960Reqd,
+	BS7958Fee,
+	BS7958Reqd,
+	BS79841Fee,
+	BS79841Reqd,
+	BS79842Fee,
+	BS79842Reqd,
+	BS79843Fee,
+	BS79843Reqd,
+	Cop119Fee,
+	Cop119Reqd,
+	DaysTravel,
+	DaysReportWriting,
+	Reqd10092,
+	Fee10092,
+	Reqd10107,
+	Reqd10108,
+	Reqd10109,
+	Reqd10110,
+	Reqd10111,
+	Reqd10112,
+	Reqd10113,
+	Reqd10114,
+	Reqd10115,
+	Reqd10116,
+	Reqd10117,
+	Reqd10118,
+	Fee10107,
+	Fee10108,
+	Fee10109,
+	Fee10110,
+	Fee10111,
+	Fee10112,
+	Fee10113,
+	Fee10114,
+	Fee10115,
+	Fee10116,
+	Fee10117,
+	Fee10118,
+	Reqd10119,
+	Fee10119,
+	DayRecertv3,
+	"10119Reqd",
+	"10119Fee",
+	NHSS17Reqd,
+	NHSS17Fee,
+	NHSS17bReqd,
+	NHSS17bFee,
+	TermsAcceptVersion,
+	DayRateMin,
+	DayRateTarget,
+	DayRateApplied,
+	DeclineReason,
+	DeclineDate,
+	PlanningFee,
+	AS9100Reqd,
+	AS9110Reqd,
+	AS9120Reqd,
+	AS9100Fee,
+	AS9110Fee,
+	AS9120Fee,
+	R2Wosp,
+	R2Wasp,
+	R2Widsp,
+	R2Rosp,
+	R2Rasp,
+	R2Ridsp,
+	DBSosp,
+	DBSasp,
+	DBSidsp,
+	R2WidspFee,
+	R2WospFee,
+	R2WaspFee,
+	R2RospFee,
+	R2RaspFee,
+	R2RidspFee,
+	DBSospFee,
+	DBSaspFee,
+	DBSidspFee
+FROM babclear.dbo.tblProposals;
+
+[Extract_tblFinance]:
+LOAD
+	[FinanceID],
+	[InvoiceNumber],
+	[CustomerID],
+	[Description],
+	[DateRaised],
+	[DatePaid],
+	[AppFee],
+	[AdditionalFee],
+	[Quantity],
+	[SubTotal],
+	[VATPaid],
+	[TotalFeePaid],
+	[BalanceDue],
+	[CreditCard],
+	[ProcessedBy],
+	[Type],
+	[VATReceiptDone],
+	[PurchaseOrder],
+	[AddressID],
+	[AdditionalDescription],
+	[Standards],
+	[PaymentType],
+	[PaymentTerms],
+	[CCAuthCode],
+	[BadDebt],
+	[BadDebtDate],
+	[InvoiceCancel],
+	[InvoiceCancelDate],
+	[PaidHSBC],
+	[LastPaymentDate],
+	[DirectDebit],
+	[LastEventID],
+	[DDCustomerRef],
+	[DDMandateID],
+	[DDSubscriptionID],
+	[FinanceEmail],
+	[FinanceSort],
+	[FinanceAccount],
+	[FinanceAd1],
+	[FinanceAd2],
+	[FinanceTown],
+	[FinancePostcode],
+	[FinanceConfirm],
+	[FinanceCompanyName],
+	[FinanceCancelReason],
+	[CommitDate],
+	[FinalNoticeDate],
+	[AgencyInvNo],
+	[AgencyInvNoDate],
+	[Sage4020],
+	[Sage4021],
+	[Sage4022],
+	[Sage4023],
+	[Sage4024],
+	[Sage4025],
+	[Sage4026],
+	[Sage4027],
+	[Sage4028],
+	[Sage4029],
+	[Sage4030],
+	[Sage4031],
+	[Sage4032],
+	[Sage4033],
+	[ProposalID],
+	[ServicesFee],
+	[ExpensesFee],
+	[DateReleased],
+	[GreenRegister]
+ FROM [lib://DataFiles/Extract_tblFinance.qvd]
+(qvd);
+
+[Extract_tblProposals]:
+LOAD
+	[ProposalID] AS [Extract_tblProposals.ProposalID],
+	[BABContact],
+	[CustomerID] AS [Extract_tblProposals.CustomerID],
+	[DateRaised] AS [Extract_tblProposals.DateRaised],
+	[Pre-AssessmentFee],
+	[AuditFee],
+	[PackageFee],
+	[Stage1Fee],
+	[Stage2Fee],
+	[SurveillanceFee],
+	[RecertFee],
+	[DiscountFee],
+	[SubTotal] AS [Extract_tblProposals.SubTotal],
+	[VATPaid] AS [Extract_tblProposals.VATPaid],
+	[TotalFeePaid] AS [Extract_tblProposals.TotalFeePaid],
+	[ProcessedBy] AS [Extract_tblProposals.ProcessedBy],
+	[TwoPayments],
+	[Standard],
+	[accepted],
+	[Prop_Type],
+	[QMRequired],
+	[ERRequired],
+	[CertReason],
+	[PropReferred],
+	[PersonDays],
+	[ActualPersonDays],
+	[ClientSite],
+	[TypicalTime],
+	[SBScheme],
+	[employees],
+	[Proposal_expiry],
+	[DayPreAss],
+	[DayST1],
+	[DayST2],
+	[DaySurv],
+	[DayRecert],
+	[DayRecertv3],
+	[BookReqd],
+	[LOCReqd],
+	[LapsedPIN],
+	[TransGAReqd],
+	[GAFee],
+	[SSIPReqd],
+	[SSIPFee],
+	[RequireSignOff],
+	[SignedOff],
+	[Currency],
+	[SimplifiFee],
+	[ApplicationFee],
+	[ApplicationFeeUKAS],
+	[EarlyPay],
+	[PropVersion],
+	[DiscountNEW],
+	[DiscountSURV],
+	[TermsAccepted],
+	[TermsAcceptName],
+	[TermsAcceptJobTitle],
+	[TermsAcceptIP],
+	[GDPRReqd],
+	[GDPRFee],
+	[PropQuantity],
+	[TravelFee],
+	[EstimatedCloseDate],
+	[Probability],
+	[Expenses],
+	[PreDiscount],
+	[ActivUsers],
+	[ActivUsersPre],
+	[ActivUserFee],
+	[ConsultantLead],
+	[ActivModules],
+	[ActivDiscount],
+	[ActivSubTotal],
+	[ActivFee],
+	[CertificationFee],
+	[EstimatedST2Date],
+	[CAID],
+	[DayST2v2],
+	[DaySurvv2],
+	[DayST2v3],
+	[DaySurvv3],
+	[CustomerAddresses],
+	[NHSS2AReqd],
+	[NHSS2BReqd],
+	[NHSS2CReqd],
+	[NHSS7Reqd],
+	[NHSS16Reqd],
+	[NHSS23Reqd],
+	[NHSS9AReqd],
+	[NHSS12AReqd],
+	[NHSS12BReqd],
+	[NHSS12CReqd],
+	[NHSS12DReqd],
+	[NHSS18Reqd],
+	[NHSS20Reqd],
+	[NHSS2AFee],
+	[NHSS2BFee],
+	[NHSS2CFee],
+	[NHSS7Fee],
+	[NHSS16Fee],
+	[NHSS23Fee],
+	[NHSS9AFee],
+	[NHSS12AFee],
+	[NHSS12BFee],
+	[NHSS12CFee],
+	[NHSS12DFee],
+	[NHSS18Fee],
+	[NHSS20Fee],
+	[BoltOnList],
+	[BoltOnInspections],
+	[NHSS10BReqd],
+	[NHSS10BFee],
+	[PASTrustMark],
+	[TotalInspections],
+	[DayRateMin],
+	[DayRateTarget],
+	[DayRateApplied],
+	[DeclineReason],
+	[DeclineDate],
+	[PlanningFee],
+	[DaysReportWriting]
+ FROM [lib://DataFiles/Extract_tblProposals.qvd]
+(qvd);
+
+
+
+
+
+///$tab Section
