@@ -1,0 +1,202 @@
+
+SHEETS
+{"qInfo":{"qId":"EjxJk","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"EjxJk","approved":true,"published":true,"publishTime":"2024-11-28T10:09:05.180Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T09:13:55.897Z","modifiedDate":"2026-04-01T11:13:36.555Z","encrypted":true,"privileges":["read","change_owner"],"title":"RetentionYear Checks","description":""},"qData":[]}
+{"qInfo":{"qId":"FMeuzR","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"FMeuzR","approved":false,"published":false,"owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T09:13:55.909Z","modifiedDate":"2025-10-13T09:13:55.909Z","encrypted":true,"privileges":["read","update","delete","publish","change_owner"],"title":"My new sheet (1)","description":""},"qData":[]}
+{"qInfo":{"qId":"GaFW","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"GaFW","approved":false,"published":false,"owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T09:13:55.922Z","modifiedDate":"2025-10-13T09:13:55.922Z","encrypted":true,"privileges":["read","update","delete","publish","change_owner"],"title":"My new sheet","description":""},"qData":[]}
+{"qInfo":{"qId":"jXAHfv","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"jXAHfv","approved":false,"published":false,"owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T09:13:55.945Z","modifiedDate":"2025-10-13T09:13:55.945Z","encrypted":true,"privileges":["read","update","delete","publish","change_owner"],"title":"My new sheet (2)","description":""},"qData":[]}
+
+OBJECTS ON SHEETS
+{"name":"UmRhth","type":"table","col":0,"row":0,"colspan":24,"rowspan":12,"bounds":{"y":0,"x":0,"width":100,"height":100}}
+{"name":"htyTz","type":"sn-table","col":0,"row":1,"colspan":24,"rowspan":4,"bounds":{"y":8.333333333333332,"x":0,"width":100,"height":33.33333333333333}}
+{"name":"VjALhc","type":"table","col":0,"row":5,"colspan":24,"rowspan":7,"bounds":{"y":41.66666666666667,"x":0,"width":100,"height":58.333333333333336}}
+{"name":"ujxe","type":"table","col":0,"row":1,"colspan":24,"rowspan":4,"bounds":{"y":8.333333333333332,"x":0,"width":100,"height":33.33333333333333}}
+{"name":"rExDZR","type":"table","col":0,"row":5,"colspan":24,"rowspan":7,"bounds":{"y":41.66666666666667,"x":0,"width":100,"height":58.333333333333336}}
+{"name":"CbZKzV","type":"table","col":0,"row":0,"colspan":12,"rowspan":6,"bounds":{"y":0,"x":0,"width":50,"height":50}}
+
+DIMENSIONS
+
+MASTER OBJECTS
+
+VARIABLES
+{"qName":"TableColumn","qDefinition":"Proposal","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"f05b21a2-e362-42a8-a998-780c74121d72","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vCurrentMonth","qDefinition":"04","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"34e22567-2229-4f94-87bf-4f8a9da02b91","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"TableName","qDefinition":"Transformation1_Proposals","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"f643454c-5cc6-4fc3-9235-39031e843614","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vCurrentYear","qDefinition":"2026","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"52431c54-847e-452c-8a1e-24a435c8b1b8","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vDataFilesTest","qDefinition":"QVD Test Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"16f3b06d-06df-4ef9-830f-39ecd3a5c5ec","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vDataFiles","qDefinition":"QVD Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"c164d861-e3e7-42f2-9d00-493353c097ab","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vSourceSpreadsheets","qDefinition":"DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"90a23e7b-11f1-4655-b894-d31d1b426e22","qType":"variable"},"qData":[]}
+{"qName":"vTrans2QVDLocation","qDefinition":"DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"2c0ba653-cbca-4904-a03b-6b312209e3ce","qType":"variable"},"qData":[]}
+{"qName":"vExtractQVDLocation","qDefinition":"QVD Test Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"a25157da-94fa-4700-8cc7-2dc4b7cce771","qType":"variable"},"qData":[]}
+{"qName":"vTrans1QVDLocation","qDefinition":"QVD Test Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"4724c6f5-3b12-40b9-984c-4bcc5b71dcd3","qType":"variable"},"qData":[]}
+{"qName":"vTestTrans1QVDLocation","qDefinition":"QVD Test Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"39f64ee3-e240-48ad-8a66-26184f9de3c6","qType":"variable"},"qData":[]}
+{"qName":"vTestExtractQVDLocation","qDefinition":"QVD Test Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"3121cc5f-ba6f-4703-a9b0-b0f6161ffb0b","qType":"variable"},"qData":[]}
+{"qName":"vTrans1QVDLocationTest","qDefinition":"QVD Test Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"4063f002-b977-42c5-b319-d242515b5127","qType":"variable"},"qData":[]}
+{"qName":"vExtractQVDLocationTest","qDefinition":"QVD Test Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"d5b8ca6f-466e-41ec-970b-5d45955288f6","qType":"variable"},"qData":[]}
+
+FIELDS
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Field","qCardinal":160,"qTags":["$text","$hidden","$system","$key"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Table","qCardinal":2,"qTags":["$ascii","$text","$hidden","$system","$key"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Rows","qCardinal":2,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Fields","qCardinal":2,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$FieldNo","qCardinal":158,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Info","qCardinal":1,"qTags":["$ascii","$text","$hidden","$system"],"qSrcTables":[]}
+{"qName":"Customer_ID","qCardinal":172899,"qTags":["$ascii","$text"],"qSrcTables":["Map_ClientID"]}
+{"qName":"Client_ID","qCardinal":127000,"qTags":["$ascii","$text"],"qSrcTables":["Map_ClientID"]}
+{"qName":"Proposal Certifying Body","qCardinal":37,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"PSAStandardFix","qCardinal":189,"qTags":[],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"PSABoltOnFix","qCardinal":1216,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal BoltOn Description (New IT table)","qCardinal":216,"qTags":["$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"DataType","qCardinal":4,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"ProposalID","qCardinal":373223,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal BAB Contact","qCardinal":485,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Customer ID","qCardinal":149311,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Dates CustomerID","qCardinal":149311,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal FranchiseName","qCardinal":37,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Date Raised","qCardinal":5675,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Time Raised","qCardinal":1438,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Pre Assessment Amount","qCardinal":190,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Audit Amount","qCardinal":5246,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Package Amount","qCardinal":4910,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Stage 1 Amount","qCardinal":270,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Stage 2 Amount","qCardinal":445,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Surveillance Amount","qCardinal":1096,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Recertification Fee","qCardinal":697,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Recertification Application Fee","qCardinal":5,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal SSIP Amount","qCardinal":44,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Gap Amount","qCardinal":92,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Travel Amount","qCardinal":76,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Discount Amount","qCardinal":1134,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal GDPR Amount","qCardinal":26,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Simplifi Amount","qCardinal":4,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Application Amount","qCardinal":127,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Application Amount (Annual Fee)","qCardinal":43,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Total Net Amount (Post Discount)","qCardinal":9687,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Total Net Amount (Post Discount with no travel fee or expenses)","qCardinal":9653,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal OasisFees","qCardinal":43,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Vat Amount","qCardinal":10462,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Total Gross Amount","qCardinal":12691,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Processed By","qCardinal":1494,"qTags":["$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Two Payments","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Standard","qCardinal":276,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Accepted","qCardinal":5,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Prop_Type","qCardinal":45,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Ballpark Quote","qCardinal":2,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal QM RequiProp_Tred","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal ER Required","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Certification Reason","qCardinal":179,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Referred","qCardinal":14,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Person Days","qCardinal":64,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Actual Person Days","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Client Site","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Typical Time","qCardinal":55,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal SB Scheme","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal # Employees","qCardinal":1334,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Proposal Expiry Date","qCardinal":6234,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Day Pre Assessment","qCardinal":7,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal # Stage 1 Days","qCardinal":30,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"DayST2","qCardinal":22,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"DayST2v3","qCardinal":93,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"DaySurv","qCardinal":19,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"DaySurvv3","qCardinal":148,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"DayRecertv3","qCardinal":133,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"DayRecert","qCardinal":56,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Book Required","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal LOC Required","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Lapsed PIN","qCardinal":68,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Trans GA Required","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal SSIP Required","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Requires Sign Off","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Signed Off","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Currency","qCardinal":19,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal UKAS Application Amount","qCardinal":21,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Early Pay","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Version","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Discount New Amount","qCardinal":0,"qTags":[],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Discount Surveilance Amount","qCardinal":0,"qTags":[],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Terms Accepted","qCardinal":63256,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Terms Accepted Name","qCardinal":28162,"qTags":["$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Terms Accepted Job Title","qCardinal":9600,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Terms Accepted IP","qCardinal":1488,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal GDPR Required","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Quantity","qCardinal":34,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Estimated Close Date","qCardinal":20,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Probability","qCardinal":9,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Expenses","qCardinal":293,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal PreDiscount","qCardinal":6520,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal ActivUsers","qCardinal":32,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal ActivUsersPre","qCardinal":7,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal ActivUserFee","qCardinal":4,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal ConsultantLead","qCardinal":22,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal PAS Total Inspections","qCardinal":114,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal PAS BoltOnList","qCardinal":2413,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal PAS BoltOnInspections","qCardinal":2124,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal DayRateMin","qCardinal":2952,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal DayRateTarget","qCardinal":3223,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal DayRateApplied","qCardinal":3727,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal DeclineReason","qCardinal":9,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal DeclineDate","qCardinal":966,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal PlanningFee","qCardinal":7,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal DaysReportWriting","qCardinal":21,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal DaysCount GWO","qCardinal":34,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal DaysCount GWO Modules","qCardinal":26,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Total Deliverable Days","qCardinal":27,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal HubSpot DealID","qCardinal":5137,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal RetentionYear","qCardinal":7,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal AuditorTravelDays (Source Value)","qCardinal":12,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal AuditorTravelFees (Source Value)","qCardinal":54,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal TermsCancelled","qCardinal":947,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal CustomerAddresses ID's","qCardinal":7606,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal CustomerAddresses","qCardinal":19,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Free Of Charge","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal AuditorTravelDays","qCardinal":5,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal LeadPin","qCardinal":2,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Standard Description New","qCardinal":216,"qTags":["$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Estimated Days to Close","qCardinal":26,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Contract Signed Date","qCardinal":4397,"qTags":[],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Key","qCardinal":373223,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal CustomerID - Date Raised Key","qCardinal":344956,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"EnquiryQuoteContract_Key","qCardinal":344956,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Standard Description","qCardinal":326,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Standard Description (NO PSA)","qCardinal":151,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Standard Description (No changes)","qCardinal":142,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Total Net Amount","qCardinal":8857,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Total Net Amount1","qCardinal":9025,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Est # Days","qCardinal":139,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal # Survey Days temp","qCardinal":147,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal # Recertification Days Temp","qCardinal":146,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal # Stage 2 Days","qCardinal":94,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal NonNativeCurrencyCheck","qCardinal":1,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal CB Integrated","qCardinal":22,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Contract Is Signed Flag","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Type","qCardinal":39,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Type Summary","qCardinal":16,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal # Recertification Days","qCardinal":110,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal # Survey Days","qCardinal":141,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal # Days to Sign Contract","qCardinal":2102,"qTags":[],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal # Days Since Quote","qCardinal":7002,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Contract Unsigned Bucket","qCardinal":5,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Standard Bundle","qCardinal":12,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Standard Bundle Standard Mapped","qCardinal":326,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Total Net Amount_\u00a3","qCardinal":17515,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Total Net Amount_$","qCardinal":22012,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Total Net Amount_\u20ac","qCardinal":22231,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Total Net Amount1_\u00a3","qCardinal":17216,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Total Net Amount1_$","qCardinal":21542,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Total Net Amount1_\u20ac","qCardinal":22053,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Contract Unsigned Pipeline Flag","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal # Recertification Days (GWO)","qCardinal":110,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal # Stage 1 Days (GWO)","qCardinal":30,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal # Stage 2 Days (GWO)","qCardinal":95,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal # Stage 2 Days (GWO) (Test)","qCardinal":90,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal # Recertification Days (GWO) (Test)","qCardinal":110,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"current id","qCardinal":153411,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"previous id","qCardinal":153411,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"RowNumber","qCardinal":373223,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal First Value Flag (Contract is Signed Flag)","qCardinal":61,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Contract Unsigned Multi Quote Flag","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Difference Between Date Raised and Previous Date Raised","qCardinal":3355,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Duplicate Quote Flag","qCardinal":3,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Customer Is PAS Flag","qCardinal":4,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal TotalDays","qCardinal":274,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal TotalDays (with travel days)","qCardinal":278,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Client_ID","qCardinal":106518,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
