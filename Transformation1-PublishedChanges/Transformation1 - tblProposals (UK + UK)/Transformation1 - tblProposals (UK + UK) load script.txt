@@ -773,6 +773,16 @@ Load *,
 
 Resident $(TableName)_DeDupeTemp;
 
+left join ($(TableName))
+
+load
+[$(TableColumn) Customer ID],
+max([$(TableColumn) Terms Accepted]) as MostRecentSignedProposal
+
+
+Resident $(TableName)_DeDupeTemp
+group by [$(TableColumn) Customer ID]
+;
 
 
 Drop table $(TableName)_Temp;
