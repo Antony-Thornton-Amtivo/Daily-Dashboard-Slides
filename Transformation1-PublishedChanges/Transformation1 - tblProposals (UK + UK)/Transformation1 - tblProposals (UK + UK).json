@@ -1,6 +1,6 @@
 
 SHEETS
-{"qInfo":{"qId":"EjxJk","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"EjxJk","approved":true,"published":true,"publishTime":"2024-11-28T10:09:05.180Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T09:13:55.897Z","modifiedDate":"2026-04-01T11:13:36.555Z","encrypted":true,"privileges":["read","change_owner"],"title":"RetentionYear Checks","description":""},"qData":[]}
+{"qInfo":{"qId":"EjxJk","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"EjxJk","approved":true,"published":true,"publishTime":"2024-11-28T10:09:05.180Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T09:13:55.897Z","modifiedDate":"2026-04-01T11:36:41.065Z","encrypted":true,"privileges":["read","change_owner"],"title":"RetentionYear Checks","description":""},"qData":[]}
 {"qInfo":{"qId":"FMeuzR","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"FMeuzR","approved":false,"published":false,"owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T09:13:55.909Z","modifiedDate":"2025-10-13T09:13:55.909Z","encrypted":true,"privileges":["read","update","delete","publish","change_owner"],"title":"My new sheet (1)","description":""},"qData":[]}
 {"qInfo":{"qId":"GaFW","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"GaFW","approved":false,"published":false,"owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T09:13:55.922Z","modifiedDate":"2025-10-13T09:13:55.922Z","encrypted":true,"privileges":["read","update","delete","publish","change_owner"],"title":"My new sheet","description":""},"qData":[]}
 {"qInfo":{"qId":"jXAHfv","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"jXAHfv","approved":false,"published":false,"owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T09:13:55.945Z","modifiedDate":"2025-10-13T09:13:55.945Z","encrypted":true,"privileges":["read","update","delete","publish","change_owner"],"title":"My new sheet (2)","description":""},"qData":[]}
@@ -34,11 +34,11 @@ VARIABLES
 {"qName":"vExtractQVDLocationTest","qDefinition":"QVD Test Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"d5b8ca6f-466e-41ec-970b-5d45955288f6","qType":"variable"},"qData":[]}
 
 FIELDS
-{"qIsHidden":true,"qIsSystem":true,"qName":"$Field","qCardinal":160,"qTags":["$text","$hidden","$system","$key"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Field","qCardinal":161,"qTags":["$text","$hidden","$system","$key"],"qSrcTables":[]}
 {"qIsHidden":true,"qIsSystem":true,"qName":"$Table","qCardinal":2,"qTags":["$ascii","$text","$hidden","$system","$key"],"qSrcTables":[]}
 {"qIsHidden":true,"qIsSystem":true,"qName":"$Rows","qCardinal":2,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
 {"qIsHidden":true,"qIsSystem":true,"qName":"$Fields","qCardinal":2,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
-{"qIsHidden":true,"qIsSystem":true,"qName":"$FieldNo","qCardinal":158,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$FieldNo","qCardinal":159,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
 {"qIsHidden":true,"qIsSystem":true,"qName":"$Info","qCardinal":1,"qTags":["$ascii","$text","$hidden","$system"],"qSrcTables":[]}
 {"qName":"Customer_ID","qCardinal":172899,"qTags":["$ascii","$text"],"qSrcTables":["Map_ClientID"]}
 {"qName":"Client_ID","qCardinal":127000,"qTags":["$ascii","$text"],"qSrcTables":["Map_ClientID"]}
@@ -156,7 +156,7 @@ FIELDS
 {"qName":"Proposal Key","qCardinal":373223,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
 {"qName":"Proposal CustomerID - Date Raised Key","qCardinal":344956,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
 {"qName":"EnquiryQuoteContract_Key","qCardinal":344956,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
-{"qName":"Proposal Standard Description","qCardinal":326,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Standard Description","qCardinal":327,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
 {"qName":"Proposal Standard Description (NO PSA)","qCardinal":151,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
 {"qName":"Proposal Standard Description (No changes)","qCardinal":142,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
 {"qName":"Proposal Total Net Amount","qCardinal":8857,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
@@ -176,7 +176,7 @@ FIELDS
 {"qName":"Proposal # Days Since Quote","qCardinal":7002,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
 {"qName":"Proposal Contract Unsigned Bucket","qCardinal":5,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
 {"qName":"Proposal Standard Bundle","qCardinal":12,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
-{"qName":"Proposal Standard Bundle Standard Mapped","qCardinal":326,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"Proposal Standard Bundle Standard Mapped","qCardinal":327,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
 {"qName":"Proposal Total Net Amount_\u00a3","qCardinal":17515,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
 {"qName":"Proposal Total Net Amount_$","qCardinal":22012,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
 {"qName":"Proposal Total Net Amount_\u20ac","qCardinal":22231,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
@@ -189,8 +189,8 @@ FIELDS
 {"qName":"Proposal # Stage 2 Days (GWO)","qCardinal":95,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
 {"qName":"Proposal # Stage 2 Days (GWO) (Test)","qCardinal":90,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
 {"qName":"Proposal # Recertification Days (GWO) (Test)","qCardinal":110,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
-{"qName":"current id","qCardinal":153411,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
-{"qName":"previous id","qCardinal":153411,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"current id","qCardinal":153404,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"previous id","qCardinal":153404,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
 {"qName":"RowNumber","qCardinal":373223,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
 {"qName":"Proposal First Value Flag (Contract is Signed Flag)","qCardinal":61,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
 {"qName":"Proposal Contract Unsigned Multi Quote Flag","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Proposals"]}
@@ -200,3 +200,4 @@ FIELDS
 {"qName":"Proposal TotalDays","qCardinal":274,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
 {"qName":"Proposal TotalDays (with travel days)","qCardinal":278,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
 {"qName":"Proposal Client_ID","qCardinal":106518,"qTags":["$ascii","$text"],"qSrcTables":["Transformation1_Proposals"]}
+{"qName":"MostRecentSignedProposal","qCardinal":22249,"qTags":["$numeric"],"qSrcTables":["Transformation1_Proposals"]}
