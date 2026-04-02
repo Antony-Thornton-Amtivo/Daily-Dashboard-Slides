@@ -1,0 +1,616 @@
+
+SHEETS
+{"qInfo":{"qId":"0c16570c-4088-43af-974f-438cf22c429f","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"0c16570c-4088-43af-974f-438cf22c429f","approved":false,"published":true,"publishTime":"2024-09-23T09:22:46.634Z","owner":"auth0|63a23e335ff880d32e012f1b5b4c4bf6548aeacd187c28cbc39cfd15a507bc4e","ownerId":"9ScizHsZXotdvXGNu6iGPVKNFboJUgeq","createdDate":"2025-10-13T08:34:39.778Z","modifiedDate":"2025-10-13T08:34:39.778Z","encrypted":true,"privileges":["read","publish"],"title":"Customer Detail - Stage 1 & 2 progression (1)","description":""},"qData":[]}
+{"qInfo":{"qId":"23db3e2d-0300-407d-bcbc-d2ff08c02f26","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"23db3e2d-0300-407d-bcbc-d2ff08c02f26","approved":true,"published":true,"publishTime":"2023-09-14T12:37:08.399Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T08:34:39.829Z","modifiedDate":"2026-04-02T11:17:23.801Z","encrypted":true,"privileges":["read","change_owner"],"title":"Client Progression With & Without Activ","description":""},"qData":[]}
+{"qInfo":{"qId":"2f27809e-1a42-46f9-bbe9-8c9aa100d5af","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"2f27809e-1a42-46f9-bbe9-8c9aa100d5af","approved":true,"published":true,"publishTime":"2025-11-11T15:34:33.952Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-11-11T16:00:24.573Z","modifiedDate":"2026-04-02T11:17:23.793Z","encrypted":true,"privileges":["read","change_owner"],"title":"% Stage Progression by Bundle","description":""},"qData":[]}
+{"qInfo":{"qId":"3359aa57-0ccf-469d-b2d0-edfb6609d59a","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"3359aa57-0ccf-469d-b2d0-edfb6609d59a","approved":true,"published":true,"publishTime":"2026-04-02T11:15:53.261Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T08:34:39.874Z","modifiedDate":"2026-04-02T11:17:23.809Z","encrypted":true,"privileges":["read","change_owner"],"title":"Summary Dashboard","description":""},"qData":[]}
+{"qInfo":{"qId":"3eee2e2c-f4c0-47e4-9f46-7aac26a5f6ea","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"3eee2e2c-f4c0-47e4-9f46-7aac26a5f6ea","approved":false,"published":false,"owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-11-06T12:25:31.621Z","modifiedDate":"2025-11-06T13:38:42.998Z","encrypted":true,"privileges":["read","update","delete","publish","change_owner"],"title":"Customer Detail - Stage 1 & 2 progression (3)","description":""},"qData":[]}
+{"qInfo":{"qId":"4cad0652-2d66-40e9-a72e-e1d53136ec5e","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"4cad0652-2d66-40e9-a72e-e1d53136ec5e","approved":true,"published":true,"publishTime":"2023-10-17T13:32:43.004Z","owner":"auth0|63a23e335ff880d32e012f1b5b4c4bf6548aeacd187c28cbc39cfd15a507bc4e","ownerId":"9ScizHsZXotdvXGNu6iGPVKNFboJUgeq","createdDate":"2025-10-13T08:34:39.919Z","modifiedDate":"2026-04-02T11:17:23.807Z","encrypted":true,"privileges":["read"],"title":"Customer Visit Delivery Status","description":"Has a visit been delivered in time for customers that have not been withdrawn."},"qData":[]}
+{"qInfo":{"qId":"6f12e28c-0d05-4f8d-9c3a-0ade62e61a97","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"6f12e28c-0d05-4f8d-9c3a-0ade62e61a97","approved":true,"published":true,"publishTime":"2023-09-14T12:37:07.073Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T08:34:40.045Z","modifiedDate":"2026-04-02T11:17:23.797Z","encrypted":true,"privileges":["read","change_owner"],"title":"Booked & Completed Trends","description":""},"qData":[]}
+{"qInfo":{"qId":"8e6a1774-8dc5-4282-96f6-54cae6eac955","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"8e6a1774-8dc5-4282-96f6-54cae6eac955","approved":false,"published":true,"publishTime":"2024-11-05T11:53:17.339Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T08:34:40.094Z","modifiedDate":"2025-10-13T08:34:40.094Z","encrypted":true,"privileges":["read","publish","change_owner"],"title":"Progression Arrival Curves - Adjusted Sizing","description":""},"qData":[]}
+{"qInfo":{"qId":"9744c1ab-cee3-4dda-a527-fc393ab2f063","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"9744c1ab-cee3-4dda-a527-fc393ab2f063","approved":true,"published":true,"publishTime":"2023-09-14T12:36:59.957Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T08:34:40.121Z","modifiedDate":"2026-04-02T11:17:23.795Z","encrypted":true,"privileges":["read","change_owner"],"title":"Introduction","description":""},"qData":[]}
+{"qInfo":{"qId":"9760ba66-f7f4-416d-841f-389a6dcf9c40","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"9760ba66-f7f4-416d-841f-389a6dcf9c40","approved":true,"published":true,"publishTime":"2026-03-23T14:57:13.914Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2026-03-20T15:13:24.697Z","modifiedDate":"2026-04-02T11:17:23.816Z","encrypted":true,"privileges":["read","change_owner"],"title":"Contracted Days Summary","description":""},"qData":[]}
+{"qInfo":{"qId":"PULJgU","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"PULJgU","approved":true,"published":true,"publishTime":"2026-03-20T15:12:17.061Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2026-03-20T15:13:24.694Z","modifiedDate":"2026-04-02T11:17:23.806Z","encrypted":true,"privileges":["read","change_owner"],"title":"Contracted Days Breakdown","description":""},"qData":[]}
+{"qInfo":{"qId":"a497c21e-6913-4ce0-b79e-d0c270aab9b1","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"a497c21e-6913-4ce0-b79e-d0c270aab9b1","approved":true,"published":true,"publishTime":"2024-07-30T08:14:28.685Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T08:34:40.168Z","modifiedDate":"2026-04-02T11:17:23.798Z","encrypted":true,"privileges":["read","change_owner"],"title":"Progression Arrival Curves","description":""},"qData":[]}
+{"qInfo":{"qId":"a4d11c7d-4a85-4615-9311-b30cf1533d26","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"a4d11c7d-4a85-4615-9311-b30cf1533d26","approved":true,"published":true,"publishTime":"2025-11-24T10:48:36.018Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-11-24T10:48:55.599Z","modifiedDate":"2026-04-02T11:17:23.804Z","encrypted":true,"privileges":["read","change_owner"],"title":"Progression Arrival Curves As Tables","description":""},"qData":[]}
+{"qInfo":{"qId":"a70dcb63-62c5-4399-9fec-cd3544d6d07d","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"a70dcb63-62c5-4399-9fec-cd3544d6d07d","approved":false,"published":false,"owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T08:34:40.180Z","modifiedDate":"2025-10-13T08:34:40.180Z","encrypted":true,"privileges":["read","update","delete","publish","change_owner"],"title":"Customer Detail - Stage 1 & 2 progression (1)","description":""},"qData":[]}
+{"qInfo":{"qId":"ca74cd24-ef8c-4f4d-b9b0-0d723467a102","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"ca74cd24-ef8c-4f4d-b9b0-0d723467a102","approved":false,"published":false,"owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2026-03-10T14:52:07.048Z","modifiedDate":"2026-03-10T14:52:07.048Z","encrypted":true,"privileges":["read","update","delete","publish","change_owner"],"title":"Progression Arrival Curves (1)","description":""},"qData":[]}
+{"qInfo":{"qId":"d9f239df-8179-4605-b589-330fb8aa0f55","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"d9f239df-8179-4605-b589-330fb8aa0f55","approved":true,"published":true,"publishTime":"2026-03-17T14:48:02.836Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T08:34:40.265Z","modifiedDate":"2026-04-02T11:17:23.813Z","encrypted":true,"privileges":["read","change_owner"],"title":"Customer Detail - Stage 1 & 2 progression","description":""},"qData":[]}
+{"qInfo":{"qId":"e307a423-db9e-4951-8c72-206a35bb6a18","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"e307a423-db9e-4951-8c72-206a35bb6a18","approved":true,"published":true,"publishTime":"2023-09-14T12:37:04.206Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T08:34:40.324Z","modifiedDate":"2026-04-02T11:17:23.811Z","encrypted":true,"privileges":["read","change_owner"],"title":"Annual Progression Arrival Curves","description":""},"qData":[]}
+{"qInfo":{"qId":"e74eb328-b574-4b2c-8c91-c6c868ae6b3d","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"e74eb328-b574-4b2c-8c91-c6c868ae6b3d","approved":false,"published":false,"owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T08:34:40.335Z","modifiedDate":"2025-10-13T08:34:40.335Z","encrypted":true,"privileges":["read","update","delete","publish","change_owner"],"title":"Customer Detail - Stage 1 & 2 progression (2)","description":""},"qData":[]}
+{"qInfo":{"qId":"hTrhYc","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"hTrhYc","approved":true,"published":true,"publishTime":"2026-03-10T15:29:46.573Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2026-03-10T15:31:53.040Z","modifiedDate":"2026-04-02T11:17:23.804Z","encrypted":true,"privileges":["read","change_owner"],"title":"Daily Dash - Core Hub New Business Stage 2 Progression","description":""},"qData":[]}
+{"qInfo":{"qId":"uPvcDP","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"uPvcDP","approved":true,"published":true,"publishTime":"2025-11-11T15:32:11.333Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-11-11T12:23:23.536Z","modifiedDate":"2026-04-02T11:17:23.792Z","encrypted":true,"privileges":["read","change_owner"],"title":"Stage Progression by Bundle","description":""},"qData":[]}
+
+OBJECTS ON SHEETS
+{"name":"7989e694-f1d8-4e89-aef5-bdf02a4c0c57","type":"filterpane","col":0,"row":0,"colspan":19,"rowspan":1,"bounds":{"y":0,"x":0,"width":52.77777777777778,"height":5.555555555555555}}
+{"name":"468297c9-c622-4c46-ac42-a648c6fb4d5f","type":"table","col":0,"row":1,"colspan":36,"rowspan":17,"bounds":{"y":5.555555555555555,"x":0,"width":100,"height":94.44444444444444}}
+{"name":"9150c54f-c53d-4ee1-b047-cd4bb73b1aa7","type":"filterpane","col":19,"row":0,"colspan":17,"rowspan":1,"bounds":{"y":0,"x":52.77777777777778,"width":47.22222222222222,"height":5.555555555555555}}
+{"name":"48f6aeb5-5d80-430f-ace1-2ba72265206a","type":"filterpane","col":0,"row":0,"colspan":19,"rowspan":1,"bounds":{"y":0,"x":0,"width":52.77777777777778,"height":5.555555555555555}}
+{"name":"e4b7189d-e48d-487a-88ce-6cef06e734e7","type":"filterpane","col":19,"row":0,"colspan":17,"rowspan":1,"bounds":{"y":0,"x":52.77777777777778,"width":47.22222222222222,"height":5.555555555555555}}
+{"name":"UBCjaP","type":"table","col":0,"row":1,"colspan":36,"rowspan":17,"bounds":{"y":5.555555555555555,"x":0,"width":100,"height":94.44444444444444}}
+{"name":"833f966d-4aab-4f55-b1bb-5a743d53d700","type":"filterpane","col":0,"row":0,"colspan":36,"rowspan":1,"bounds":{"y":0,"x":0,"width":100,"height":5.555555555555555}}
+{"name":"63ed6dbb-f7d8-43f5-a026-14a1f1449501","type":"pivot-table","col":0,"row":1,"colspan":36,"rowspan":9,"bounds":{"y":5.555555555555555,"x":0,"width":100,"height":50}}
+{"name":"616c9651-20ce-4802-b88b-fd68e9efe741","type":"pivot-table","col":0,"row":10,"colspan":36,"rowspan":8,"bounds":{"y":55.55555555555556,"x":0,"width":100,"height":44.44444444444444}}
+{"name":"DxJFpJ","type":"filterpane","col":0,"row":0,"colspan":36,"rowspan":1,"bounds":{"y":0,"x":0,"width":100,"height":5.555555555555555}}
+{"name":"TxAB","type":"kpi","col":0,"row":1,"colspan":8,"rowspan":3,"bounds":{"y":5.555555555555555,"x":0,"width":22.22222222222222,"height":16.666666666666664}}
+{"name":"nTasdj","type":"kpi","col":0,"row":4,"colspan":4,"rowspan":3,"bounds":{"y":22.22222222222222,"x":0,"width":11.11111111111111,"height":16.666666666666664}}
+{"name":"sjgp","type":"kpi","col":4,"row":4,"colspan":4,"rowspan":3,"bounds":{"y":22.22222222222222,"x":11.11111111111111,"width":11.11111111111111,"height":16.666666666666664}}
+{"name":"gmUppEc","type":"kpi","col":0,"row":7,"colspan":4,"rowspan":3,"bounds":{"y":38.88888888888889,"x":0,"width":11.11111111111111,"height":16.666666666666664}}
+{"name":"EcpWq","type":"kpi","col":4,"row":7,"colspan":4,"rowspan":3,"bounds":{"x":11.11111111111111,"y":38.88888888888889,"width":11.11111111111111,"height":16.666666666666664}}
+{"name":"xfxsm","type":"kpi","col":0,"row":10,"colspan":4,"rowspan":3,"bounds":{"y":55.55555555555556,"x":0,"width":11.11111111111111,"height":16.666666666666664}}
+{"name":"DKpUd","type":"kpi","col":4,"row":10,"colspan":4,"rowspan":3,"bounds":{"y":55.55555555555556,"x":11.11111111111111,"width":11.11111111111111,"height":16.666666666666664}}
+{"name":"mUWJvs","type":"sn-tabbed-container","col":8,"row":1,"colspan":28,"rowspan":8,"bounds":{"y":5.555555555555555,"x":22.22222222222222,"width":77.77777777777779,"height":44.44444444444444}}
+{"name":"vBtGnJ","type":"sn-tabbed-container","col":8,"row":9,"colspan":28,"rowspan":9,"bounds":{"y":50,"x":22.22222222222222,"width":77.77777777777779,"height":50}}
+{"name":"3910dddf-ddf6-4bab-a7a8-f721e26417d9","type":"filterpane","col":0,"row":0,"colspan":19,"rowspan":1,"bounds":{"y":0,"x":0,"width":52.77777777777778,"height":5.555555555555555}}
+{"name":"bec050bb-0693-4e7e-87d7-84c8e1768fdd","type":"table","col":0,"row":1,"colspan":36,"rowspan":17,"bounds":{"y":5.555555555555555,"x":0,"width":100,"height":94.44444444444444}}
+{"name":"860869ff-1d31-4d99-a4be-46e5476e8d6d","type":"filterpane","col":19,"row":0,"colspan":17,"rowspan":1,"bounds":{"y":0,"x":52.77777777777778,"width":47.22222222222222,"height":5.555555555555555}}
+{"name":"f2eeaf39-9fd2-4e68-bf1b-68f741246ffd","type":"filterpane","col":0,"row":0,"colspan":19,"rowspan":1,"bounds":{"y":0,"x":0,"width":52.77777777777778,"height":5.555555555555555}}
+{"name":"b5cbb868-3a01-48b3-a549-7e95aead9546","type":"filterpane","col":19,"row":0,"colspan":17,"rowspan":1,"bounds":{"y":0,"x":52.77777777777778,"width":47.22222222222222,"height":5.555555555555555}}
+{"name":"YahPjm","type":"pivot-table","col":0,"row":1,"colspan":18,"rowspan":7,"bounds":{"y":5.555555555555555,"x":0,"width":50,"height":38.88888888888889}}
+{"name":"YEbPZY","type":"barchart","col":0,"row":8,"colspan":36,"rowspan":5,"bounds":{"y":44.44444444444444,"x":0,"width":100,"height":27.77777777777778}}
+{"name":"mLzTeJ","type":"pivot-table","col":18,"row":1,"colspan":18,"rowspan":7,"bounds":{"y":5.555555555555555,"x":50,"width":50,"height":38.88888888888889}}
+{"name":"eGUcAz","type":"barchart","col":0,"row":13,"colspan":36,"rowspan":5,"bounds":{"y":72.22222222222221,"x":0,"width":100,"height":27.77777777777778}}
+{"name":"fb0245f4-e49e-4cb5-953f-cd02b07d49b0","type":"filterpane","col":0,"row":0,"colspan":19,"rowspan":1,"bounds":{"y":0,"x":0,"width":52.77777777777778,"height":5.555555555555555}}
+{"name":"87b2a9e2-4e07-45ba-b304-02cea563449d","type":"filterpane","col":19,"row":0,"colspan":17,"rowspan":1,"bounds":{"y":0,"x":52.77777777777778,"width":47.22222222222222,"height":5.555555555555555}}
+{"name":"dfRWkTT","type":"linechart","col":0,"row":1,"colspan":18,"rowspan":8,"bounds":{"y":5.555555555555555,"x":0,"width":50,"height":44.44444444444444}}
+{"name":"cRqMJvx","type":"linechart","col":18,"row":1,"colspan":18,"rowspan":8,"bounds":{"y":5.555555555555555,"x":50,"width":50,"height":44.44444444444444}}
+{"name":"TPhRx","type":"linechart","col":0,"row":9,"colspan":18,"rowspan":9,"bounds":{"y":50,"x":0,"width":50,"height":50}}
+{"name":"sDXFYg","type":"linechart","col":18,"row":9,"colspan":18,"rowspan":9,"bounds":{"y":50,"x":50,"width":50,"height":50}}
+{"name":"ca6bbd1b-8d64-4a94-9fdb-8ac56ad713d9","type":"filterpane","col":19,"row":0,"colspan":17,"rowspan":1,"bounds":{"y":0,"x":52.77777777777778,"width":47.22222222222222,"height":5.555555555555555}}
+{"name":"1b71b5e0-38c4-4c1f-952d-eec9bdb14b94","type":"linechart","col":0,"row":0,"colspan":19,"rowspan":9,"bounds":{"y":0,"x":0,"width":52.77777777777778,"height":50}}
+{"name":"83b9ea91-0dfe-49be-96c5-621aeb9becf5","type":"linechart","col":0,"row":9,"colspan":19,"rowspan":9,"bounds":{"y":50,"x":0,"width":52.77777777777778,"height":50}}
+{"name":"ZUZPVm","type":"text-image","col":0,"row":0,"colspan":9,"rowspan":7,"bounds":{"y":0,"x":0,"width":25,"height":38.88888888888889}}
+{"name":"wkdHU","type":"filterpane","col":15,"row":8,"colspan":3,"rowspan":10,"bounds":{"y":44.44444444444444,"x":41.66666666666667,"width":8.333333333333332,"height":55.55555555555556}}
+{"name":"LJqZaJ","type":"text-image","col":15,"row":4,"colspan":7,"rowspan":3,"bounds":{"y":22.22222222222222,"x":41.66666666666667,"width":19.444444444444446,"height":16.666666666666664}}
+{"name":"jSjyp","type":"text-image","col":9,"row":0,"colspan":5,"rowspan":2,"bounds":{"y":0,"x":25,"width":13.88888888888889,"height":11.11111111111111}}
+{"name":"DWST","type":"filterpane","col":18,"row":8,"colspan":4,"rowspan":10,"bounds":{"y":44.44444444444444,"x":50,"width":11.11111111111111,"height":55.55555555555556}}
+{"name":"TAyNS","type":"text-image","col":14,"row":0,"colspan":5,"rowspan":2,"bounds":{"y":0,"x":38.88888888888889,"width":13.88888888888889,"height":11.11111111111111}}
+{"name":"qVaeN","type":"text-image","col":0,"row":8,"colspan":9,"rowspan":10,"bounds":{"y":44.44444444444444,"x":0,"width":25,"height":55.55555555555556}}
+{"name":"njBgmCp","type":"text-image","col":28,"row":4,"colspan":8,"rowspan":3,"bounds":{"y":22.22222222222222,"x":77.77777777777779,"width":22.22222222222222,"height":16.666666666666664}}
+{"name":"EUcpf","type":"text-image","col":28,"row":8,"colspan":8,"rowspan":10,"bounds":{"y":44.44444444444444,"x":77.77777777777779,"width":22.22222222222222,"height":55.55555555555556}}
+{"name":"JwamFL","type":"text-image","col":10,"row":4,"colspan":4,"rowspan":3,"bounds":{"y":22.22222222222222,"x":27.77777777777778,"width":11.11111111111111,"height":16.666666666666664}}
+{"name":"wFyXyTL","type":"action-button","col":10,"row":8,"colspan":4,"rowspan":2,"bounds":{"y":44.44444444444444,"x":27.77777777777778,"width":11.11111111111111,"height":11.11111111111111}}
+{"name":"NNCuZf","type":"filterpane","col":23,"row":12,"colspan":4,"rowspan":4,"bounds":{"y":66.66666666666666,"x":63.888888888888886,"width":11.11111111111111,"height":22.22222222222222}}
+{"name":"ugaLaaN","type":"text-image","col":23,"row":4,"colspan":4,"rowspan":3,"bounds":{"y":22.22222222222222,"x":63.888888888888886,"width":11.11111111111111,"height":16.666666666666664}}
+{"name":"jBezTR","type":"text-image","col":23,"row":8,"colspan":4,"rowspan":4,"bounds":{"y":44.44444444444444,"x":63.888888888888886,"width":11.11111111111111,"height":22.22222222222222}}
+{"name":"a609e254-fa0d-40c9-93ca-f4f9eb97bce5","type":"kpi","col":6,"row":2,"colspan":6,"rowspan":1,"bounds":{"y":16.666666666666664,"x":25,"width":25,"height":8.333333333333332}}
+{"name":"93a1f168-9aa7-4c61-9a1a-358026f793f5","type":"kpi","col":0,"row":2,"colspan":6,"rowspan":1,"bounds":{"y":16.666666666666664,"x":0,"width":25,"height":8.333333333333332}}
+{"name":"ddec2ac8-c5c7-4a89-a41e-65cc5fe7619d","type":"kpi","col":12,"row":2,"colspan":6,"rowspan":1,"bounds":{"y":16.666666666666664,"x":50,"width":25,"height":8.333333333333332}}
+{"name":"7b8b24ed-b433-4fcd-b9f4-03fdc0c0a4a4","type":"kpi","col":18,"row":2,"colspan":6,"rowspan":1,"bounds":{"y":16.666666666666664,"x":75,"width":25,"height":8.333333333333332}}
+{"name":"c43a30a8-6383-4230-84ad-d562ae7ad899","type":"filterpane","col":0,"row":0,"colspan":24,"rowspan":1,"bounds":{"y":0,"x":0,"width":100,"height":8.333333333333332}}
+{"name":"9ff9d6f0-964d-43f4-829d-273bb64eff31","type":"kpi","col":0,"row":1,"colspan":24,"rowspan":1,"bounds":{"y":8.333333333333332,"x":0,"width":100,"height":8.333333333333332}}
+{"name":"kpyjbgg","type":"table","col":0,"row":3,"colspan":12,"rowspan":9,"bounds":{"y":25,"x":0,"width":50,"height":75}}
+{"name":"cVhwmmk","type":"table","col":12,"row":3,"colspan":12,"rowspan":9,"bounds":{"y":25,"x":50,"width":50,"height":75}}
+{"name":"fyPAAF","type":"kpi","col":6,"row":2,"colspan":6,"rowspan":1,"bounds":{"y":16.666666666666664,"x":25,"width":25,"height":8.333333333333332}}
+{"name":"JWegZf","type":"kpi","col":0,"row":2,"colspan":6,"rowspan":1,"bounds":{"y":16.666666666666664,"x":0,"width":25,"height":8.333333333333332}}
+{"name":"aDZpm","type":"kpi","col":12,"row":2,"colspan":6,"rowspan":1,"bounds":{"y":16.666666666666664,"x":50,"width":25,"height":8.333333333333332}}
+{"name":"PNCjc","type":"kpi","col":18,"row":2,"colspan":6,"rowspan":1,"bounds":{"y":16.666666666666664,"x":75,"width":25,"height":8.333333333333332}}
+{"name":"GJVdDP","type":"pivot-table","col":0,"row":6,"colspan":12,"rowspan":6,"bounds":{"y":50,"x":0,"width":50,"height":50}}
+{"name":"WxxmdZv","type":"filterpane","col":0,"row":0,"colspan":24,"rowspan":1,"bounds":{"y":0,"x":0,"width":100,"height":8.333333333333332}}
+{"name":"ctswD","type":"kpi","col":0,"row":1,"colspan":24,"rowspan":1,"bounds":{"y":8.333333333333332,"x":0,"width":100,"height":8.333333333333332}}
+{"name":"VTxj","type":"linechart","col":0,"row":3,"colspan":24,"rowspan":3,"bounds":{"y":25,"x":0,"width":100,"height":25}}
+{"name":"GhmJjME","type":"pivot-table","col":12,"row":6,"colspan":12,"rowspan":6,"bounds":{"y":50,"x":50,"width":50,"height":50}}
+{"name":"2460f28e-8c07-4378-a225-155c726224d7","type":"filterpane","col":0,"row":0,"colspan":36,"rowspan":1,"bounds":{"y":0,"x":0,"width":100,"height":5.555555555555555}}
+{"name":"4e8090ea-d9b1-40ad-a00f-6168321f8444","type":"linechart","col":0,"row":1,"colspan":12,"rowspan":8,"bounds":{"y":5.555555555555555,"x":0,"width":33.33333333333333,"height":44.44444444444444}}
+{"name":"dba31bc2-fa07-43df-b1e0-e5c4807e08cc","type":"linechart","col":0,"row":9,"colspan":12,"rowspan":9,"bounds":{"y":50,"x":0,"width":33.33333333333333,"height":50}}
+{"name":"1a2f1c4e-919c-4f83-89d4-14e1e19b2588","type":"linechart","col":24,"row":1,"colspan":12,"rowspan":17,"bounds":{"y":5.555555555555555,"x":66.66666666666666,"width":33.33333333333333,"height":94.44444444444444}}
+{"name":"TwbJTN","type":"linechart","col":12,"row":1,"colspan":12,"rowspan":17,"bounds":{"y":5.555555555555555,"x":33.33333333333333,"width":33.33333333333333,"height":94.44444444444444}}
+{"name":"ea635721-a792-4818-b36c-5d219b511307","type":"filterpane","col":0,"row":0,"colspan":36,"rowspan":1,"bounds":{"y":0,"x":0,"width":100,"height":5.555555555555555}}
+{"name":"3fe0dff4-7010-4407-b53f-6bb2d527cba1","type":"pivot-table","col":0,"row":1,"colspan":12,"rowspan":8,"bounds":{"y":5.555555555555555,"x":0,"width":33.33333333333333,"height":44.44444444444444}}
+{"name":"6b7d8659-e068-43ab-b740-071d72f0f613","type":"pivot-table","col":0,"row":9,"colspan":12,"rowspan":9,"bounds":{"y":50,"x":0,"width":33.33333333333333,"height":50}}
+{"name":"04eac08b-5d93-4323-946a-fb27064c752b","type":"pivot-table","col":24,"row":1,"colspan":12,"rowspan":17,"bounds":{"y":5.555555555555555,"x":66.66666666666666,"width":33.33333333333333,"height":94.44444444444444}}
+{"name":"be42a7de-a83b-4d75-9bf9-02dc23f1cbff","type":"pivot-table","col":12,"row":1,"colspan":12,"rowspan":17,"bounds":{"y":5.555555555555555,"x":33.33333333333333,"width":33.33333333333333,"height":94.44444444444444}}
+{"name":"8521eb96-eb1d-4084-982e-a36e64c75620","type":"filterpane","col":0,"row":0,"colspan":19,"rowspan":1,"bounds":{"y":0,"x":0,"width":52.77777777777778,"height":5.555555555555555}}
+{"name":"77c7eddc-e2dd-45fb-8081-6af46178b4e5","type":"table","col":0,"row":1,"colspan":36,"rowspan":17,"bounds":{"y":5.555555555555555,"x":0,"width":100,"height":94.44444444444444}}
+{"name":"018d903d-a881-4a6f-96b4-08aef4542519","type":"filterpane","col":19,"row":0,"colspan":17,"rowspan":1,"bounds":{"y":0,"x":52.77777777777778,"width":47.22222222222222,"height":5.555555555555555}}
+{"name":"6eeaaef1-73c1-4019-b2bb-99435df97e83","type":"filterpane","col":0,"row":0,"colspan":36,"rowspan":1,"bounds":{"y":0,"x":0,"width":100,"height":5.555555555555555}}
+{"name":"27dbc4ec-7db9-4d1b-8f73-551a0a98b72c","type":"linechart","col":0,"row":1,"colspan":12,"rowspan":8,"bounds":{"y":5.555555555555555,"x":0,"width":33.33333333333333,"height":44.44444444444444}}
+{"name":"e6119988-e8c2-427b-8754-cf41a6b79cd6","type":"linechart","col":0,"row":9,"colspan":12,"rowspan":9,"bounds":{"y":50,"x":0,"width":33.33333333333333,"height":50}}
+{"name":"cb34bccc-f943-4a9f-93a4-2d5be735bf29","type":"linechart","col":24,"row":1,"colspan":12,"rowspan":17,"bounds":{"y":5.555555555555555,"x":66.66666666666666,"width":33.33333333333333,"height":94.44444444444444}}
+{"name":"d2cc0b8f-bd0c-4bf0-a13b-8733d8957bef","type":"linechart","col":12,"row":1,"colspan":12,"rowspan":17,"bounds":{"y":5.555555555555555,"x":33.33333333333333,"width":33.33333333333333,"height":94.44444444444444}}
+{"name":"BKhZLfP","type":"table","col":0,"row":1,"colspan":36,"rowspan":17,"bounds":{"y":5.555555555555555,"x":0,"width":100,"height":94.44444444444444}}
+{"name":"PYCBPA","type":"filterpane","col":0,"row":0,"colspan":36,"rowspan":1,"bounds":{"y":0,"x":0,"width":100,"height":5.555555555555555}}
+{"name":"anqeAej","type":"filterpane","col":0,"row":0,"colspan":36,"rowspan":1,"bounds":{"y":0,"x":0,"width":100,"height":5.555555555555555}}
+{"name":"gSuLpDb","type":"linechart","col":0,"row":1,"colspan":18,"rowspan":17,"bounds":{"y":5.555555555555555,"x":0,"width":50,"height":94.44444444444444}}
+{"name":"syrm","type":"linechart","col":18,"row":1,"colspan":18,"rowspan":17,"bounds":{"y":5.555555555555555,"x":50,"width":50,"height":94.44444444444444}}
+{"name":"e7511098-8182-4d62-b845-bdf01de2031e","type":"filterpane","col":0,"row":0,"colspan":19,"rowspan":1,"bounds":{"y":0,"x":0,"width":52.77777777777778,"height":5.555555555555555}}
+{"name":"b1d4482f-847a-4c5f-8e48-29d83f9fec5a","type":"table","col":0,"row":1,"colspan":36,"rowspan":17,"bounds":{"y":5.555555555555555,"x":0,"width":100,"height":94.44444444444444}}
+{"name":"db1631a9-2632-40a3-9d04-a5dfbd670a31","type":"filterpane","col":19,"row":0,"colspan":17,"rowspan":1,"bounds":{"y":0,"x":52.77777777777778,"width":47.22222222222222,"height":5.555555555555555}}
+{"name":"DqmePJ","type":"sn-text","col":22,"row":26,"colspan":14,"rowspan":1,"bounds":{"y":96.29629629629629,"x":61.111111111111114,"width":38.88888888888889,"height":3.7037037037037033}}
+{"name":"jtJUX","type":"sn-text","col":10,"row":2,"colspan":25,"rowspan":2,"bounds":{"y":7.4074074074074066,"x":27.77777777777778,"width":69.44444444444444,"height":7.4074074074074066}}
+{"name":"CxrvDH","type":"linechart","col":1,"row":5,"colspan":34,"rowspan":20,"bounds":{"y":18.51851851851852,"x":2.7777777777777777,"width":94.44444444444444,"height":74.07407407407408}}
+{"name":"mGmG","type":"filterpane","col":0,"row":0,"colspan":36,"rowspan":1,"bounds":{"y":0,"x":0,"width":100,"height":5.555555555555555}}
+{"name":"JhubLj","type":"pivot-table","col":0,"row":1,"colspan":36,"rowspan":9,"bounds":{"y":5.555555555555555,"x":0,"width":100,"height":50}}
+{"name":"PgRAb","type":"pivot-table","col":0,"row":10,"colspan":36,"rowspan":8,"bounds":{"y":55.55555555555556,"x":0,"width":100,"height":44.44444444444444}}
+
+DIMENSIONS
+{"qInfo":{"qId":"BTqdyGd","qType":"dimension"},"qMeta":{"_resourcetype":"app.object","_objecttype":"dimension","id":"BTqdyGd","approved":true,"published":false,"owner":"auth0|63a23e335ff880d32e012f1b5b4c4bf6548aeacd187c28cbc39cfd15a507bc4e","ownerId":"9ScizHsZXotdvXGNu6iGPVKNFboJUgeq","createdDate":"2020-01-21T10:43:59.579Z","modifiedDate":"2020-01-21T10:43:59.579Z","encrypted":true,"privileges":["read"],"title":"[Postcode District Area Country]","description":"","tags":[]},"qData":[]}
+{"qInfo":{"qId":"fkLV","qType":"dimension"},"qMeta":{"_resourcetype":"app.object","_objecttype":"dimension","id":"fkLV","approved":true,"published":false,"owner":"auth0|63a23e335ff880d32e012f1b5b4c4bf6548aeacd187c28cbc39cfd15a507bc4e","ownerId":"9ScizHsZXotdvXGNu6iGPVKNFboJUgeq","createdDate":"2020-01-21T10:33:09.466Z","modifiedDate":"2020-01-21T10:42:59.626Z","encrypted":true,"privileges":["read"],"title":"[Postcode Area - Country]","description":"","tags":[]},"qData":[]}
+
+MASTER OBJECTS
+{"qInfo":{"qId":"7344c64a-e215-43ec-9f64-613b99dcce4c","qType":"masterobject"},"qMeta":{"_resourcetype":"app.object","_objecttype":"masterobject","id":"7344c64a-e215-43ec-9f64-613b99dcce4c","approved":true,"published":false,"owner":"auth0|63a23e335ff880d32e012f1b5b4c4bf6548aeacd187c28cbc39cfd15a507bc4e","ownerId":"9ScizHsZXotdvXGNu6iGPVKNFboJUgeq","createdDate":"2025-10-13T08:34:40.057Z","modifiedDate":"2026-04-02T11:17:23.793Z","encrypted":true,"privileges":["read"],"title":"Stage 1 Progression Arrival Curve","description":"","tags":[]},"qData":[]}
+{"qInfo":{"qId":"79d107ca-ebd4-443d-9005-21ab57810c46","qType":"masterobject"},"qMeta":{"_resourcetype":"app.object","_objecttype":"masterobject","id":"79d107ca-ebd4-443d-9005-21ab57810c46","approved":true,"published":false,"owner":"auth0|63a23e335ff880d32e012f1b5b4c4bf6548aeacd187c28cbc39cfd15a507bc4e","ownerId":"9ScizHsZXotdvXGNu6iGPVKNFboJUgeq","createdDate":"2025-10-13T08:34:40.069Z","modifiedDate":"2026-04-02T11:17:23.801Z","encrypted":true,"privileges":["read"],"title":"Master Selections","description":"","tags":[]},"qData":[]}
+{"qInfo":{"qId":"b4faf8a3-1457-4a68-b07d-d76a47e51089","qType":"masterobject"},"qMeta":{"_resourcetype":"app.object","_objecttype":"masterobject","id":"b4faf8a3-1457-4a68-b07d-d76a47e51089","approved":true,"published":false,"owner":"auth0|63a23e335ff880d32e012f1b5b4c4bf6548aeacd187c28cbc39cfd15a507bc4e","ownerId":"9ScizHsZXotdvXGNu6iGPVKNFboJUgeq","createdDate":"2025-10-13T08:34:40.237Z","modifiedDate":"2026-04-02T11:17:23.793Z","encrypted":true,"privileges":["read"],"title":"Stage 2 Progression Arrival Curve","description":"","tags":[]},"qData":[]}
+
+VARIABLES
+{"qName":"vMonth_TY_Live","qDefinition":"[Calendar Year] =,\n      [Calendar Week] =,\n      [Calendar Date] =,\n      [Calendar Month]=,\n      [Calendar Year] = {'$(=Year(Today()))'},\n      [Calendar Month Number] = {'$(=Num(Month(Today())))'}","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"9c7cc152-a641-4562-a778-a2b7a1424711","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vToday_LY_Live","qDefinition":"[Calendar Year] =,\n        [Calendar Week] =,\n        [Calendar Date] =,\n        [Calendar Month]=,\n        [Calendar Year] = {'$(=Year(Today())-1)'},\n        [Calendar Date] = {'$(=Date(Date(Today())-364,'DD\/MM\/YYYY'))'}","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"8e778bbb-8e49-47e6-a6b8-7d572704bfff","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vMaxMonth-3_TY","qDefinition":"[Calendar Year] =,\n[Calendar Week] =,\n[Calendar Date] =,\n[Calendar Month]=,\n[Calendar Month_ID] = {'$(=Max([Calendar Month_ID])-3)'}","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"396777bb-223a-424c-baae-2e1d562057d1","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vMTD_TY","qDefinition":"[Calendar Year] =,\n[Calendar Week] =,\n[Calendar Month]=,\n[Calendar Year] = {'$(=$(vMaxYear))'},\n[Calendar Month Number] = {'$(=$(vMaxMonth))'},\n[Calendar Date] = {\"<=$(=Date(Max([Calendar Date])))\"}","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"f84400bb-d49e-44d8-a9f4-717077f6fe5e","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vMonths_TY","qDefinition":"[Calendar Year] =,\n[Calendar Year] = {'$(=$(vMaxYear))'}","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"f2101f50-4739-4a52-924e-b805b9030b0e","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vYTD_LY","qDefinition":"[Calendar Year] =,\n[Calendar Week] =,\n[Calendar Year] = {'$(=$(vMaxYear-1))'},\n[Calendar Month] = {\"<= $(=Max([Calendar Month]))\"},\n[Calendar Date] = {\"<=$(=Date(Max([Calendar Date])-364))\"}","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"371be48d-951c-451c-89a8-bb17a9aba579","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vToday_TY_Live","qDefinition":"[Calendar Year] =,\n        [Calendar Week] =,\n        [Calendar Date] =,\n        [Calendar Month]=,\n        [Calendar Year] = {'$(=Year(Today()))'},\n        [Calendar Date] = {'$(=Date(Today()))'}","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"79e308fc-f230-491d-a8fd-6c7886b8b685","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vLast12Months_TY_Live","qDefinition":"[Calendar Year] =,\n        [Calendar Week] =,\n        [Calendar Date] =,\n        [Calendar Month]=,\n        [Calendar Date] = {\">=$(=Date(Monthstart(Today()-325))) <=$(=Date(Today()))\"}","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"d406ac80-d4f7-484b-aee0-b3923d343d31","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vMaxMonth-1_TY","qDefinition":"[Calendar Year] =,\n[Calendar Week] =,\n[Calendar Date] =,\n[Calendar Month]=,\n[Calendar Month_ID] = {'$(=Max([Calendar Month_ID])-1)'}","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"766b3f84-207b-4688-b098-f36037c4a572","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vMTD_LY","qDefinition":"[Calendar Year] =,\n[Calendar Week] =,\n[Calendar Month]=,\n[Calendar Year] = {'$(=$(vMaxYear-1))'},\n[Calendar Month Number] = {'$(=$(vMaxMonth))'},\n[Calendar Date] = {\"<=$(=Date(Max([Calendar Date])-364))\"}","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"0b77cd2e-8305-4774-9b6f-9f2d1d32ff0a","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vVariable_Name","qDefinition":"vLast12Months_TY_Live","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"ae638b0c-4607-4571-8adf-fa52e979cb4e","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vYTD_TY","qDefinition":"[Calendar Year] =,\n[Calendar Week] =,\n[Calendar Year] = {'$(=$(vMaxYear))'},\n[Calendar Month] = {\"<= $(=Max([Calendar Month]))\"},\n[Calendar Date] = {\"<=$(=Date(Max([Calendar Date])))\"}","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"eece938f-5b13-4acf-9eea-cda58cb8bea2","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vNumberOfRows","qDefinition":"29","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"f45f8b7e-9cae-4ba5-aa90-1613d5392b65","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vMaxMonth","qDefinition":"$(=Max([Calendar Month Number]))","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"2315fab1-c277-442d-abc8-8278e22e862e","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vMaxYear","qDefinition":"$(=Max([Calendar Year]))","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"bee919e0-a58c-4f48-8f2b-044e72954d11","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vMaxMonth+1_TY_Live","qDefinition":"[Calendar Year] =,\n[Calendar Week] =,\n[Calendar Date] =,\n[Calendar Month]=,\n[Calendar Month_ID] = {'$(=Max([Calendar Month_ID])+1)'}","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"e2e724c8-ee6a-46c7-bf97-6c6939eba8db","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vYTD_LY_Live","qDefinition":"[Calendar Year] =,\n      [Calendar Week] =,\n      [Calendar Date] =,\n      [Calendar Month]=,\n      [Calendar Year] = {'$(=Year(Today())-1)'},\n      [Calendar Month Number] = {\"<=$(=Num(Month(Today())))\"},\n      [Calendar Date] = {\"<=$(=Date(Today()-364))\"}","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"0c336d9e-9a78-411a-82f8-3de66e84f677","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vFullYear_TY","qDefinition":"[Calendar Year] =,\n[Calendar Week] =,\n[Calendar Year] = {'$(=$(vMaxYear))'},\n[Calendar Week] =,\n[Calendar Month]=,\n[Calendar Date]=","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"3907327f-9c8c-457d-a35b-642360f74d7e","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vMaxYear-1","qDefinition":"$(=Max([Calendar Year])-1)","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"cfc9cb2e-aa2b-4a21-aab5-c26ad360cd3e","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vFullYear_LY","qDefinition":"[Calendar Year] =,\n[Calendar Week] =,\n[Calendar Year] = {'$(=$(vMaxYear-1))'},\n[Calendar Week] =,\n[Calendar Month]=,\n[Calendar Date]=","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"549314b2-2cb0-401b-8513-11171d423a3c","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vMaxMonth-2_TY","qDefinition":"[Calendar Year] =,\n[Calendar Week] =,\n[Calendar Date] =,\n[Calendar Month]=,\n[Calendar Month_ID] = {'$(=Max([Calendar Month_ID])-2)'}","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"30099eb4-af08-4ca9-9aaa-704c73ddabb1","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vI","qDefinition":"29","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"c262a94d-6214-4804-89b5-4dc52b00bfa3","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vMTD_LY_Live","qDefinition":"[Calendar Year] =,\n      [Calendar Week] =,\n      [Calendar Date] =,\n      [Calendar Month]=,\n      [Calendar Year] = {'$(=Year(Today())-1)'},\n      [Calendar Month Number] = {'$(=Num(Month(Today())))'},\n      [Calendar Date] = {\"<=$(=Date(Today()-364))\"}","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"59ba5c42-1a8e-45b3-afe4-9e30edf2a936","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vMaxMonth_LY","qDefinition":"[Calendar Year] =,\n[Calendar Week] =,\n[Calendar Month]=,\n[Calendar Year] = {'$(=$(vMaxYear-1))'},\n[Calendar Month Number] = {'$(=$(vMaxMonth))'}","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"26243632-d7aa-4196-a6fd-df1793e8554e","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vMaxMonth+2_TY_Live","qDefinition":"[Calendar Year] =,\n[Calendar Week] =,\n[Calendar Date] =,\n[Calendar Month]=,\n[Calendar Month_ID] = {'$(=Max([Calendar Month_ID])+2)'}","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"0fe55bd2-942f-49c1-b25b-cf18f4f48afa","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vLast3Months_TY_Live","qDefinition":"[Calendar Year] =,\n        [Calendar Week] =,\n        [Calendar Date] =,\n        [Calendar Month]=,\n        [Calendar Date] = {\">=$(=Date(Monthstart(Today()-90))) <=$(=Date(Today()))\"}","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"2c5f11ec-52f6-4bc6-b91d-ee27e23a5167","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vNext3Months_TY_Live","qDefinition":"[Calendar Year] =,\n[Calendar Week] =,\n[Calendar Date] =,\n[Calendar Month]=,\n[Calendar Year-Month]=,\n[Calendar Month_ID] = {\">= $(=Max({$<[Calendar Date] = {'$(=Date(today()))'}>} [Calendar Month_ID])) <= $(=Max({$<[Calendar Date] = {'$(=Date(today()))'}>} [Calendar Month_ID])+2)\"}","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"1f1c5ac8-18a1-4cbb-9fde-2f8ebc77c801","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vMTD_TY_Live","qDefinition":"[Calendar Year] =,\n      [Calendar Week] =,\n      [Calendar Date] =,\n      [Calendar Month]=,\n      [Calendar Year] = {'$(=Year(Today()))'},\n      [Calendar Month Number] = {'$(=Num(Month(Today())))'},\n      [Calendar Date] = {\"<=$(=Date(Today()))\"}","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"36bf6e34-0dee-4d84-85b7-5293eb53a744","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vMaxMonth_TY","qDefinition":"[Calendar Year] =,\n[Calendar Week] =,\n[Calendar Date] =,\n[Calendar Month]=,\n[Calendar Month_ID] = {'$(=Max([Calendar Month_ID]))'}","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"dd7501f3-39b6-4119-9873-7c05e0d40749","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vDataFiles","qDefinition":"QVD Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"956e23b7-5eb6-4d58-953f-9ace0232dd37","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vYTD_TY_Live","qDefinition":"[Calendar Year] =,\n[Calendar Week] =,\n[Calendar Date] =,\n[Calendar Month]=,\n[Calendar Year] = {'$(=Year(Today()))'},\n[Calendar Month Number] = {\"<=$(=Num(Month(Today())))\"},\n[Calendar Date] = {\"<=$(=Date(Today()))\"}","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"f459914c-c787-4eea-a751-866f8ad6082c","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vMonths_LY","qDefinition":"[Calendar Year] =,\n[Calendar Year] = {'$(=$(vMaxYear-1))'}","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"af083f5b-ce1c-4751-ac6e-7599d6218783","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vClearCalendar","qDefinition":"[Calendar Year] =,\n[Calendar Year-Month] =,\n[Calendar Week] =,\n[Calendar Year-Week] =,\n[Calendar Month]=,\n[Calendar Quarter] =,\n[Calendar Date] =","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"409bb2ee-93bc-49eb-b766-be8695b1f565","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vQtyCustsActiv_Stage2Completed _Act_AllTime","qDefinition":"Count({$<[Progression to Stage 2 Flag] = {1}, [Progression Completed to Stage 2 Flag] = {1}, CBIntegrated = {100,200},ActivSystemIsRevokedFlag = {0}>} distinct [Progression Customer ID])","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"7b6ce374-8a92-4c61-a0db-bce56cd000f7","qType":"variable"},"qData":[]}
+{"qName":"vQtyCusts_Contract_Act_AllTime","qDefinition":"Count({$<[Progression to Contract Flag] = {1}>} distinct [Progression Customer ID])\t","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"b2ed9e48-cf1e-4ec2-80a9-4b0868245a01","qType":"variable"},"qData":[]}
+{"qName":"vQtyCusts_Stage1Booked_Act_AllTime","qDefinition":"Count({$<[Progression to Stage 1 Flag] = {1}>} distinct [Progression Customer ID])","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"5921eb15-bcd5-433f-94e6-bef8aca3c402","qType":"variable"},"qData":[]}
+{"qName":"vQtyCustsNotActiv_Stage2Booked_Act_AllTime","qDefinition":"(Count({$<[Progression to Stage 2 Flag] = {1},CBIntegrated = {100,200},ActivSystemIsRevokedFlag = {1}>} distinct [Progression Customer ID])\r\n+\nCount({$<[Progression to Stage 2 Flag] = {1},CBIntegrated -= {100,200}>} distinct [Progression Customer ID]))","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"802e314b-dbac-4367-9c24-40dcfeb309c4","qType":"variable"},"qData":[]}
+{"qName":"vQtyCusts_Stage2NotBooked_Act_AllTime","qDefinition":"Count({$<[Progression to Stage 2 Flag] = {0}>} distinct [Progression Customer ID])","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"a7ab8406-9694-42a6-a3d9-2a0b4e4e7f14","qType":"variable"},"qData":[]}
+{"qName":"vQtyCustsActiv_Stage1Booked_Act_AllTime","qDefinition":"Count({$<[Progression to Stage 1 Flag] = {1},CBIntegrated = {100,200},ActivSystemIsRevokedFlag = {0}>} distinct [Progression Customer ID])","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"ad59c01a-b8ef-4a22-a0a5-9612373e3392","qType":"variable"},"qData":[]}
+{"qName":"vQtyCusts_SurvNotBooked_Act_AllTime","qDefinition":"Count({$<[Progression to Surveillance Flag] = {0}>} distinct [Progression Customer ID])","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"9bafbdf4-2af3-4550-91f4-1ac944f795d0","qType":"variable"},"qData":[]}
+{"qName":"vQtyCustsActiv_Contract_AllTime","qDefinition":"Count({$<[Progression to Contract Flag] = {1},CBIntegrated = {100,200},ActivSystemIsRevokedFlag = {0}>} distinct [Progression Customer ID])","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"3add16d8-60fe-4227-9893-815c228ff77a","qType":"variable"},"qData":[]}
+{"qName":"vQtyCusts_Stage2Booked_Act_AllTime","qDefinition":"Count({$<[Progression to Stage 2 Flag] = {1}>} distinct [Progression Customer ID])","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"4ea9450f-060c-4c7a-93b9-4b9aae67334c","qType":"variable"},"qData":[]}
+{"qName":"vQtyCustsNotActiv_Stage2Completed _Act_AllTime","qDefinition":"(Count({$<[Progression to Stage 2 Flag] = {1}, [Progression Completed to Stage 2 Flag] = {1}, CBIntegrated = {100,200}, ActivSystemIsRevokedFlag = {1}>} distinct [Progression Customer ID])\r\n+\nCount({$<[Progression to Stage 2 Flag] = {1}, [Progression Completed to Stage 2 Flag] = {1}, CBIntegrated -= {100,200}>} distinct [Progression Customer ID]))","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"14f565ae-799e-4592-bb32-d28d6c07aec7","qType":"variable"},"qData":[]}
+{"qName":"vQtyCusts_Stage1NotBooked_Act_AllTime","qDefinition":"Count({$<[Progression to Stage 1 Flag] = {0}>} distinct [Progression Customer ID])","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"6b302847-c120-4743-9c67-e03fe1e1d41e","qType":"variable"},"qData":[]}
+{"qName":"vValueCusts_Contract_Act_AllTime","qDefinition":"sum({$<[Progression to Contract Flag] = {1}>} [UnknownDates_Consolidated Contract Value])","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"34481d93-49c8-447e-a90d-827770a9219f","qType":"variable"},"qData":[]}
+{"qName":"vQtyCustsNotActiv_Contract_AllTime","qDefinition":"(Count({$<[Progression to Contract Flag] = {1},CBIntegrated = {100,200},ActivSystemIsRevokedFlag = {1}>} distinct [Progression Customer ID])\r\n+\nCount({$<[Progression to Contract Flag] = {1},CBIntegrated -= {100,200}>} distinct [Progression Customer ID]))","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"c7ca0ca2-520b-4e1e-87d6-eb27613aaac4","qType":"variable"},"qData":[]}
+{"qName":"vQtyCusts_Stage1Completed_Act_AllTime","qDefinition":"Count({$<[Progression to Stage 1 Flag] = {1}, [Progression Completed to Stage 1 Flag] = {1}>} distinct [Progression Customer ID])","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"0dd8e58d-0b90-4a99-9b64-8af6ab3dfd83","qType":"variable"},"qData":[]}
+{"qName":"vQtyCustsNotActiv_Stage1Completed _Act_AllTime","qDefinition":"(Count({$<[Progression to Stage 1 Flag] = {1}, [Progression Completed to Stage 1 Flag] = {1}, CBIntegrated = {100,200}, ActivSystemIsRevokedFlag = {1}>} distinct [Progression Customer ID])\r\n+\nCount({$<[Progression to Stage 1 Flag] = {1}, [Progression Completed to Stage 1 Flag] = {1}, CBIntegrated -= {100,200}>} distinct [Progression Customer ID]))","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"c3f0e4cc-8f65-4e15-8d24-d02fb3c3223d","qType":"variable"},"qData":[]}
+{"qName":"vQtyCustsActiv_Stage1Completed _Act_AllTime","qDefinition":"Count({$<[Progression to Stage 1 Flag] = {1}, [Progression Completed to Stage 1 Flag] = {1}, CBIntegrated = {100,200},ActivSystemIsRevokedFlag = {0}>} distinct [Progression Customer ID])","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"7ed3524c-df0a-40f7-9da3-e9a03c30adf9","qType":"variable"},"qData":[]}
+{"qName":"vQtyCusts_Stage2Completed_Act_AllTime","qDefinition":"Count({$<[Progression to Stage 2 Flag] = {1}, [Progression Completed to Stage 2 Flag] = {1}>} distinct [Progression Customer ID])","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"7691b11b-aa9e-4e3f-af57-b80a9f1ff7a8","qType":"variable"},"qData":[]}
+{"qName":"vQtyCustsActiv_Stage2Booked_Act_AllTime","qDefinition":"Count({$<[Progression to Stage 2 Flag] = {1},CBIntegrated = {100,200},ActivSystemIsRevokedFlag = {0}>} distinct [Progression Customer ID])","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"7413723a-62e4-47d6-b104-66397a261e31","qType":"variable"},"qData":[]}
+{"qName":"vQtyCustsNotActiv_Stage1Booked_Act_AllTime","qDefinition":"(Count({$<[Progression to Stage 1 Flag] = {1},CBIntegrated = {100,200},ActivSystemIsRevokedFlag = {1}>} distinct [Progression Customer ID])\r\n+\nCount({$<[Progression to Stage 1 Flag] = {1},CBIntegrated -= {100,200}>} distinct [Progression Customer ID]))","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"4e5ec23b-60d0-4155-aa15-f0edf424cdca","qType":"variable"},"qData":[]}
+{"qName":"vQtyCusts_SurvBooked_Act_AllTime","qDefinition":"Count({$<[Progression to Surveillance Flag] = {1}>} distinct [Progression Customer ID])","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"57823161-6c05-4835-ab14-b97035d3f364","qType":"variable"},"qData":[]}
+{"qName":"vContractValue","qDefinition":"sum([tblProposals Contract Value])","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"294bddb6-58ab-48fc-962a-ff2beace594d","qType":"variable"},"qData":[]}
+{"qName":"DailyDash_CoreHubFilter","qDefinition":"if(DataType='UK' and match([Calendar Year],'2024','2025') and match([Customer Delivery Type],\r\n'Advanced',\n'BAB Activ (Greyridge Platform)',\n'BAB Activ (New Platform)',\n'BAB Using Own System',\n'Consultant (Birmingham)',\n'Consultant (Kent)',\n'Consultant (Newcastle)',\n'Leicester UK ISO',\n'Toolkit'),\"Calendar Year-Month\",NULL())","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"6b46f69f-3d4c-4495-af6c-9cdd74879656","qType":"variable"},"qData":[]}
+
+FIELDS
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Field","qCardinal":418,"qTags":["$text","$ascii","$key","$hidden","$system"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Table","qCardinal":6,"qTags":["$text","$ascii","$key","$hidden","$system"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Rows","qCardinal":5,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Fields","qCardinal":6,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$FieldNo","qCardinal":310,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Info","qCardinal":1,"qTags":["$text","$ascii","$hidden","$system"],"qSrcTables":[]}
+{"qName":"Variable","qCardinal":29,"qTags":["$text","$ascii"],"qSrcTables":["Expressions"]}
+{"qName":"Expression","qCardinal":29,"qTags":["$text","$ascii"],"qSrcTables":["Expressions"]}
+{"qName":"Usage","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Expressions"]}
+{"qName":"DataType","qCardinal":4,"qTags":["$text","$ascii"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Customer ID","qCardinal":11716,"qTags":["$text","$ascii"],"qSrcTables":["Client Progression"]}
+{"qName":"Customer_ID","qCardinal":11716,"qTags":["$text","$ascii","$key"],"qSrcTables":["Client Progression","Customers","DeliveryStatusTable"]}
+{"qName":"Progression Contract Date","qCardinal":2329,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Client Progression"]}
+{"qName":"Calendar_Key","qCardinal":9131,"qTags":["$numeric","$integer","$timestamp","$date","$key"],"qSrcTables":["Client Progression","Calendar"]}
+{"qName":"Progression ProposalID","qCardinal":11931,"qTags":["$text","$ascii"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Package","qCardinal":3,"qTags":["$numeric","$integer"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Date Type","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Customer - Date Key","qCardinal":11915,"qTags":["$text","$ascii"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Sales Advisor","qCardinal":123,"qTags":["$text","$ascii"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Proposal Type","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Client Progression"]}
+{"qName":"UnknownDates_Consolidated Contract Value","qCardinal":1459,"qTags":["$numeric"],"qSrcTables":["Client Progression"]}
+{"qName":"UnknownDates_Consolidated Order Cancelled","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Client Progression"]}
+{"qName":"UnknownDates_Consolidated Date","qCardinal":2329,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Stage 1 Date","qCardinal":2405,"qTags":[],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Stage 2 Date","qCardinal":2268,"qTags":[],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Surveillance Date","qCardinal":1248,"qTags":[],"qSrcTables":["Client Progression"]}
+{"qName":"Progression to Contract Flag","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Transfer Customer","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Expiry Date","qCardinal":1970,"qTags":[],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Surveillance Contract Date","qCardinal":1186,"qTags":[],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Client ID","qCardinal":10249,"qTags":["$text","$ascii"],"qSrcTables":["Client Progression"]}
+{"qName":"Proposal Standard Description","qCardinal":66,"qTags":["$text","$ascii"],"qSrcTables":["Client Progression"]}
+{"qName":"Proposal Contracted Stage 1 Days","qCardinal":13,"qTags":["$numeric"],"qSrcTables":["Client Progression"]}
+{"qName":"Proposal Contracted Stage 2 Days","qCardinal":43,"qTags":["$numeric"],"qSrcTables":["Client Progression"]}
+{"qName":"Proposal Contracted Other Days","qCardinal":8,"qTags":["$numeric"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Completed to Stage 1 Flag","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Completed to Stage 2 Flag","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression to Stage 1 Flag","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression to Stage 1","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression to Stage 2 Flag","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression to Stage 2","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression to Surveillance Flag","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression to Surveillance","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression to Achieved Certification Flag","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Future Stage 1 Date","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Future Stage 2 Date","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Future Surveillance Date","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Surveillance Contract Signed Flag","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Surveillance Contract Signed","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Contract to Stage 2 Days","qCardinal":952,"qTags":["$numeric","$integer"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Contract to Stage 1 Days","qCardinal":818,"qTags":["$numeric","$integer"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Stage 2 to Contract Months1","qCardinal":153,"qTags":[],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Stage 1 to Contract Months1","qCardinal":150,"qTags":[],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Client First Visit Date","qCardinal":2925,"qTags":[],"qSrcTables":["Client Progression"]}
+{"qName":"ContractDaysType","qCardinal":4,"qTags":["$text","$ascii"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Contract to Stage 2 Timing Rank","qCardinal":8,"qTags":["$numeric","$integer"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Contract to Stage 2 Timing","qCardinal":7,"qTags":["$text","$ascii"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Contract to Stage 1 Timing Rank","qCardinal":8,"qTags":["$numeric","$integer"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Contract to Stage 1 Timing","qCardinal":8,"qTags":["$text","$ascii"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression New Client Classification","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["Client Progression"]}
+{"qName":"tblProposals Contract Value","qCardinal":1755,"qTags":["$numeric"],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Stage 1 to Contract Months","qCardinal":89,"qTags":[],"qSrcTables":["Client Progression"]}
+{"qName":"Progression Stage 2 to Contract Months","qCardinal":92,"qTags":[],"qSrcTables":["Client Progression"]}
+{"qName":"StatusCode","qCardinal":8,"qTags":["$numeric","$integer"],"qSrcTables":["Client Progression"]}
+{"qName":"Status","qCardinal":8,"qTags":["$text","$ascii"],"qSrcTables":["Client Progression"]}
+{"qName":"CouldBeBooked","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Client Progression"]}
+{"qName":"DaysSinceContractDate","qCardinal":1870,"qTags":["$numeric","$integer"],"qSrcTables":["Client Progression"]}
+{"qName":"MonthsSinceContractDate","qCardinal":1870,"qTags":["$numeric"],"qSrcTables":["Client Progression"]}
+{"qName":"DaysSinceContractDateGrouped1","qCardinal":111,"qTags":["$numeric","$integer"],"qSrcTables":["Client Progression"]}
+{"qName":"DaysSinceContractDateGrouped","qCardinal":13,"qTags":["$numeric","$integer"],"qSrcTables":["Client Progression"]}
+{"qName":"subfield(DaysSinceContractDateGrouped1,' ',1)","qCardinal":111,"qTags":["$numeric","$integer"],"qSrcTables":["Client Progression"]}
+{"qName":"ManuallyRemovedProposals","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Client Progression"]}
+{"qName":"Calendar Date","qCardinal":9131,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Calendar"]}
+{"qName":"Calendar Week Day","qCardinal":7,"qTags":["$numeric","$integer"],"qSrcTables":["Calendar"]}
+{"qName":"Calendar Year","qCardinal":25,"qTags":["$numeric","$integer"],"qSrcTables":["Calendar"]}
+{"qName":"Calendar Month","qCardinal":12,"qTags":["$numeric","$integer"],"qSrcTables":["Calendar"]}
+{"qName":"Calendar Week","qCardinal":53,"qTags":["$numeric","$integer"],"qSrcTables":["Calendar"]}
+{"qName":"Calendar W\/C","qCardinal":1307,"qTags":["$text","$ascii"],"qSrcTables":["Calendar"]}
+{"qName":"Calendar Week_ID","qCardinal":340,"qTags":["$numeric","$integer"],"qSrcTables":["Calendar"]}
+{"qName":"Calendar Month Number","qCardinal":12,"qTags":["$numeric","$integer"],"qSrcTables":["Calendar"]}
+{"qName":"Calendar Month_ID","qCardinal":300,"qTags":["$numeric","$integer"],"qSrcTables":["Calendar"]}
+{"qName":"Calendar Day Number of Month","qCardinal":31,"qTags":["$numeric","$integer"],"qSrcTables":["Calendar"]}
+{"qName":"Calendar Day Number of Year","qCardinal":366,"qTags":["$numeric","$integer"],"qSrcTables":["Calendar"]}
+{"qName":"Calendar Year-Month","qCardinal":301,"qTags":["$text","$ascii"],"qSrcTables":["Calendar"]}
+{"qName":"Calendar Quarter","qCardinal":5,"qTags":["$text","$ascii"],"qSrcTables":["Calendar"]}
+{"qName":"Calendar Quarter_ID","qCardinal":100,"qTags":["$numeric","$integer"],"qSrcTables":["Calendar"]}
+{"qName":"Calendar Quarter_ID_v2","qCardinal":100,"qTags":["$numeric","$integer"],"qSrcTables":["Calendar"]}
+{"qName":"Calendar Year-Quarter","qCardinal":101,"qTags":["$text","$ascii"],"qSrcTables":["Calendar"]}
+{"qName":"Calendar Month Start Date","qCardinal":300,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Calendar"]}
+{"qName":"Calendar Month End Date","qCardinal":300,"qTags":["$numeric","$timestamp"],"qSrcTables":["Calendar"]}
+{"qName":"CompanyPIN","qCardinal":10642,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer Audit Frequency","qCardinal":3,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"Agency","qCardinal":4,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"CustomerType","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"CompanyName","qCardinal":9503,"qTags":["$text"],"qSrcTables":["Customers"]}
+{"qName":"Address1","qCardinal":8674,"qTags":["$text"],"qSrcTables":["Customers"]}
+{"qName":"Address2","qCardinal":4989,"qTags":["$text"],"qSrcTables":["Customers"]}
+{"qName":"Address3","qCardinal":2206,"qTags":["$text"],"qSrcTables":["Customers"]}
+{"qName":"Town","qCardinal":2692,"qTags":["$text"],"qSrcTables":["Customers"]}
+{"qName":"County","qCardinal":854,"qTags":["$text"],"qSrcTables":["Customers"]}
+{"qName":"PostalCode","qCardinal":7467,"qTags":[],"qSrcTables":["Customers"]}
+{"qName":"Country","qCardinal":73,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"RegionID","qCardinal":16,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"LocalKnowledge","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Tel","qCardinal":5979,"qTags":["$text"],"qSrcTables":["Customers"]}
+{"qName":"Ext","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Fax","qCardinal":126,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Email","qCardinal":8828,"qTags":["$text"],"qSrcTables":["Customers"]}
+{"qName":"Web","qCardinal":8124,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Notes","qCardinal":5403,"qTags":["$text"],"qSrcTables":["Customers"]}
+{"qName":"CompanyNumber","qCardinal":5596,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"VATNumber","qCardinal":201,"qTags":["$text"],"qSrcTables":["Customers"]}
+{"qName":"CharityNumber","qCardinal":15,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"MembershipNumber","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"MembershipType","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"Customer No of Employees","qCardinal":503,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"ApplicableEmployees","qCardinal":104,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"NoOfSites","qCardinal":33,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"TotalSites","qCardinal":35,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"Turnover","qCardinal":3,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"ProcStat","qCardinal":163,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"ProcStat_ID","qCardinal":318,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer Proc Status","qCardinal":12,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"InitialCertDate","qCardinal":2185,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"InitialCertDate2019","qCardinal":46,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"InitialCertDate2023","qCardinal":0,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"ExpiryDate","qCardinal":1969,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"PrevExpiryDate","qCardinal":530,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"ExpiryDate2019","qCardinal":45,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"ExpiryDate2023","qCardinal":0,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"CertStartDate","qCardinal":1441,"qTags":["$numeric","$timestamp"],"qSrcTables":["Customers"]}
+{"qName":"NextVisitDate","qCardinal":465,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"Scope","qCardinal":9791,"qTags":["$text"],"qSrcTables":["Customers"]}
+{"qName":"ScopeJustify","qCardinal":1076,"qTags":["$text"],"qSrcTables":["Customers"]}
+{"qName":"LowRisk","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"Risk","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"IndustrySectors","qCardinal":74,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"BusinessSectors","qCardinal":17,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"NACE","qCardinal":4056,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer 1st NACE","qCardinal":518,"qTags":["$numeric"],"qSrcTables":["Customers"]}
+{"qName":"Customer 2nd NACE","qCardinal":410,"qTags":["$numeric"],"qSrcTables":["Customers"]}
+{"qName":"Customer 3rd NACE","qCardinal":236,"qTags":["$numeric"],"qSrcTables":["Customers"]}
+{"qName":"Customer 4th NACE","qCardinal":148,"qTags":["$numeric"],"qSrcTables":["Customers"]}
+{"qName":"Customer 5th NACE","qCardinal":73,"qTags":["$numeric"],"qSrcTables":["Customers"]}
+{"qName":"TechnicalAreas","qCardinal":24,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"HowHeard","qCardinal":61,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"enquirysource","qCardinal":0,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer Account Manager","qCardinal":71,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"ProjectManager_ID","qCardinal":80,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"ProjectManager","qCardinal":73,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"InitialContact","qCardinal":0,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"ReferredBy","qCardinal":166,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"OriginalLinkedStandards","qCardinal":4118,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"LinkedStandards","qCardinal":11253,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"MultiAudit","qCardinal":3956,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"EnquiryOwner_ID","qCardinal":111,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer Enquiry Owner","qCardinal":86,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer Enquiry Owner (Sales Advisor in AC)","qCardinal":86,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"CustomerStandards","qCardinal":89,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"Customer Is PAS Flag","qCardinal":3,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"CorpManagement","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"SameOutputs","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"SampleNo","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"ST2Visits","qCardinal":24,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Cust_AuditLength","qCardinal":0,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"UKASAccredited_CertificationStart","qCardinal":94,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"UKASAccredited_CertificationExpire","qCardinal":143,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"UKASAccredited","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"NonUKASAccredited","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"UKASAccredited_Certificate","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"UKASAccredited_Transfer","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"UKASAccredited_Transfer_Amended","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer Consultant Name","qCardinal":618,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"ConsultantName","qCardinal":24,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Consultant_ID","qCardinal":691,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Sampled","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"Relationships","qCardinal":0,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"EnquiryFrom","qCardinal":6,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Overseas","qCardinal":0,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"LatestPO","qCardinal":348,"qTags":["$text"],"qSrcTables":["Customers"]}
+{"qName":"LatestPODate","qCardinal":363,"qTags":["$numeric","$timestamp"],"qSrcTables":["Customers"]}
+{"qName":"Reference","qCardinal":450,"qTags":["$numeric","$timestamp"],"qSrcTables":["Customers"]}
+{"qName":"CRActivity","qCardinal":8970,"qTags":["$text"],"qSrcTables":["Customers"]}
+{"qName":"CRLegal","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"CRLegalDetails","qCardinal":50,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"CRCompetency","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"CRCompetencyDetails","qCardinal":0,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"CRUpdateDate","qCardinal":10266,"qTags":["$numeric","$timestamp"],"qSrcTables":["Customers"]}
+{"qName":"CRUpdateUser","qCardinal":178,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"CRAllFields","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"CRAllFieldsReason","qCardinal":0,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"CRUnaccredited","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"CRUnaccreditedKnow","qCardinal":580,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"CRVerifiedDate","qCardinal":10221,"qTags":["$numeric","$timestamp"],"qSrcTables":["Customers"]}
+{"qName":"Customer Compliance Verified Date","qCardinal":1858,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"Customer Compliance Verified Time","qCardinal":856,"qTags":["$numeric"],"qSrcTables":["Customers"]}
+{"qName":"CRVerifiedBy","qCardinal":123,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"CRVerifiedReason","qCardinal":9660,"qTags":["$text"],"qSrcTables":["Customers"]}
+{"qName":"CRExclusions","qCardinal":1859,"qTags":["$text"],"qSrcTables":["Customers"]}
+{"qName":"CRDateAgreement","qCardinal":0,"qTags":[],"qSrcTables":["Customers"]}
+{"qName":"CRLogoConfirmed","qCardinal":1766,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"CRUnaccreditedReason","qCardinal":237,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"AuditorDays","qCardinal":48,"qTags":["$numeric"],"qSrcTables":["Customers"]}
+{"qName":"Declined","qCardinal":0,"qTags":["$numeric","$timestamp"],"qSrcTables":["Customers"]}
+{"qName":"UKASRequired","qCardinal":3,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"BigTicketAllocate","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"CROutsourced","qCardinal":1237,"qTags":["$text"],"qSrcTables":["Customers"]}
+{"qName":"CREnvironmental","qCardinal":11,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"CROffSite","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"CRSiteVisit","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"CRAspects","qCardinal":118,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"SMTRefer","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"PDP","qCardinal":39,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"AccreditedCertificate","qCardinal":244,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"AuditorNotes","qCardinal":5359,"qTags":["$text"],"qSrcTables":["Customers"]}
+{"qName":"CRSuggestedDays","qCardinal":17,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"CREnergyConsumption","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"CREnergySources","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"CREnergyUses","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"TransferReason","qCardinal":26,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"TransferComplaints","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"TransferLegal","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"TransferLegalDetails","qCardinal":3,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"TransferReturn","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"Emp1","qCardinal":41,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"Emp2","qCardinal":35,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"Emp3","qCardinal":56,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"Emp4","qCardinal":16,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"Emp5","qCardinal":31,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"Emp6","qCardinal":69,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"Emp7","qCardinal":77,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"Emp8","qCardinal":18,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"Emp9","qCardinal":23,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"Emp10","qCardinal":63,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"TransferSignOff","qCardinal":21,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"TransferNextVisit","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"CRSubmit","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"CRDontSign","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"IntQs1","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"IntQs2","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"IntQs3","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"IntQs4","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"IntQs5","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"IntQs6","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"IntQs7","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"IntQs8","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"ST1RepRec","qCardinal":1,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"ST1RepCon","qCardinal":0,"qTags":[],"qSrcTables":["Customers"]}
+{"qName":"ST1RepClient","qCardinal":35,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"ST1RepBMS","qCardinal":35,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"ST1RepToolkit","qCardinal":82,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"ST1RepHelp","qCardinal":0,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"ST1RepInv","qCardinal":0,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"ST1RepAnyQs","qCardinal":680,"qTags":["$text"],"qSrcTables":["Customers"]}
+{"qName":"ST1RepQs","qCardinal":30,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"TandCVersion","qCardinal":5,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"TandCDate","qCardinal":1262,"qTags":["$numeric","$timestamp"],"qSrcTables":["Customers"]}
+{"qName":"HeatRating","qCardinal":4,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"PackageItems1","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"PackageItems2","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"PackageItems3","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"PackageItems4","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"PackageItems5","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"PackageItems6","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"PackageItems7","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"PackageItems8","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"PackageItems9","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"MigratedPIN","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"ReferredByAuditor","qCardinal":74,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"LastUser","qCardinal":157,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"LastAccessed","qCardinal":4131,"qTags":["$numeric","$timestamp"],"qSrcTables":["Customers"]}
+{"qName":"Emp11","qCardinal":6,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"createcompletionpack","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"MD5Justification","qCardinal":6733,"qTags":["$text"],"qSrcTables":["Customers"]}
+{"qName":"HSMSRisk","qCardinal":931,"qTags":["$text"],"qSrcTables":["Customers"]}
+{"qName":"TransCertNumber","qCardinal":371,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"TransMessageSent","qCardinal":3216,"qTags":["$numeric","$timestamp"],"qSrcTables":["Customers"]}
+{"qName":"ADRedPrep","qCardinal":3,"qTags":["$numeric"],"qSrcTables":["Customers"]}
+{"qName":"ADRedWrite","qCardinal":6,"qTags":["$numeric"],"qSrcTables":["Customers"]}
+{"qName":"ADRedNCs","qCardinal":6,"qTags":["$numeric"],"qSrcTables":["Customers"]}
+{"qName":"AuditorDaysST1","qCardinal":5,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"ABid","qCardinal":7,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"AuditorDaysST2","qCardinal":39,"qTags":["$numeric"],"qSrcTables":["Customers"]}
+{"qName":"AuditorDaysSurv","qCardinal":34,"qTags":["$numeric"],"qSrcTables":["Customers"]}
+{"qName":"ActivSystemRevoke","qCardinal":270,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"ActivSystemIsRevokedFlag","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"ActivSystemRemove","qCardinal":7,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"ActivComplyTrialDate","qCardinal":420,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"ActivComplyDate","qCardinal":114,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"AccountManReqd","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"ActivComplyTrialReq","qCardinal":116,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"ActivComplyTrialName","qCardinal":55,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"ActivComplyTrialJT","qCardinal":15,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"ActivComplyTrialDur","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"LeadStatus","qCardinal":7,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"ReStartStatus","qCardinal":3,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"CorpEnt","qCardinal":4,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"CROffSiteLocations","qCardinal":1428,"qTags":["$text"],"qSrcTables":["Customers"]}
+{"qName":"CRAddedServices","qCardinal":23,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"CRAddedServicesName","qCardinal":3674,"qTags":["$text"],"qSrcTables":["Customers"]}
+{"qName":"CRNotesForCompliance","qCardinal":6274,"qTags":["$text"],"qSrcTables":["Customers"]}
+{"qName":"CorrectSurvDate","qCardinal":570,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"Initial18001","qCardinal":25,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"CBIntegrated","qCardinal":18,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"Rev2017Expiry","qCardinal":0,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"TrustMarkRef","qCardinal":45,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"TrustMarkInitialDate","qCardinal":41,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"itTestFlag","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"BoltOns","qCardinal":151,"qTags":[],"qSrcTables":["Customers"]}
+{"qName":"BoltOnCountry","qCardinal":178,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"BoltOnDesc","qCardinal":151,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"SiteStructure","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"TMSubLicence","qCardinal":40,"qTags":["$numeric","$timestamp"],"qSrcTables":["Customers"]}
+{"qName":"TMLicenceNumber","qCardinal":35,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"PAS2030Revision","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"PAS2030Renewal","qCardinal":60,"qTags":["$numeric","$timestamp"],"qSrcTables":["Customers"]}
+{"qName":"PASeco2017","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"PAS2030ecoghg","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"PASSignedOff","qCardinal":5,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"PASInspecComplete","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"OrbSubLicence","qCardinal":0,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"Client_ID","qCardinal":10249,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"FranchiseID","qCardinal":27,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"Customer Date Activ Revoked - Toolkit Issued","qCardinal":40,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"HubspotContactID","qCardinal":7877,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"vTigerProjectID","qCardinal":23,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"Customer Standard Description (New IT table)","qCardinal":193,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer BoltOn Description (New IT table)","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer Old FranchiseID","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"SourceOfData i.e. tblCustomers","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer HubSpot DealID","qCardinal":1864,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"HasBudget","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"CertificationStructre","qCardinal":3,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer 1st std","qCardinal":64,"qTags":[],"qSrcTables":["Customers"]}
+{"qName":"Customer 2nd std","qCardinal":21,"qTags":[],"qSrcTables":["Customers"]}
+{"qName":"Customer 3rd std","qCardinal":19,"qTags":[],"qSrcTables":["Customers"]}
+{"qName":"Customer 4th std","qCardinal":10,"qTags":[],"qSrcTables":["Customers"]}
+{"qName":"Customer Corrected Surveillance Expiry Date","qCardinal":2073,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Customers"]}
+{"qName":"Customer 1st Linked Customer_ID","qCardinal":3826,"qTags":[],"qSrcTables":["Customers"]}
+{"qName":"Customer 2nd Linked Customer_ID","qCardinal":1678,"qTags":[],"qSrcTables":["Customers"]}
+{"qName":"Customer 3rd Linked Customer_ID","qCardinal":411,"qTags":[],"qSrcTables":["Customers"]}
+{"qName":"Customer Office","qCardinal":25,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer Office Summary","qCardinal":28,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer Delivery Type","qCardinal":33,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer Certifying Body","qCardinal":30,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"FranchiseIDFilter","qCardinal":30,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer Enquiry Source","qCardinal":38,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer NB Sales Referral","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer Segment","qCardinal":3,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer RealFranchiseName","qCardinal":27,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer RealFranchiseNameToKeep","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer Country Description","qCardinal":73,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer Region Description","qCardinal":16,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer Employee Buckets","qCardinal":5,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer Employee Bucket Sort","qCardinal":5,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"Customer 1st Standard","qCardinal":41,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer 2nd Standard","qCardinal":10,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer 3rd Standard","qCardinal":10,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer 4th Standard","qCardinal":5,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer_Linked_Key","qCardinal":7350,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"DataType Sub Region","qCardinal":6,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer 1st Nace EA Code","qCardinal":40,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer 2nd Nace EA Code","qCardinal":33,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer 3rd Nace EA Code","qCardinal":26,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer 4th Nace EA Code","qCardinal":18,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer 5th Nace EA Code","qCardinal":18,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer NACE Codes Concat1","qCardinal":980,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer 1st Std Counter Temp","qCardinal":5,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"Customer 2nd Std Counter Temp","qCardinal":5,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"Customer 3rd Std Counter Temp","qCardinal":5,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"Customer 4th Std Counter Temp","qCardinal":4,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"Customer 1st EA Description","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer 2nd EA Description","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer 3rd EA Description","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer 4th EA Description","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer 5th EA Description","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"PSAStandardFix","qCardinal":88,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"PSABoltOnFix","qCardinal":172,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer Standard Description (Old)","qCardinal":193,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer Has ISO Flag","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"ClientStandardDescription","qCardinal":87,"qTags":[],"qSrcTables":["Customers"]}
+{"qName":"tblCustomers Enquiry Standard","qCardinal":62,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer NACE Codes Concat","qCardinal":980,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"CertificateStatus","qCardinal":4,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer Preferred Accreditation Body","qCardinal":8,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer Preferred Accreditation Body (Short)","qCardinal":8,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Test Database CustomerID","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Test Database FranchiseID","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Test Database CB IntegratedID","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Test Database Record (Delete)","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"FranchiseWhereField","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"deleteTestRecord","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Customers"]}
+{"qName":"Customer Enquiry Standard Bundle","qCardinal":7,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Main Standards lookup","qCardinal":16,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer Standard Description (lookup for bundle)","qCardinal":193,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer Standard Description","qCardinal":185,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"Customer Standard Description (Before PSA)","qCardinal":194,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"IATFFlag","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Customers"]}
+{"qName":"PostCodeNoSpace_Key","qCardinal":7467,"qTags":["$text","$ascii","$key"],"qSrcTables":["Customers","PostCodeLocations"]}
+{"qName":"Postcodes Postcode","qCardinal":5922,"qTags":["$text","$ascii"],"qSrcTables":["PostCodeLocations"]}
+{"qName":"Postcodes Status","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["PostCodeLocations"]}
+{"qName":"Postcodes Usertype","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["PostCodeLocations"]}
+{"qName":"Postcodes Easting","qCardinal":5778,"qTags":[],"qSrcTables":["PostCodeLocations"]}
+{"qName":"Postcodes Northing","qCardinal":5762,"qTags":[],"qSrcTables":["PostCodeLocations"]}
+{"qName":"Postcodes Positional_quality_indicator","qCardinal":4,"qTags":["$numeric","$integer"],"qSrcTables":["PostCodeLocations"]}
+{"qName":"Postcodes Country","qCardinal":5,"qTags":["$text","$ascii"],"qSrcTables":["PostCodeLocations"]}
+{"qName":"Postcodes Latitude","qCardinal":5867,"qTags":[],"qSrcTables":["PostCodeLocations"]}
+{"qName":"Postcodes Longitude","qCardinal":5884,"qTags":[],"qSrcTables":["PostCodeLocations"]}
+{"qName":"Postcodes GeoPoint","qCardinal":5890,"qTags":["$text","$ascii","$geopoint"],"qSrcTables":["PostCodeLocations"]}
+{"qName":"Postcodes Postcode_no_space","qCardinal":5922,"qTags":["$text","$ascii"],"qSrcTables":["PostCodeLocations"]}
+{"qName":"Postcodes Postcode_fixed_width_seven","qCardinal":5922,"qTags":["$text","$ascii"],"qSrcTables":["PostCodeLocations"]}
+{"qName":"Postcodes Postcode_fixed_width_eight","qCardinal":5922,"qTags":["$text","$ascii"],"qSrcTables":["PostCodeLocations"]}
+{"qName":"Postcodes Postcode_area","qCardinal":122,"qTags":["$text","$ascii"],"qSrcTables":["PostCodeLocations"]}
+{"qName":"Postcodes Postcode_district","qCardinal":1800,"qTags":["$text","$ascii"],"qSrcTables":["PostCodeLocations"]}
+{"qName":"Postcodes Postcode_sector","qCardinal":3445,"qTags":["$text","$ascii"],"qSrcTables":["PostCodeLocations"]}
+{"qName":"Postcodes Outcome","qCardinal":1800,"qTags":["$text","$ascii"],"qSrcTables":["PostCodeLocations"]}
+{"qName":"Postcodes Incode","qCardinal":2740,"qTags":["$text","$ascii"],"qSrcTables":["PostCodeLocations"]}
+{"qName":"Postcodes Region","qCardinal":367,"qTags":["$text","$ascii"],"qSrcTables":["PostCodeLocations"]}
+{"qName":"DeliveryStatusTable.ProcStat","qCardinal":163,"qTags":["$numeric","$integer"],"qSrcTables":["DeliveryStatusTable"]}
+{"qName":"DeliveryStatusTable.ProcStat_ID","qCardinal":318,"qTags":["$text","$ascii"],"qSrcTables":["DeliveryStatusTable"]}
+{"qName":"DeliveryStatusTable.Customer Proc Status","qCardinal":12,"qTags":["$text","$ascii"],"qSrcTables":["DeliveryStatusTable"]}
+{"qName":"DeliveryStatusTable.Calendar_Key","qCardinal":2329,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["DeliveryStatusTable"]}
+{"qName":"DeliveryStatusTable.Progression Stage 2 Date","qCardinal":2268,"qTags":[],"qSrcTables":["DeliveryStatusTable"]}
+{"qName":"DeliveryStatusTable.Stage 2 Delivery Status","qCardinal":4,"qTags":["$text","$ascii"],"qSrcTables":["DeliveryStatusTable"]}
