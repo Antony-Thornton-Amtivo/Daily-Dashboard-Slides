@@ -1,0 +1,239 @@
+
+SHEETS
+{"qInfo":{"qId":"APVhP","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"APVhP","approved":false,"published":false,"owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T08:28:54.054Z","modifiedDate":"2025-10-13T08:28:54.054Z","encrypted":true,"privileges":["read","update","delete","publish","change_owner"],"title":"My new sheet (1)","description":""},"qData":[]}
+{"qInfo":{"qId":"JKCAzL","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"JKCAzL","approved":false,"published":false,"owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T08:28:54.114Z","modifiedDate":"2025-10-13T08:28:54.114Z","encrypted":true,"privileges":["read","update","delete","publish","change_owner"],"title":"My new sheet","description":""},"qData":[]}
+{"qInfo":{"qId":"PfBgtZ","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"PfBgtZ","approved":false,"published":true,"publishTime":"2025-05-07T09:15:46.113Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T08:28:54.130Z","modifiedDate":"2025-10-13T08:28:54.130Z","encrypted":true,"privileges":["read","publish","change_owner"],"title":"Customer Check","description":""},"qData":[]}
+{"qInfo":{"qId":"SpPxVqQ","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"SpPxVqQ","approved":true,"published":true,"publishTime":"2025-08-20T14:35:14.582Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T08:28:54.139Z","modifiedDate":"2026-04-02T11:41:56.968Z","encrypted":true,"privileges":["read","change_owner"],"title":"Snapshot Table (All Data)","description":""},"qData":[]}
+{"qInfo":{"qId":"VRKGFb","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"VRKGFb","approved":true,"published":true,"publishTime":"2025-06-10T09:00:48.024Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T08:28:54.148Z","modifiedDate":"2026-04-02T11:41:56.967Z","encrypted":true,"privileges":["read","change_owner"],"title":"New Retention Status","description":""},"qData":[]}
+{"qInfo":{"qId":"pVg","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"pVg","approved":false,"published":false,"owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T08:28:54.157Z","modifiedDate":"2025-10-13T08:28:54.157Z","encrypted":true,"privileges":["read","update","delete","publish","change_owner"],"title":"My new sheet (2)","description":""},"qData":[]}
+
+OBJECTS ON SHEETS
+{"bounds":{"x":0,"y":0,"width":100,"height":100},"col":0,"colspan":24,"name":"EJPwzN","row":0,"rowspan":12,"smartGrid":{"rowIdx":0,"itemIdx":0,"item":{"width":1}},"type":"auto-chart"}
+{"bounds":{"x":0,"y":0,"width":100,"height":100},"col":0,"colspan":24,"name":"ayzJXh","row":0,"rowspan":12,"smartGrid":{"rowIdx":0,"itemIdx":0,"item":{"width":1}},"type":"auto-chart"}
+{"bounds":{"x":0,"y":0,"width":100,"height":100},"col":0,"colspan":24,"name":"dFpGMCG","row":0,"rowspan":12,"smartGrid":{"rowIdx":0,"itemIdx":0,"item":{"width":1}},"type":"auto-chart"}
+{"name":"xCpjy","type":"sn-table","col":0,"row":1,"colspan":24,"rowspan":11,"bounds":{"y":8.333333333333332,"x":0,"width":100,"height":91.66666666666666}}
+{"name":"mQDsfd","type":"table","col":0,"row":1,"colspan":24,"rowspan":11,"bounds":{"y":8.333333333333332,"x":0,"width":100,"height":91.66666666666666}}
+{"name":"uAxxDhB","type":"table","col":0,"row":6,"colspan":12,"rowspan":6,"bounds":{"y":50,"x":0,"width":50,"height":50}}
+{"name":"AThNp","type":"table","col":12,"row":6,"colspan":12,"rowspan":6,"bounds":{"y":50,"x":50,"width":50,"height":50}}
+
+DIMENSIONS
+
+MASTER OBJECTS
+
+VARIABLES
+{"qName":"vExtractQVDLocation","qDefinition":"QVD Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"c5c3045d-3944-443e-8cf7-eece04fc8f29","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vTrans1QVDLocation","qDefinition":"QVD Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"1ec6e4e4-cfc2-4639-a07f-50d440ee3c0e","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vTrans2QVDLocation","qDefinition":"QVD Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"1e017c4c-cb21-4b84-a2c6-2e9ecd82bd3d","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vSourceSpreadsheets","qDefinition":"QVD Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"0cd940a9-0f58-4a4d-8fa4-9e450f5658c3","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vDataFiles","qDefinition":"QVD Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"12768c30-daaf-4564-9a51-b62dfd1e8c0c","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vCurrentMonth","qDefinition":"04","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"5bf77cd3-1fa7-47d3-bfaf-38032c60911e","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vCurrentYear","qDefinition":"2026","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"05d4951f-05db-4bcd-b03b-18192230c3a5","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"TableName","qDefinition":"Transformation2_AmtivoRetentionCube","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"cc3996de-f918-4721-8ef3-8fdc460ba1ac","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"TableColumn","qDefinition":"CustomerRetention2025","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"6758d655-6177-4b85-b53b-6ac064b49089","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vTableName","qDefinition":"Transformation2_Amtivo_RetentionCube_Snapshots","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"2e386723-9c51-4768-a03e-9bd3c671e241","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+
+FIELDS
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Field","qCardinal":198,"qTags":["$ascii","$text","$hidden","$system","$key"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Table","qCardinal":2,"qTags":["$ascii","$text","$hidden","$system","$key"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Rows","qCardinal":2,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Fields","qCardinal":2,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$FieldNo","qCardinal":190,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Info","qCardinal":1,"qTags":["$ascii","$text","$hidden","$system"],"qSrcTables":[]}
+{"qName":"Retention Status Detailed","qCardinal":44,"qTags":["$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"NACE","qCardinal":6838,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Customer Is PAS Flag","qCardinal":4,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"CRUnaccredited","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Customer Audit Frequency","qCardinal":5,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"DataType","qCardinal":3,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"ProposalID","qCardinal":25727,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"CustomerID","qCardinal":28679,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"ClientID","qCardinal":18451,"qTags":["$ascii","$text","$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"CompanyName","qCardinal":18615,"qTags":["$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Address1","qCardinal":17699,"qTags":["$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Address2","qCardinal":6961,"qTags":["$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Address3","qCardinal":3238,"qTags":["$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Town","qCardinal":5247,"qTags":["$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"County","qCardinal":1365,"qTags":["$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"PostalCode","qCardinal":11520,"qTags":["$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Country","qCardinal":80,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"DateRaised","qCardinal":11499,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"TermsAccepted","qCardinal":15275,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"ProcStat","qCardinal":228,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"ProcStatDesc","qCardinal":13,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"WithdrawalReason","qCardinal":42,"qTags":["$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"FirstProjectManagerID","qCardinal":78,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"FirstProjectManagerName","qCardinal":77,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"CurrentProjectManagerID","qCardinal":91,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"CurrentProjectManagerName","qCardinal":86,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"TotalDays","qCardinal":76,"qTags":["$numeric"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"SubTotal","qCardinal":3916,"qTags":["$numeric"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Prop_Type","qCardinal":9,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"FranchiseID","qCardinal":32,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"CustomerStandards","qCardinal":83,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Standard","qCardinal":98,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Sectors","qCardinal":2253,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"NoOfEmployees","qCardinal":736,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"ExpiryDateMonth","qCardinal":12,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"ExpiryDateYear","qCardinal":5,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"CRVerifiedDate","qCardinal":27904,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"CRVerifiedReason","qCardinal":27080,"qTags":["$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"CorrectSurvDate","qCardinal":1219,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Month_CorrectSurvDate","qCardinal":12,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"AuditReportID","qCardinal":15115,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"DateSignedOff","qCardinal":5303,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"DateSubmitted","qCardinal":564,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"FirstVisitID","qCardinal":31719,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"FirstVisitTypeDesc","qCardinal":28,"qTags":["$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"FirstDateBooked","qCardinal":4663,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"LastVisitID","qCardinal":31756,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"LastVisitTypeDesc","qCardinal":28,"qTags":["$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"LastDateBooked","qCardinal":5244,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"FirstVisitDate","qCardinal":877,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"LastVisitDate","qCardinal":822,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"CAID","qCardinal":21367,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"CADate","qCardinal":21415,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"ProposalRetentionYear","qCardinal":4,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"RetentionYear","qCardinal":3,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Retained","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"RetentionStatus","qCardinal":16,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"InitialCertDate","qCardinal":6106,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"CertStartDate","qCardinal":1374,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"ExpiryDate","qCardinal":1092,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"LastRecertDate","qCardinal":1877,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"DataBaseSource","qCardinal":2,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Report","qCardinal":16,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"TestDataFlag","qCardinal":3,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"prior_year_retained_days","qCardinal":77,"qTags":["$numeric"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"prior_year_retained_value","qCardinal":4017,"qTags":["$numeric"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"SiteCount","qCardinal":66,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"CyclePosition_InitialCertDate","qCardinal":4,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"CyclePosition_ExpiryDate","qCardinal":4,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"prior_year_retained_ProposalID","qCardinal":24101,"qTags":["$ascii","$text","$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"auditfreq","qCardinal":4,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Multiplier","qCardinal":5,"qTags":["$numeric"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"RetainedDaysWeighted","qCardinal":62,"qTags":["$numeric"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"RetainedValueWeighted","qCardinal":4401,"qTags":["$numeric"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"RetentionStandardCategoryName","qCardinal":5,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"UniqueID","qCardinal":51861,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"ExpiryDate1","qCardinal":1603,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"FirstVisitDate1","qCardinal":877,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"LastVisitDate1","qCardinal":822,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Correct Surv Date","qCardinal":1219,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Calendar_Key","qCardinal":36,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Expiry Date","qCardinal":1092,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Calendar_Key Year CorrectSurvDate","qCardinal":36,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Calendar_Key Year RetentionYear","qCardinal":36,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"ProposalStandardDescription","qCardinal":122,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"ProposalStandardDescriptionOLD","qCardinal":110,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"ProposalStandardDescriptionOLDTEMP","qCardinal":119,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"CustomerStandardDescription","qCardinal":285,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"CustomerAccountManager","qCardinal":81,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"CustomerOffice","qCardinal":28,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"CustomerOfficeSummary","qCardinal":29,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"CustomerConsultantName","qCardinal":973,"qTags":["$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"T1 Customers Standard Bundle","qCardinal":7,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"tblProposals Contract Value","qCardinal":4570,"qTags":["$numeric"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"LastWithdrawDate1","qCardinal":3153,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"TestRecordsToDelete","qCardinal":2,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"TestFranchiseToDelete","qCardinal":1,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"BookedCheck","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"TotalDaysExtract","qCardinal":76,"qTags":["$numeric"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"prior_year_retained_Proposal_ID","qCardinal":24101,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"WithdrawnLast12Months","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Days from first visit booked to expiry date","qCardinal":4959,"qTags":["$numeric"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Days from first visit to expiry date","qCardinal":813,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Days from Terms Accepted to Expiry Date","qCardinal":16847,"qTags":["$numeric"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"ContractEOMDAYS22DateBooked","qCardinal":1011,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"ContractEOMDAYS22","qCardinal":1079,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"ProposalQuoted","qCardinal":2,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"IATFFlag","qCardinal":1,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Customer Tenure Years","qCardinal":6106,"qTags":["$numeric"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Customer Tenure Months","qCardinal":6106,"qTags":["$numeric"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Customer Tenure Days","qCardinal":6106,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Months from first visit booked to expiry date","qCardinal":38,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Months from first visit to expiry date","qCardinal":38,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Months from Terms Accepted to Expiry Date","qCardinal":54,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"OriginalExpiryDate","qCardinal":1603,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Report (Qlik If Statement)","qCardinal":8,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Customer Standard Bundle","qCardinal":12,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Customer Standard Bundle (Old)","qCardinal":12,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Customer Standard Bundle (Old Old)","qCardinal":15,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Customer Standard Bundle1","qCardinal":12,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Customer Standard Bundle2","qCardinal":5,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Industry (Spreadsheet)","qCardinal":21,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Industry NACE Description","qCardinal":353,"qTags":["$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Industry ISO Scope","qCardinal":38,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"tblProposals Delivery Amount (Total Net Amount)1","qCardinal":3760,"qTags":["$numeric"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"tblProposals Total Days1","qCardinal":90,"qTags":["$numeric"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"NetSuite Invoice ID","qCardinal":10738,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"NetSuite Order Reference","qCardinal":10857,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"NetSuite DD Date","qCardinal":1,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Customer CR Unaccredited","qCardinal":2,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Retention Status Lookup","qCardinal":4,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Customer Employee Buckets","qCardinal":6,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Customer Employee Bucket Sort","qCardinal":6,"qTags":[],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"KeyForCustomerByYear","qCardinal":137821,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"KeyForClientsByYear","qCardinal":87672,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Expiry Month1","qCardinal":12,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Retention Counter","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"ContractLeadKey","qCardinal":63895,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"PriorYearContractLeadKey","qCardinal":64200,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"SnapshotKey","qCardinal":9179274,"qTags":["$ascii","$text","$key"],"qSrcTables":["Transformation2_AmtivoRetentionCube","Transformation2_Amtivo_RetentionCube_Snapshots"]}
+{"qName":"vQtyFullRetained_AllTime_Loaded","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"NetSuite DD Date Found","qCardinal":1,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"PrimaryPin","qCardinal":2,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"PriorYearPrimaryPin","qCardinal":2,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Retention Status Detailed (Old Doesnt work)","qCardinal":44,"qTags":["$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"EOMDAYSv2","qCardinal":1079,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"tblProposals Delivery Amount (Total Net Amount)","qCardinal":3760,"qTags":["$numeric"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"tblProposals Total Days","qCardinal":90,"qTags":["$numeric"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"SubTotal1","qCardinal":3916,"qTags":["$numeric"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"TotalDays1","qCardinal":76,"qTags":["$numeric"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"prior_year_retained_value1","qCardinal":4017,"qTags":["$numeric"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"prior_year_retained_days1","qCardinal":77,"qTags":["$numeric"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"RetainedDaysWeighted1","qCardinal":62,"qTags":["$numeric"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"RetainedValueWeighted1","qCardinal":4401,"qTags":["$numeric"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"BoardPackSummaryControllability","qCardinal":5,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"BoardPackSummaryOrderInTable","qCardinal":5,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"BoardPackSummaryOrderWithinTable","qCardinal":27,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"BoardPackSummaryNotes","qCardinal":4,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"BoardPackSummaryGroupedStatus","qCardinal":3,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"BoardPackSummaryOffice","qCardinal":9,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"BoardPackSummaryEntity","qCardinal":4,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"ReportConsolidated","qCardinal":3,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"BoardPackSummaryControllabilityOrder","qCardinal":3,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Calendar Date","qCardinal":36,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Calendar Week Day","qCardinal":7,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Calendar Year","qCardinal":3,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Calendar Month","qCardinal":12,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Calendar Week","qCardinal":23,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Calendar W\/C","qCardinal":36,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Calendar Week_ID","qCardinal":35,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Calendar Month Number","qCardinal":12,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Calendar Month_ID","qCardinal":36,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Calendar Day Number of Month","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Calendar Day Number of Year","qCardinal":12,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Calendar Year-Month","qCardinal":36,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Calendar Quarter","qCardinal":4,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Calendar Quarter_ID","qCardinal":12,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Calendar Quarter_ID_v2","qCardinal":12,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Calendar Year-Quarter","qCardinal":12,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Calendar Month Start Date","qCardinal":36,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Calendar Month End Date","qCardinal":36,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Months to go","qCardinal":10,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Records by Customer by Year","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Records by Client by Year","qCardinal":12,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"ArrivalCurve","qCardinal":38,"qTags":["$numeric"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Retention Target","qCardinal":30,"qTags":["$numeric"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Retention Target Flag","qCardinal":6,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"End of Month Target","qCardinal":49,"qTags":["$numeric"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"DuplicatedRecordCheck","qCardinal":1,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"Rowno()","qCardinal":137821,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_AmtivoRetentionCube"]}
+{"qName":"FileName","qCardinal":714,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_Amtivo_RetentionCube_Snapshots"]}
+{"qName":"Snap RetentionYear","qCardinal":3,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_Amtivo_RetentionCube_Snapshots"]}
+{"qName":"Snap Customer_ID","qCardinal":29145,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_Amtivo_RetentionCube_Snapshots"]}
+{"qName":"Snap Proposal_ID","qCardinal":27508,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_Amtivo_RetentionCube_Snapshots"]}
+{"qName":"Snap RetentionStatus","qCardinal":17,"qTags":["$ascii","$text"],"qSrcTables":["Transformation2_Amtivo_RetentionCube_Snapshots"]}
+{"qName":"Snap FirstVisitDate","qCardinal":1121,"qTags":[],"qSrcTables":["Transformation2_Amtivo_RetentionCube_Snapshots"]}
+{"qName":"Snap LastVisitDate","qCardinal":903,"qTags":[],"qSrcTables":["Transformation2_Amtivo_RetentionCube_Snapshots"]}
+{"qName":"Snap SnapshotDate","qCardinal":236,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_Amtivo_RetentionCube_Snapshots"]}
