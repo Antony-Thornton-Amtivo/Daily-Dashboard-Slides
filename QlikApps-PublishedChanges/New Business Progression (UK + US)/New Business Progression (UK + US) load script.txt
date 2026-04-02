@@ -1,0 +1,125 @@
+///$tab Main
+SET ThousandSep=',';
+SET DecimalSep='.';
+SET MoneyThousandSep=',';
+SET MoneyDecimalSep='.';
+SET MoneyFormat='£#,##0.00;-£#,##0.00';
+SET TimeFormat='hh:mm:ss';
+SET DateFormat='DD/MM/YYYY';
+SET TimestampFormat='DD/MM/YYYY hh:mm:ss[.fff]';
+SET FirstWeekDay=0;
+SET BrokenWeeks=0;
+SET ReferenceDay=4;
+SET FirstMonthOfYear=1;
+SET CollationLocale='en-GB';
+SET CreateSearchIndexOnReload=1;
+SET MonthNames='Jan;Feb;Mar;Apr;May;Jun;Jul;Aug;Sep;Oct;Nov;Dec';
+SET LongMonthNames='January;February;March;April;May;June;July;August;September;October;November;December';
+SET DayNames='Mon;Tue;Wed;Thu;Fri;Sat;Sun';
+SET LongDayNames='Monday;Tuesday;Wednesday;Thursday;Friday;Saturday;Sunday';
+SET NumericalAbbreviation='3:k;6:M;9:G;12:T;15:P;18:E;21:Z;24:Y;-3:m;-6:μ;-9:n;-12:p;-15:f;-18:a;-21:z;-24:y';
+
+
+
+//Store locations
+
+Let vDataFiles = 'QVD Files:DataFiles';
+
+
+Expressions:
+LOAD
+    Variable,
+    Expression,
+    Usage
+FROM [lib://Development:Office_365_Sharepoint - FP&A Folder/Shared Documents/Private/Spreadsheets for Qlik/Calendar Variables.xlsx]
+(ooxml, embedded labels, table is CalendarVariables);
+
+
+Let vNumberOfRows = NoOfRows('Expressions');
+For vI = 0 to (vNumberOfRows - 1)
+Let vVariable_Name = Peek('Variable',vI,'Expression');
+Let [$(vVariable_Name)] = Peek('Expression',vI,'Expression');
+Next
+
+
+
+///$tab Mapping
+
+///$tab Fact Table
+[Client Progression]:
+
+
+LOAD *
+// ,
+// if([Progression Completed to Stage 1 Flag]=1 and [Progression Completed to Stage 2 Flag]='1','Fully Booked',
+// 'Continue') as Status
+// // if([Progression Completed to Stage 1 Flag]=0 and [Progression Completed to Stage 2 Flag]=0 and SubStringCount([Customer Proc Status],'WITHDRAWN')>=1,'Withdrawn. Neither stage 1 or stage 2 booked',
+// // if([Progression Completed to Stage 1 Flag]=0 and [Progression Completed to Stage 2 Flag]=0,'Neither stage 1 or stage 2 booked',
+// // if([Progression Completed to Stage 1 Flag]=1 and [Progression Completed to Stage 2 Flag]='1','Fully Booked',
+// // 	if([Progression Completed to Stage 1 Flag]=1 and [Progression Completed to Stage 2 Flag]=0,'Stage 1 booked but not stage 2',
+// // 'Continue')))) as Status
+FROM [lib://$(vDataFiles)/Transformation2_ClientProgression.qvd] (qvd)
+where ManuallyRemovedProposals='N'
+;
+
+drop field [Customer Proc Status] from [Client Progression];
+
+
+///$tab Dimensions
+Calendar:
+LOAD * FROM [lib://$(vDataFiles)/Transformation1_Calendar.qvd] (qvd);
+
+
+
+Customers:
+LOAD 
+	*,
+    PostalCode as PostCodeNoSpace_Key
+FROM [lib://$(vDataFiles)/Transformation1_Customers.qvd] (qvd) Where Exists(Customer_ID);
+
+
+
+
+Drop Field DataType From Customers;
+
+
+
+PostCodeLocations:
+LOAD * FROM [lib://$(vDataFiles)/Transformation1_Postcodes.qvd] (qvd) 
+Where Exists(PostCodeNoSpace_Key)
+;
+
+
+
+DeliveryStatusTable_temp:
+Load
+	Customer_ID,
+    ProcStat,
+    ProcStat_ID,
+    [Customer Proc Status]
+    
+Resident Customers;
+
+Left Join(DeliveryStatusTable_temp)
+
+Load
+	Customer_ID,
+    Calendar_Key,
+    [Progression Stage 2 Date]
+Resident [Client Progression];
+
+Qualify *;
+
+Unqualify Customer_ID;
+DeliveryStatusTable:
+Load *,
+	if(Date([Progression Stage 2 Date],'DD/MM/YYYY')<=Date(Calendar_Key,'DD/MM/YYYY')+365,'Delivered On Time',
+		if(Date([Progression Stage 2 Date],'DD/MM/YYYY')>Date(Calendar_Key,'DD/MM/YYYY')+365,'Delivered Late (After Target)',
+    		if(ProcStat=256 or ProcStat=1024 or ProcStat=16777216,'Withdrawn','Backlog'))) as [Stage 2 Delivery Status]
+
+Resident DeliveryStatusTable_temp;
+
+Drop table DeliveryStatusTable_temp;
+
+Unqualify DeliveryStatusTable.Customer_ID;
+
