@@ -1,0 +1,899 @@
+///$tab Locking users by DataType
+// Section Access;
+// LOAD * INLINE [
+// ACCESS,  USER.EMAIL,                     DATATYPE, RETENTIONYEAR
+// ADMIN,   antony.thornton@amtivo.com,     *,	2026
+// USER,    antony.thornton@amtivo.com,     UK,	2026
+// USER,    antony.thornton@amtivo.com,     US,	2026
+// USER,    Qlik.Admin@amtivo.com,          UK,	2026
+// USER,    Sophie.Brown@amtivo.com,        UK,	2026
+// ];
+
+// Section Application;
+///$tab Main
+SET ThousandSep=',';
+SET DecimalSep='.';
+SET MoneyThousandSep=',';
+SET MoneyDecimalSep='.';
+SET MoneyFormat='£ ###0.00;-£ ###0.00';
+SET TimeFormat='h:mm:ss TT';
+SET DateFormat='DD/MM/YYYY';
+SET TimestampFormat='DD/MM/YYYY h:mm:ss[.fff] TT';
+SET FirstWeekDay=6;
+SET BrokenWeeks=1;
+SET ReferenceDay=0;
+SET FirstMonthOfYear=1;
+SET CollationLocale='en-UK';
+SET CreateSearchIndexOnReload=1;
+SET MonthNames='Jan;Feb;Mar;Apr;May;Jun;Jul;Aug;Sep;Oct;Nov;Dec';
+SET LongMonthNames='January;February;March;April;May;June;July;August;September;October;November;December';
+SET DayNames='Mon;Tue;Wed;Thu;Fri;Sat;Sun';
+SET LongDayNames='Monday;Tuesday;Wednesday;Thursday;Friday;Saturday;Sunday';
+SET NumericalAbbreviation='3:k;6:M;9:G;12:T;15:P;18:E;21:Z;24:Y;-3:m;-6:μ;-9:n;-12:p;-15:f;-18:a;-21:z;-24:y';
+
+///$tab Mapping Company Info
+BacklogCustomerLoad:
+LOAD
+    Customer_ID as CompanyNameKey,
+    CompanyName as "Backlog Company Name",
+    "Customer Account Manager" as "Backlog Customer Account Manager",
+    "Customer Office" as "Backlog Customer Office"
+FROM [lib://QVD Files:DataFiles/Transformation1_Customers.qvd]
+(qvd);
+
+
+
+
+///$tab Mapping - Franchises to keep (QAICL AC into IRE instance)
+FranchiseToKeepQAICLintoIRE:
+Mapping 
+LOAD
+    Customer_ID,
+    "Customer RealFranchiseNameToKeep"
+FROM [lib://QVD Files:DataFiles/Transformation1_Customers.qvd]
+(qvd);
+
+
+///$tab Main Table
+Let TableName = 'CustomerRetention2025';
+
+$(TableName)_Temp:
+load *
+where FranchiseToKeepQAICLintoIRE='Keep'
+;
+
+Load
+*
+where Not FranchiseID='10081'
+;
+
+load
+*
+where IATFFlag='Keep'
+
+;
+
+LOAD
+  *,
+  
+  RetentionYear&CustomerID as Key,
+  'Live' as LiveData,
+  
+  // Remove later. See comments about this in T2-AV/SP. 
+  applymap('FranchiseToKeepQAICLintoIRE',CustomerID,'Hide') as FranchiseToKeepQAICLintoIRE,
+  DataType as DATATYPE,
+  RetentionYear as RETENTIONYEAR
+  
+FROM [lib://QVD Files:DataFiles/Transformation2_AmtivoRetentionCube.qvd]
+(qvd)
+where TestDataFlag='Live Azure Data'
+//where left(TestDataFlag,4)='Live'
+// Commented out for now as Moad/IT have added a test customer flag on the Azure end.10:43 07/05/2025 by AT 
+// and TestRecordsToDelete='Keep' 
+// 	And TestFranchiseToDelete='Keep'
+// where Match(DataType,'IRE','UK')
+//where Match(DataType,'UK')
+;
+
+SnapshotTable:
+load
+*
+where SnapshotInLast30Days='Keep'
+;
+
+LOAD
+    "FileName",
+    "Snap RetentionYear",
+    "Snap Customer_ID",
+    "Snap Proposal_ID",
+    "Snap RetentionStatus",
+    "Snap FirstVisitDate",
+    "Snap LastVisitDate",
+    "Snap SnapshotDate",
+    "Snap RetentionYear"&"Snap Customer_ID" as Key,
+	if("Snap SnapshotDate" >= Year(Today()-30)*10000 + Month(Today()-30)*100 + Day(Today()-30), 'Keep', 'Delete')								as SnapshotInLast30Days,
+	if("Snap SnapshotDate" >= Year(Today()-7)*10000 + Month(Today()-7)*100 + Day(Today()-7),'Snapshot in last 7 days','Older than 7 days') 		as SnapshotInLast7Days,
+    if("Snap SnapshotDate" >= Year(Today()-5)*10000 + Month(Today()-5)*100 + Day(Today()-5),'Snapshot in last 5 days','Older than 5 days') 		as SnapshotInLast5Days,
+    if("Snap SnapshotDate" >= Year(Today()-1)*10000 + Month(Today()-1)*100 + Day(Today()-1),'Snapshot in last 1 days','Older than 1 days') 		as SnapshotInLast1Days
+    
+FROM [lib://QVD Files:DataFiles/Transformation2_Amtivo_RetentionCube_Snapshots.qvd]
+(qvd)
+;
+
+
+
+
+
+// NoConcatenate
+
+// $(TableName):
+// load 
+// *,
+// if 
+// resident $(TableName)_Temp;
+///$tab Exit Script
+Exit Script;
+///$tab Backlog New
+/* 
+Now covered by the data coming in as the report status is accurate via proposal ID
+*/
+///$tab Backlog
+// Let vTableName = 'BacklogTable';
+
+// $(vTableName):
+
+// load 
+// 	*, 
+//     if([Backlog Flag]='1', If(DaysinBacklog<=30,'0-30 Days' ,
+//     	if(DaysinBacklog<=60,'30-60 Days',
+// 			if(DaysinBacklog<=90,'60-90 Days',
+// 				if(DaysinBacklog<=120,'90-120 Days','Over 120 Days')))))	      		 				as Intervals1;
+
+// Load
+// 	*,
+// 	Today()-SurvSignDate							 													as DaysinBacklog
+//     ;
+
+// Load
+// 	*,
+//     IF([Backlog Flag]=1 and "UnknownDates_Consolidated Contract Value" >0,'1','<null>')		        	as [True Backlog]
+//     ;
+
+
+// Load
+// 	*,
+// 	If([Visit Booked Date]='<missing>' and [Cust Visit Flag] ='0' ,'1','0') 							as [Backlog Flag]
+//     ;
+
+// Load
+// 	*,
+// 	If([Visit Booked Date]>0,'1','0') 																	as PropVisitFlag
+//     ;
+        
+// // Logic>>> If No Prop ID match search on Customer_ID
+// Load
+// 	*,
+// 	IF([Cust Visit Booked Date]>= SurvSignDate-40,'1','0') 												as [Cust Visit Flag]
+//     ;
+
+// Load
+// 	*,
+// 	If([Visit Booked Date]='<missing>',
+// 	ApplyMap('Map_3',Customer_ID,'<missing>')) 															as [Cust Visit Booked Date];
+// //	ApplyMap('Map_3',Customer_ID,'<missing>')  as [Visit Type Code]
+// 	;
+
+
+// Load
+// 	*
+// Where "UnknownDates_Consolidated Contract Value" >= '0' and "UnknownDates_Consolidated Order Cancelled" = '0';
+
+// Load
+// 	*
+// Where match("UnknownDates_Consolidated Proposal Type" ,'1','4','2','0','262144')
+
+// ;
+
+// LOAD
+// 	ApplyMap('Map_6',"UnknownDates_Consolidated ProposalID",'<missing>')	 							as [Visit Booked Date],
+//     ApplyMap('Visit_Type_Map',"UnknownDates_Consolidated ProposalID",'<missing>')	 					as [Visit Booked ID],
+//     ApplyMap('Map_Stat',"UnknownDates_Consolidated CustomerID",'<missing>')	 							as [Status],
+//     ApplyMap('Map_Comp',"UnknownDates_Consolidated CustomerID",'<missing>')	 							as [CertStandard],
+//     "UnknownDates_Consolidated RowNo",
+//     "UnknownDates_Consolidated CustomerID" 																as Customer_ID,
+//     "UnknownDates_Consolidated CustomerID" 																as CompanyNameKey,
+// 	Date(Date#("UnknownDates_Consolidated Date",'YYYYMMDD'),'DD/MM/YYYY') 								as Calendar_Key,    
+//     Date("UnknownDates_Consolidated Date",'DD/MM/YYYY') 												as SurvSignDate,
+//     "UnknownDates_Consolidated ProposalID",
+//     "UnknownDates_Consolidated ProposalID" as Proposal_ID,
+//     "UnknownDates_Consolidated Package",
+//     "UnknownDates_Consolidated Order Cancelled",
+//     "UnknownDates_Consolidated Date Type",
+//     "UnknownDates_Consolidated Customer - Date Key",
+//     "UnknownDates_Consolidated OrderPricingQueried",
+//     "UnknownDates_Consolidated Cancelled Invoice Flag",
+//     "UnknownDates_Consolidated Advisor",
+//     "UnknownDates_Consolidated Contract Value",
+//     "UnknownDates_Consolidated Proposal Type",
+//     "UnknownDates_Consolidated Stage 1 Days",
+//     "UnknownDates_Consolidated Stage 2 Days",
+//     "UnknownDates_Consolidated Surveillance Days",
+//     "UnknownDates_Consolidated Recertification Days",
+//     "UnknownDates_Consolidated Surveillance Days"+
+//     "UnknownDates_Consolidated Recertification Days" 													as [SurvRecertDays],
+//     "UnknownDates_Consolidated Total Inspections",
+//     "UnknownDates_Consolidated Consultant Lead",
+//     "UnknownDates_Consolidated Enquiry Date",
+//     "UnknownDates_Consolidated Proposal Date",
+//     "UnknownDates_Consolidated E2C Days",
+//     "UnknownDates_Consolidated P2C Days"
+// FROM [lib://QVD Files:DataFiles/Transformation1_UnknownDates_Consolidated.qvd]
+// (qvd)
+// Where "UnknownDates_Consolidated Date Type" ='Surveillance' and  "UnknownDates_Consolidated Date" >='01/01/2023' 
+// ;
+
+// Store $(vTableName) INTO [lib://QVD Files:DataFiles/$(vTableName).qvd](qvd);
+
+
+///$tab Mapping - Backlog
+// ///////////////////////////////////////////////////////////////////Backlog Maps////////////////////////////////////////////////////
+// // Load Extract tblVisits dates
+// LatestVisitDate_Backlog:
+// Load 
+// 	Customer_ID,
+//  	"Date"
+// FROM [lib://QVD Files:DataFiles/Extract_tblVisits.qvd](qvd)
+// Where 
+// "Date">='01/01/2022';
+
+// //Apply map using tblVisits Data
+// Map_3:
+// Mapping 
+// LOAD
+// 	Customer_ID,
+// 	Date("Date",'DD/MM/YYYY') 
+// Resident LatestVisitDate_Backlog
+// Order by "Date" desc;
+
+// // Map t1 - Customers data
+// Map_Stat:
+// Mapping
+// LOAD
+//     Customer_ID,
+//     "Customer Proc Status"
+// FROM [lib://QVD Files:DataFiles/Transformation1_Customers.qvd]
+// (qvd)
+// ;
+
+// //Map t1 customers data
+// Map_Comp:
+// Mapping
+// LOAD
+//     Customer_ID,
+//     "Customer Standard Description"
+// FROM [lib://QVD Files:DataFiles/Transformation1_Customers.qvd]
+// (qvd)
+// ;
+
+
+
+// // Map visit Data
+// Map_6:
+// Mapping 
+// LOAD
+// 	Proposal_ID,
+//    "Date" 																						as [Prop Visit Date]
+    
+// FROM [lib://QVD Files:DataFiles/Extract_tblVisits.qvd]
+// (qvd);
+
+    
+// // Map Visit type
+// Visit_Type_Map:
+// Mapping 
+// LOAD
+// 	Proposal_ID,
+// 	VisitType
+// FROM [lib://QVD Files:DataFiles/Extract_tblVisits.qvd]
+// (qvd);
+
+// Drop Tables 
+// LatestVisitDate_Backlog;
+
+
+///$tab StandardLookup
+// StandardDesc:
+// mapping LOAD
+//     StandardType,
+//     DescriptionShort
+// FROM [lib://Development:Office_365_Sharepoint - FP&A Folder/Shared Documents/Private/Spreadsheets for Qlik/tblStandardTypes - Additions.xlsx]
+// (ooxml, embedded labels, table is tblStandardTypes);
+
+
+///$tab Mapping - tblCustomers
+// Customers:
+// LOAD
+//     Customer_ID,
+// //     CompanyPIN,
+// //     Agency,
+// //     CustomerType,
+// //     CompanyName,
+// //     Address1,
+// //     Address2,
+// //     Address3,
+// //     Town,
+// //     County,
+// //     PostalCode,
+// //     Country,
+// //     RegionID,
+// //     LocalKnowledge,
+// //     Tel,
+// //     Ext,
+// //     Fax,
+// //     Email,
+// //     Web,
+// //     Notes,
+// //     CompanyNumber,
+// //     VATNumber,
+// //     CharityNumber,
+// //     MembershipNumber,
+// //     MembershipType,
+// //     "Customer No of Employees",
+// //     ApplicableEmployees,
+// //     NoOfSites,
+// //     TotalSites,
+// //     Turnover,
+// //     ProcStat,
+// //     ProcStat_ID,
+// //     "Customer Proc Status",
+// //     InitialCertDate,
+// //     InitialCertDate2019,
+// //     InitialCertDate2023,
+// //     ExpiryDate,
+// //     PrevExpiryDate,
+// //     CertStartDate,
+// //     NextVisitDate,
+// //     Scope,
+// //     ScopeJustify,
+// //     LowRisk,
+// //     Risk,
+// //     IndustrySectors,
+// //     BusinessSectors,
+// 	NACE,
+// //     "Customer 1st NACE",
+// //     "Customer 2nd NACE",
+// //     "Customer 3rd NACE",
+// //     "Customer 4th NACE",
+// //     "Customer 5th NACE",
+// //     TechnicalAreas,
+// //     HowHeard,
+// //     enquirysource,
+// 	"Customer Account Manager",
+// //     ProjectManager,
+// //     InitialContact,
+// //     ReferredBy,
+// //     OriginalLinkedStandards,
+// //     LinkedStandards,
+// //     MultiAudit,
+// //     EnquiryOwner_ID,
+// //     "Customer Enquiry Owner",
+// //     CustomerStandards,
+// //     "Customer Is PAS Flag",
+// //     CorpManagement,
+// //     SameOutputs,
+// //     SampleNo,
+// //     ST2Visits,
+// //     Cust_AuditLength,
+// //     UKASAccredited_CertificationStart,
+// //     UKASAccredited_CertificationExpire,
+// //     UKASAccredited,
+// //     NonUKASAccredited,
+// //     UKASAccredited_Certificate,
+// //     UKASAccredited_Transfer,
+// //     UKASAccredited_Transfer_Amended,
+// 	"Customer Consultant Name",
+// //     ConsultantName,
+// //     Consultant_ID,
+// //     Sampled,
+// //     Relationships,
+// //     EnquiryFrom,
+// //     Overseas,
+// //     LatestPO,
+// //     LatestPODate,
+// //     Reference,
+// //     CRActivity,
+// //     CRLegal,
+// //     CRLegalDetails,
+// //     CRCompetency,
+// //     CRCompetencyDetails,
+// //     CRUpdateDate,
+// //     CRUpdateUser,
+// //     CRAllFields,
+// //     CRAllFieldsReason,
+// //     CRUnaccredited,
+// //     CRUnaccreditedKnow,
+// //     CRVerifiedDate,
+// //     "Customer Compliance Verified Date",
+// //     "Customer Compliance Verified Time",
+// //     CRVerifiedBy,
+// //     CRVerifiedReason,
+// //     CRExclusions,
+// //     CRDateAgreement,
+// //     CRLogoConfirmed,
+// //     CRUnaccreditedReason,
+// //     AuditorDays,
+// //     Declined,
+// //     UKASRequired,
+// //     BigTicketAllocate,
+// //     CROutsourced,
+// //     CREnvironmental,
+// //     CROffSite,
+// //     CRSiteVisit,
+// //     CRAspects,
+// //     SMTRefer,
+// //     PDP,
+// //     AccreditedCertificate,
+// //     AuditorNotes,
+// //     CRSuggestedDays,
+// //     CREnergyConsumption,
+// //     CREnergySources,
+// //     CREnergyUses,
+// //     TransferReason,
+// //     TransferComplaints,
+// //     TransferLegal,
+// //     TransferLegalDetails,
+// //     TransferReturn,
+// //     Emp1,
+// //     Emp2,
+// //     Emp3,
+// //     Emp4,
+// //     Emp5,
+// //     Emp6,
+// //     Emp7,
+// //     Emp8,
+// //     Emp9,
+// //     Emp10,
+// //     TransferSignOff,
+// //     TransferNextVisit,
+// //     CRSubmit,
+// //     CRDontSign,
+// //     IntQs1,
+// //     IntQs2,
+// //     IntQs3,
+// //     IntQs4,
+// //     IntQs5,
+// //     IntQs6,
+// //     IntQs7,
+// //     IntQs8,
+// //     ST1RepRec,
+// //     ST1RepCon,
+// //     ST1RepClient,
+// //     ST1RepBMS,
+// //     ST1RepToolkit,
+// //     ST1RepHelp,
+// //     ST1RepInv,
+// //     ST1RepAnyQs,
+// //     ST1RepQs,
+// //     TandCVersion,
+// //     TandCDate,
+// //     HeatRating,
+// //     PackageItems1,
+// //     PackageItems2,
+// //     PackageItems3,
+// //     PackageItems4,
+// //     PackageItems5,
+// //     PackageItems6,
+// //     PackageItems7,
+// //     PackageItems8,
+// //     PackageItems9,
+// //     MigratedPIN,
+// //     ReferredByAuditor,
+// //     LastUser,
+// //     LastAccessed,
+// //     Emp11,
+// //     createcompletionpack,
+// //     MD5Justification,
+// //     HSMSRisk,
+// //     TransCertNumber,
+// //     TransMessageSent,
+// //     ADRedPrep,
+// //     ADRedWrite,
+// //     ADRedNCs,
+// //     AuditorDaysST1,
+// //     AuditorDaysST2,
+// //     AuditorDaysSurv,
+// //     ActivSystemRevoke,
+// //     ActivSystemIsRevokedFlag,
+// //     ActivSystemRemove,
+// //     ActivComplyTrialDate,
+// //     ActivComplyDate,
+// //     AccountManReqd,
+// //     ActivComplyTrialReq,
+// //     ActivComplyTrialName,
+// //     ActivComplyTrialJT,
+// //     ActivComplyTrialDur,
+// //     LeadStatus,
+// //     ReStartStatus,
+// //     CorpEnt,
+// //     CROffSiteLocations,
+// //     CRAddedServices,
+// //     CRAddedServicesName,
+// //     CRNotesForCompliance,
+// //     CorrectSurvDate,
+// //     Initial18001,
+// //     CBIntegrated,
+// //     Rev2017Expiry,
+// //     TrustMarkRef,
+// //     TrustMarkInitialDate,
+// //     BoltOns,
+// //     BoltOnCountry,
+// //     BoltOnDesc,
+// //     TMSubLicence,
+// //     TMLicenceNumber,
+// //     PAS2030Revision,
+// //     PAS2030Renewal,
+// //     PASeco2017,
+// //     PAS2030ecoghg,
+// //     PASSignedOff,
+// //     PASInspecComplete,
+// //     OrbSubLicence,
+// //     Client_ID,
+// //     FranchiseID,
+// //     "Customer Date Activ Revoked - Toolkit Issued",
+// //     DataType,
+// //     HubspotContactID,
+// //     vTigerProjectID,
+// //     "Customer 1st std",
+// //     "Customer 2nd std",
+// //     "Customer 3rd std",
+// //     "Customer 4th std",
+// //     "Customer Corrected Surveillance Expiry Date",
+// //     "Customer 1st Linked Customer_ID",
+// //     "Customer 2nd Linked Customer_ID",
+// //     "Customer 3rd Linked Customer_ID",
+// 	"Customer Office",
+// //     "Customer Office Summary",
+// //     "Customer Delivery Type",
+// //     "Customer Certifying Body",
+// //     FranchiseIDFilter,
+// //     "Customer Enquiry Source",
+// //     "Customer NB Sales Referral",
+// //     "Customer Segment",
+// //     "Customer Country Description",
+// //     "Customer Region Description",
+// //     "Customer Employee Buckets",
+// //     "Customer Employee Bucket Sort",
+// //     "Customer 1st Standard",
+// //     "Customer 2nd Standard",
+// //     "Customer 3rd Standard",
+// //     "Customer 4th Standard",
+// //     Customer_Linked_Key,
+// //     "Customer 1st Nace EA Code",
+// //     "Customer 2nd Nace EA Code",
+// //     "Customer 3rd Nace EA Code",
+// //     "Customer 4th Nace EA Code",
+// //     "Customer 5th Nace EA Code",
+// //     "Customer 1st Std Counter Temp",
+// //     "Customer 2nd Std Counter Temp",
+// //     "Customer 3rd Std Counter Temp",
+// //     "Customer 4th Std Counter Temp",
+// //     "Customer 1st EA Description",
+// //     "Customer 2nd EA Description",
+// //     "Customer 3rd EA Description",
+// //     "Customer 4th EA Description",
+// //     "Customer 5th EA Description",
+// //     "Customer Standard Description (Old)",
+// //     "Customer Has ISO Flag",
+// //     ClientStandardDescription,
+// //     "tblCustomers Enquiry Standard",
+// //     "Test Database CustomerID",
+// //     "Test Database FranchiseID",
+// //     "Test Database CB IntegratedID",
+// //     "Test Database Record (Delete)",
+// //     FranchiseWhereField,
+// //     deleteTestRecord,
+// //     "Customer Enquiry Standard Bundle",
+// //     "Main Standards lookup",
+//     "Customer Standard Description"
+// FROM [lib://QVD Files:DataFiles/Transformation1_Customers.qvd]
+// (qvd);
+
+
+// StandardMapping:
+// Mapping Load
+// Customer_ID,
+// "Customer Standard Description"
+// Resident Customers;
+
+
+// CAMmapping:
+// Mapping Load
+// Customer_ID,
+// "Customer Account Manager"
+// Resident Customers;
+
+
+
+// OfficeMapping:
+// Mapping Load
+// Customer_ID,
+// "Customer Office"
+// Resident Customers;
+
+// NACEmapping:
+// Mapping load
+// Customer_ID,
+// NACE
+// Resident Customers;
+
+// ConsultantMapping:
+// Mapping load
+// Customer_ID,
+// "Customer Consultant Name"
+// Resident Customers;
+
+
+///$tab Mapping - Industry
+// Industry_Temp:
+
+// LOAD
+//     NACECode,
+//     EACode,
+//     NACEDescription,
+//     "ISO Certification Scope",
+//     "Industry Tag",
+//     "OC&C Risk level"
+// FROM [lib://QVD Files:DataFiles/Extract_IndustryMapping.qvd]
+// (qvd);
+
+// Industry_Tag_map:
+// Mapping Load
+// NACECode,
+// "Industry Tag"
+// Resident Industry_Temp;
+
+// Industry_NACEDescription:
+// Mapping load
+// NACECode,
+// NACEDescription
+// Resident Industry_Temp;
+
+// Industry_ISOScope:
+// Mapping load
+// NACECode,
+// "ISO Certification Scope"
+// Resident Industry_Temp;
+///$tab Mapping - Withdrawal
+// // Load withdrawal extract table
+// LatestWithdrawal:
+// Load 
+// 	Customer_ID,
+// 	WithdrawalDate
+// FROM [lib://QVD Files:DataFiles/Extract_tblWithdrawal.qvd]
+// (qvd)
+// Where 
+// 	WithdrawalDate >='01/01/2020';
+
+
+// Map_1:
+// Mapping load
+// Customer_ID,
+// Max(WithdrawalDate) as MaxWithdrawalDate
+// resident LatestWithdrawal
+// Group by Customer_ID;
+
+
+// // //Map withdrawal extract
+// // Map_1:
+// // Mapping
+// // Load
+// // 	Customer_ID,
+// // 	Date((WithdrawalDate),'DD/MM/YYYY') 													as WithdrawalDate
+// // Resident LatestWithdrawal
+// // Order by WithdrawalDate desc;
+
+///$tab Mapping - Retention Status
+                    
+// ReportConsolidated:             
+// Mapping Load * inline [
+// Report, 													ReportConsolidated
+// 'Withdrawn', 												'Withdrawn'
+// 'Retained & Booked - Previously Withdrawn Include',			'Retained & Booked' 
+// 'Retained & NotBooked - Previously Withdrawn Include',		'Retained & NotBooked'
+// 'Retained & Booked',										'Retained & Booked'
+// 'Retained & NotBooked',										'Retained & NotBooked'
+// 'Not Retained/To Be Retained',								'Not Retained/To Be Retained'
+// 'Cancelled',												'Withdrawn'
+
+// ];
+
+
+///$tab Main Table
+// LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+// load *,
+// if(LastWithdrawDate1>=Date(Today()-365,'YYYYMMDD'),1,0) as WithdrawnLast12Months
+// ;
+
+// LOAD 	
+// 	*,
+    
+//     // Changes to source fields    
+//     ClientID&'_IRE' as Client_ID, 
+//     CustomerID&'_IRE' as Customer_ID, 
+//     ProposalID&'_IRE' as Proposal_ID, 
+    
+// 	Date(CADate,'DD/MM/YYYY') as CADate1, 
+//     Date(CRVerifiedDate,'DD/MM/YYYY') as CRVerifiedDate1, 
+//     Date(DateRaised,'DD/MM/YYYY') as DateRaised1, 
+//     Date(DateSignedOff,'DD/MM/YYYY') as DateSignedOff1, 
+//     Date(DateSubmitted,'DD/MM/YYYY') as DateSubmitted1, 
+//     Date(ExpiryDate,'DD/MM/YYYY') as ExpiryDate1, 
+//     Date(FirstDateBooked,'DD/MM/YYYY') as FirstDateBooked1, 
+//     Date(LastDateBooked,'DD/MM/YYYY') as LastDateBooked1, 
+// 	Date(TermsAccepted,'DD/MM/YYYY') as TermsAccepted1, 
+// 	Date(FirstVisitDate,'DD/MM/YYYY') as FirstVisitDate1,
+//     Date(LastVisitDate,'DD/MM/YYYY') as LastVisitDate1,
+//     'IRE' as DataType, 
+    
+//     Date(MakeDate(RetentionYear, Month(ExpiryDate), 28),'YYYYMMDD') as Calendar_Key,
+    
+    
+//     Applymap('StandardMapping',CustomerID&'_IRE','<missing>') as CustomerStandardDescription,
+//     ApplyMap('CAMmapping',CustomerID&'_IRE','<missing>') as CustomerAccountManager,
+//     ApplyMap('OfficeMapping',CustomerID&'_IRE','<missing>') as CustomerOffice,
+//     ApplyMap('NACEmapping',CustomerID&'_IRE','<missing>') as NACE,
+//     ApplyMap('ConsultantMapping',CustomerID&'_IRE','<missing>') as CustomerConsultantName,
+    
+    
+    
+//     Date(ApplyMap('Map_1',CustomerID&'_IRE',null()),'YYYYMMDD') 					as LastWithdrawDate1,
+    
+    
+    
+    
+//     if(IsNull(LastVisitDate) or LastVisitDate='',0,1) as BookedCheck
+    
+    
+//     ;
+
+// [CustomerRetention2025Load]:
+// SELECT 
+// *
+// FROM CertificationEuropeAC.dbo.CustomerRetention2025;
+
+// Drop Fields
+//     // Changes to source fields    
+//     ClientID, 
+//     CustomerID, 
+//     ProposalID, 
+    
+// 	CADate, 
+//     CRVerifiedDate, 
+//     DateRaised,
+//     DateSignedOff, 
+//     DateSubmitted,
+//     ExpiryDate,
+//     FirstDateBooked,
+//     LastDateBooked,
+// 	TermsAccepted,
+//     FirstVisitDate,
+//     LastVisitDate
+//     From CustomerRetention2025Load;
+
+// NoConcatenate
+
+// load *,
+
+// ApplyMap('ReportConsolidated',Report,'Update inline load') as ReportConsolidated
+
+// ;
+
+
+// CustomerRetention2025:
+// Load
+// 	*,
+//     // Changes to source fields    
+//     Client_ID as ClientID, 
+//     Customer_ID as CustomerID, 
+//     Proposal_ID as ProposalID, 
+    
+// 	CADate1 as CADate, 
+//     CRVerifiedDate1 as CRVerifiedDate, 
+//     DateRaised1 as DateRaised, 
+//     DateSignedOff1 as DateSignedOff, 
+//     DateSubmitted1 as DateSubmitted, 
+//     ExpiryDate1 as ExpiryDate, 
+//     FirstDateBooked1 as FirstDateBooked, 
+//     LastDateBooked1 as LastDateBooked, 
+// 	TermsAccepted1 as TermsAccepted,
+//     FirstVisitDate1 as FirstVisitDate,
+//     LastVisitDate1 as LastVisitDate,
+    
+//     if(ProcStatDesc='WITHDRAWN','Withdrawn',
+//         //if(Retained=1 and BookedCheck=1 and WithdrawnLast12Months=1,'Retained & Booked - Previously Withdrawn Include', 
+//           // if(Retained=1 and BookedCheck=0 and WithdrawnLast12Months=1,'Retained & NotBooked - Previously Withdrawn Include', 
+//             if(Retained=1 and BookedCheck=1,'Retained & Booked',
+//                 if(Retained=1 and BookedCheck=0,'Retained & NotBooked',
+//                     If(Retained=0,'Not Retained/To Be Retained','Other'))))
+//                     //)) 
+//                     as [Report],
+
+            
+//     ApplyMap('Industry_Tag_map', subField(NACE, ', ', 1), '<missing>') as [Industry (Spreadsheet)],
+//     ApplyMap('Industry_NACEDescription',subField(NACE, ', ', 1), '<missing>') as [Industry NACE Description],
+//     ApplyMap('Industry_ISOScope',subField(NACE, ', ', 1), '<missing>') as [Industry ISO Scope]
+    
+    
+    
+// resident CustomerRetention2025Load;
+
+
+// Drop Fields
+//     // Changes to source fields    
+//     Client_ID, 
+//     Customer_ID, 
+//     Proposal_ID,  
+// 	CADate1, 
+//     CRVerifiedDate1, 
+//     DateRaised1,
+//     DateSignedOff1, 
+//     DateSubmitted1,
+//     ExpiryDate1,
+//     FirstDateBooked1,
+//     LastDateBooked1,
+// 	TermsAccepted1
+    
+// From CustomerRetention2025;
+
+
+// left join (CustomerRetention2025)
+
+// LOAD
+//    	Calendar_Key as Calendar_Key,
+//     "Calendar Date",
+//     "Calendar Week Day",
+//     "Calendar Year",
+//     "Calendar Month",
+//     "Calendar Week",
+//     "Calendar W/C",
+//     "Calendar Week_ID",
+//     "Calendar Month Number",
+//     "Calendar Month_ID",
+//     "Calendar Day Number of Month",
+//     "Calendar Day Number of Year",
+//     "Calendar Year-Month",
+//     "Calendar Quarter",
+//     "Calendar Quarter_ID",
+//     "Calendar Quarter_ID_v2",
+//     "Calendar Year-Quarter",
+//     "Calendar Month Start Date",
+//     "Calendar Month End Date"
+// FROM [lib://QVD Files:DataFiles/Transformation1_Calendar.qvd]
+// (qvd);
+
+
+
+// left join (CustomerRetention2025)
+
+// load
+// CustomerID,
+// count(CustomerID) as [Records by Customer by Year]
+
+// Resident CustomerRetention2025
+// Group By CustomerID;
+
+
+
+
+///$tab Drop Tables
+// Drop Tables
+// Industry_Temp,
+
+// Customers,
+// CustomerRetention2025Load,
+// LatestWithdrawal,
+
+
+
+// ;
