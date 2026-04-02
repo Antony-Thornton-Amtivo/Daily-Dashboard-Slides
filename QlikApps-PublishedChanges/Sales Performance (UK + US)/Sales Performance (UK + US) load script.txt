@@ -1,0 +1,1093 @@
+///$tab Main
+SET ThousandSep=',';
+SET DecimalSep='.';
+SET MoneyThousandSep=',';
+SET MoneyDecimalSep='.';
+SET MoneyFormat='£#,##0.;-£#,##0.';
+SET TimeFormat='hh:mm:ss';
+SET DateFormat='DD/MM/YYYY';
+SET TimestampFormat='DD/MM/YYYY hh:mm:ss[.fff]';
+SET FirstWeekDay=0;
+SET BrokenWeeks=0;
+SET ReferenceDay=4;
+SET FirstMonthOfYear=1;
+SET CollationLocale='en-GB';
+SET CreateSearchIndexOnReload=1;
+SET MonthNames='Jan;Feb;Mar;Apr;May;Jun;Jul;Aug;Sep;Oct;Nov;Dec';
+SET LongMonthNames='January;February;March;April;May;June;July;August;September;October;November;December';
+SET DayNames='Mon;Tue;Wed;Thu;Fri;Sat;Sun';
+SET LongDayNames='Monday;Tuesday;Wednesday;Thursday;Friday;Saturday;Sunday';
+SET NumericalAbbreviation='3:k;6:M;9:G;12:T;15:P;18:E;21:Z;24:Y;-3:m;-6:μ;-9:n;-12:p;-15:f;-18:a;-21:z;-24:y';
+
+
+// **************************************LIVE STORE LOCATIONS******************************************
+LET vDataFiles = 'QVD Files:DataFiles';
+LET vDataStore = 'QVD Files:DataFiles';
+
+
+// **************************************TEST APP STORE LOCATIONS**************************************
+LET vDataFilesTest = 'QVD Test Files:DataFiles';
+LET vDataStoreTest = 'QVD Test Files:DataFiles';
+
+
+Expressions:
+LOAD
+    Variable,
+    Expression,
+    Usage
+FROM [lib://Development:Office_365_Sharepoint - FP&A Folder/Shared Documents/Private/Spreadsheets for Qlik/Calendar Variables.xlsx]
+(ooxml, embedded labels, table is CalendarVariables);
+
+
+
+Let vNumberOfRows = NoOfRows('Expressions');
+For vI = 0 to (vNumberOfRows - 1)
+Let vVariable_Name = Peek('Variable',vI,'Expression');
+Let [$(vVariable_Name)] = Peek('Expression',vI,'Expression');
+Next
+
+
+///$tab Mapping - PAS MCS days
+/* James would like to take the number of PAS Inspections products. Specifically for PAS MCS.
+
+For example 172022_UK has 3 products. Although these are not DAYS so to speak they need to be treated in the SP front end
+as such. 
+ 
+SERVICES PROVIDED
+Product
+MCS Heat Pumps Design - MCS Heat Pumps Design
+MCS Heat Pumps Installation - MCS Heat Pumps Installation
+MCS Solar PV - MCS Solar PV
+
+*/
+
+Load_Visits2030:
+load
+"Visits2030 Proposal_ID",
+Sum(CountOfProducts) as NumberOfProducts
+group by "Visits2030 Proposal_ID"
+;
+
+load
+"Visits2030 Proposal_ID",
+"Visits2030 BoltOn",
+Count("Visits2030 Proposal_ID") as CountOfProducts
+FROM [lib://$(vDataFiles)/Transformation2_Visits2030.qvd]
+(qvd)
+group by "Visits2030 Proposal_ID","Visits2030 BoltOn",
+// where DataType<>'AGT'
+;
+
+Map_NumberOfMCSProducts:
+mapping load
+"Visits2030 Proposal_ID",
+NumberOfProducts
+resident Load_Visits2030;
+
+
+drop table Load_Visits2030;
+///$tab Mapping - NetSuite
+
+///$tab Mapping
+Curr_Map_US:
+Mapping LOAD
+   // "Fixed Data Date",
+   Date(Floor(Fixed_Calendar_Key),'YYYYMMDD'),
+    GBPtoUSD
+    //"GBP>EUR",
+FROM [lib://Development:DataFiles/Fixed_Currency_Data.qvd]
+(qvd);
+
+Industry_Temp:
+
+LOAD
+    NACECode,
+    EACode,
+    NACEDescription,
+    "ISO Certification Scope",
+    "Industry Tag",
+    "OC&C Risk level"
+FROM [lib://$(vDataFiles)/Extract_IndustryMapping.qvd]
+// FROM [lib://$(vDataFilesTest)/Extract_IndustryMapping.qvd]
+(qvd);
+
+Industry_Tag_map:
+Mapping Load
+NACECode,
+"Industry Tag"
+Resident Industry_Temp;
+
+Industry_NACEDescription:
+Mapping load
+NACECode,
+NACEDescription
+Resident Industry_Temp;
+
+Industry_ISOScope:
+Mapping load
+NACECode,
+"ISO Certification Scope"
+Resident Industry_Temp;
+
+
+// ****************** Previous Day Rate applied mapping
+
+
+PreviousDayRateAppliedLoad:
+Load
+Customer_ID,
+ProposalID,
+Calendar_Key as Contract_Date,
+[Day Rate Applied] as DayRateApplied,
+Customer_ID&Calendar_Key as PreviousDayRateAppliedKey,
+[SP Source Flag]
+FROM [lib://$(vDataFiles)/Transformation2_SalesPerformance.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation2_SalesPerformance.qvd]
+// FROM [lib://$(vDataFiles)/Transformation2_SalesPerformance_Agency.qvd]
+// // FROM [lib://$(vDataFilesTest)/Transformation2_SalesPerformance_Agency.qvd]
+(qvd)
+;
+
+NoConcatenate
+
+PreviousDayRateAppliedOrder:
+Load
+*
+Resident PreviousDayRateAppliedLoad
+Order By Customer_ID, Contract_Date, ProposalID;
+
+NoConcatenate
+
+PreviousDayRateAppliedWhereContract:
+Load 
+*,
+Peek(Customer_ID) as PeekCustomerID,
+if(Peek(Customer_ID)=Customer_ID,peek(DayRateApplied),Null()) as PeekPreviousDayRate,
+Peek(ProposalID) as PeekProposalID,
+if(Peek(ProposalID)=ProposalID,ProposalID,'') as PeekProposalIDIFstatement
+
+Resident PreviousDayRateAppliedOrder
+//Where Contract_Date>0
+Where [SP Source Flag] = 'Contract'
+;
+
+NoConcatenate
+PreviousDayRateAppliedWhereQuote:
+Load 
+*,
+Peek(Customer_ID) as PeekCustomerID,
+if(Peek(Customer_ID)=Customer_ID,peek(DayRateApplied),Null()) as PeekPreviousDayRate,
+Peek(ProposalID) as PeekProposalID,
+if(Peek(ProposalID)=ProposalID,ProposalID,'') as PeekProposalIDIFstatement
+
+Resident PreviousDayRateAppliedOrder
+//Where Contract_Date>0
+Where [SP Source Flag] = 'Quote'
+;
+
+
+
+PreviousDayRateAppliedContract:
+Mapping
+Load
+PreviousDayRateAppliedKey,
+PeekPreviousDayRate
+Resident PreviousDayRateAppliedWhereContract;
+
+
+
+PreviousDayRateAppliedQuote:
+Mapping
+Load
+PreviousDayRateAppliedKey,
+PeekPreviousDayRate
+Resident PreviousDayRateAppliedWhereQuote;
+
+
+
+
+Drop Table 
+Industry_Temp
+,PreviousDayRateAppliedLoad
+,PreviousDayRateAppliedOrder
+,PreviousDayRateAppliedWhereContract
+,PreviousDayRateAppliedWhereQuote
+;
+
+
+
+///$tab Mapping MCS
+MCS_Filter:
+load
+	Customer_ID,
+    Measure,
+    ProposalID,
+    Customer_ID&ProposalID&Measure as Measure_Key,
+    if(left(Measure,3)='MCS','MCS','Other') as MCSFlag,
+    if(isnull(#Inspections),0,#Inspections) as #Inspections,
+    Year(Calendar_Key) as "Converted year"
+
+FROM [lib://$(vDataFiles)/Transformation2_PAS_Proposals.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation2_PAS_Proposals.qvd]
+(qvd)
+;
+
+
+NoConcatenate
+
+MCS_Temp:
+load
+*
+resident MCS_Filter
+where MCSFlag = 'MCS';
+
+MCS_Flag:
+mapping load 
+ProposalID,
+MCSFlag
+resident MCS_Filter;
+
+
+//NoConcatenate
+
+MCS_Count:
+Mapping load
+	Measure_Key,
+    Count(Measure) as #MeasureCount
+Resident MCS_Temp
+Group By Measure_Key;
+
+Inspections_Count:
+mapping load
+Customer_ID&ProposalID as Inspections_Key,
+sum(#Inspections) as #Inspections
+Resident MCS_Filter
+Group By Customer_ID&ProposalID
+;
+
+
+drop table 
+MCS_Temp, 
+MCS_Filter;
+///$tab Additional Mapping
+Converted_Count_Load:
+Load
+Customer_ID,
+"Proposal Contract Is Signed Flag",
+Date(Calendar_Key,'DD/MM/YYYY') as Calendar_Key
+
+
+FROM [lib://$(vDataFiles)/Transformation2_SalesPerformance.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation2_SalesPerformance.qvd]
+// FROM [lib://$(vDataFiles)/Transformation2_SalesPerformance_Agency.qvd]
+// // FROM [lib://$(vDataFilesTest)/Transformation2_SalesPerformance_Agency.qvd]
+(qvd)
+Where "SP CB Integrated" < 1000
+;
+
+Converted_Count_Map:
+Mapping load
+Customer_ID,
+Sum("Proposal Contract Is Signed Flag") as Converted
+Resident Converted_Count_Load
+Group By Customer_ID;
+
+
+
+MaxContract:
+Mapping 
+Load
+Customer_ID as MaxContractKey,
+max(Calendar_Key)
+Resident Converted_Count_Load
+Group by Customer_ID;
+
+
+
+Drop Table Converted_Count_Load;
+///$tab SS classification = Transfer
+Proposal_Type_Transfer:
+LOAD
+    Customer_ID,
+    [Sales Stat Classification]
+    
+FROM [lib://$(vDataFiles)/Transformation2_SalesPerformance.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation2_SalesPerformance.qvd]
+// FROM [lib://$(vDataFiles)/Transformation2_SalesPerformance_Agency.qvd]
+// // FROM [lib://$(vDataFilesTest)/Transformation2_SalesPerformance_Agency.qvd]
+(qvd)
+;
+
+NoConcatenate
+
+Proposal_Type_Transfer_Group:
+Load
+Customer_ID,
+[Sales Stat Classification],
+Count([Sales Stat Classification]) as Count_Type
+Resident Proposal_Type_Transfer
+Group by Customer_ID, [Sales Stat Classification]
+;
+
+NoConcatenate
+
+Proposal_Type_Transfer_Only:
+Load 
+Customer_ID,
+'Transfer' as TransferCustomer
+Resident Proposal_Type_Transfer_Group
+where [Sales Stat Classification] = 'Transfer'
+;
+
+Transfer_Map:
+Mapping Load
+*
+Resident Proposal_Type_Transfer_Only;
+
+
+Drop Table Proposal_Type_Transfer, Proposal_Type_Transfer_Group, Proposal_Type_Transfer_Only;
+
+///$tab First and recent Contract Dates
+// Load your data
+Contract_Date_Load:
+LOAD
+    [Customer_ID],
+    Calendar_Key as ContractDate
+FROM [lib://$(vDataFiles)/Transformation2_SalesPerformance.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation2_SalesPerformance.qvd]
+// FROM [lib://$(vDataFiles)/Transformation2_SalesPerformance_Agency.qvd]
+// // FROM [lib://$(vDataFilesTest)/Transformation2_SalesPerformance_Agency.qvd]
+(qvd);
+
+NoConcatenate
+
+// Create a mapping table with the first and last dates for each customer ID
+Contract_MinMax:
+LOAD
+    [Customer_ID],
+    Min(ContractDate) as FirstContractDate,
+    Max(ContractDate) as LastContractDate
+Resident Contract_Date_Load
+Group By [Customer_ID];
+
+
+
+NoConcatenate
+Contract_Tenure:
+Load 
+*,
+LastContractDate - FirstContractDate as [Tenure (Days between first and recent contract dates)]
+
+Resident Contract_MinMax;
+
+
+drop table Contract_MinMax,Contract_Date_Load;
+
+NoConcatenate
+///$tab Fact Table
+//Let TableColumn = 'Sales Analysis';
+
+[Sales Performance_temp]:
+
+LOAD
+	*,
+    
+    [PAS Inspections] as [Loaded PAS Inspections],
+    
+    'T2 Sales Performance' as [Table Source 1],
+    ApplyMap('Transfer_Map',Customer_ID,'Not A Transfer Customer') as [Transfer Customer],
+    Date("Calendar_Key" -50,'YYYYMMDD')  as "Contract Date Past",
+    ApplyMap('PreviousDayRateAppliedContract',Customer_ID&Calendar_Key,null()) as [Previous Day Rate Applied (Contract)],
+    ApplyMap('PreviousDayRateAppliedQuote',Customer_ID&Calendar_Key,null()) as [Previous Day Rate Applied (Quote)],
+    ApplyMap('MCS_Count',Customer_ID&ProposalID&Measure,0) as #MeasureCount,
+    //Customer_ID&ProposalID&Measure as Measure_Key_Check,
+    //Right("Proposal PAS BoltOnInspections",3) as NumberofInspections
+    ApplyMap('Inspections_Count',Customer_ID&ProposalID,0) as #Inspections,
+    ApplyMap('Converted_Count_Map',Customer_ID,0) as "Customer has Converted Counter",
+    if(DataType='US','https://connect.us.amtivo.com/company_overview.asp?customerID='&left(Customer_ID,6),
+    	If(DataType='IRE','https://connect2.amtivo.com/company_overview.asp?customerID='&left(Customer_ID,6),'https://crm.britishassessmentbureau.org/company_overview.asp?customerID='&left(Customer_ID,6)))
+    as [CRM Customer Link],
+    
+    if(ApplyMap('MaxContract',Customer_ID,0)="Calendar_Key",1,0) as [Max Contract Date Flag],
+    
+    ApplyMap('MCS_Flag',ProposalID,'Other') as MCSFlag
+    //ApplyMap('MaxContract',Ca,NULL()) as [Max Contract Date Flag]
+ 
+
+//     "SP Actual Flag",
+//     "SP Source Flag",
+//     "SP Company Flag",
+//     Customer_ID,
+//     Calendar_Key,
+//     "Enquiry Time",
+//     "Enquiry Quote Date",
+//     "Contract Date",
+//     "Enquiry Enquiry to Quote Days",
+//     "Enquiry Is Quoted Flag",
+//     "Enquiry Quote to Contract Days",
+//     "Enquiry Is Contracted Flag",
+//     "Enquiry Enquiry to Contract Days",
+//     "BAB Advisor",
+//     "Sales Stat Classification",
+//     ProposalID,
+//     "Contract Amount",
+//     "Standard Description",
+//     Classification,
+//     "Proposal Type Summary",
+//     "Proposal Contract Is Signed Flag",
+//     "Proposal # Days to Sign Contract",
+//     FinanceID,
+//     "Finance Invoice Number"
+// FROM [lib://$(vDataFiles)/Transformation2_SalesPerformance.qvd]
+FROM [lib://$(vDataFilesTest)/Transformation2_SalesPerformance.qvd]
+// FROM [lib://$(vDataFiles)/Transformation2_SalesPerformance_Agency.qvd]
+// // FROM [lib://$(vDataFilesTest)/Transformation2_SalesPerformance_Agency.qvd]
+(qvd)
+Where "SP CB Integrated" < 1000
+;
+
+// Removed in T2 instead.
+// drop field [DataType Sub Region] from [Sales Performance_temp];
+
+NoConcatenate
+
+[Sales Performance_temp1]:
+Load *
+Resident [Sales Performance_temp]
+where FranchiseWhereField = 0
+;
+
+Drop Table [Sales Performance_temp];
+
+
+// Concatenate([Sales Performance])
+
+// LOAD
+//     Source 						as "SP Source Flag",
+//     ActualFlag 					as "SP Actual Flag",
+//     CompanyFlag 				as "SP Company Flag",
+//     "Google Source Type",
+// //     "Google Date",
+//     Calendar_Key,
+//     "Google Channel Grouping",
+//     "Google Users",
+//     "Google New Users",
+//     "Google Sessions",
+//     "Google Bounces",
+//     "Google Session Duration",
+//     "Google Avg Session Duration",
+//     "Google Transactions",
+//     "Google Campaign",
+//     "Google Impressions",
+//     "Google Clicks",
+//     "Google Costs",
+//     "Google Conversions (All)"
+// FROM [lib://$(vDataFiles)/Transformation1_GoogleConsolidated.qvd]
+// (qvd);
+
+
+left join ([Sales Performance_temp1])
+
+Proposal_Discount:
+LOAD
+
+    DiscountFee,
+    DiscountNEW,
+    DiscountSURV,
+    PreDiscount,
+    ActivDiscount,
+    //Customer_ID,
+    Proposal_ID as ProposalID,
+    If(DataType='UK',DiscountFee,
+    	If(DataType='US',DiscountFee/ApplyMap('Curr_Map_US',DateRaised))) as DiscountFee_£,
+    
+    If(DataType='US',DiscountFee,
+     If(DataType='UK',ApplyMap('Curr_Map_US',DateRaised)*DiscountFee)) as DiscountFee_$,
+     
+    If(DiscountFee=0,'No Discount Applied','Discount Applied') as [Discount Applied Check]
+     
+FROM [lib://$(vDataFiles)/Extract_tblProposals.qvd]
+// FROM [lib://$(vDataFilesTest)/Extract_tblProposals.qvd]
+(qvd);
+
+
+[Sales Performance_Temp2]:
+Load
+*,
+RowNo() as RowNumber,
+    if("Classification" = 'GAP' and "Surveillance Days">0,0,"Surveillance Days") as "Surveillance Days1"
+    
+Resident [Sales Performance_temp1];
+
+Drop Table [Sales Performance_temp1];
+
+drop field "Surveillance Days", [PAS Inspections];
+
+
+[Sales Performance]:
+Load *,
+	if(MCSFlag='MCS',
+    // See mapping tab for details.
+    applymap('Map_NumberOfMCSProducts',ProposalID,0),
+    // [#Inspections]+#MeasureCount,
+    [Loaded PAS Inspections]) as [PAS Inspections],
+	"Surveillance Days1" as "Surveillance Days",
+    if("Customer has Converted Counter"=0,'Customer has not converted in Calendar Year '&Date(Calendar_Key,'YY'),'Customer has converted in Calendar Year '&Date(Calendar_Key,'YY')) as [Converted Flag],
+    /*[#Inspections]+*/#MeasureCount as SumInspectionsMeasure,
+    [#Inspections] as MCSInspectionsField,
+    
+    applymap('Map_NumberOfMCSProducts',ProposalID,0) as NumberOfPASMCSDays
+    
+
+Resident [Sales Performance_Temp2]
+// See Application support ticket 209482. In short IT appear to have created a LOAD of duplicates
+where [Duplicate Contract Check]='Ok'
+;
+
+Drop Table [Sales Performance_Temp2];
+
+
+
+
+
+
+///$tab Dimension Tables
+Customers_temp:
+
+LOAD 
+*,
+	//Adding 1 to the subfield below takes only the first instance. 
+    //The subfield below pulls ALL of the nace codes in a string out and does a lookup.
+    ApplyMap('Industry_Tag_map', subField(NACE, ', ', 1), '<missing>') as [Industry (Spreadsheet)],
+    ApplyMap('Industry_Tag_map', subField(NACE, ', '), '<missing>') as [Industry ALL NACE (Spreadsheet)],
+    ApplyMap('Industry_NACEDescription',subField(NACE, ', ', 1), '<missing>') as [Industry NACE Description],
+    ApplyMap('Industry_ISOScope',subField(NACE, ', ', 1), '<missing>') as [Industry ISO Scope],
+    SubField(NACE,',') as [NACESubNaces (Uses Subfield)],
+ 
+'Customers Table' as [Table Source]
+//,
+//If(FranchiseIDFilter ='Test Record (Delete)',1,0) as FranchiseWhereField // 1 = delete 2 = Keep
+FROM [lib://$(vDataFiles)/Transformation1_Customers.qvd] (qvd) 
+// FROM [lib://$(vDataFilesTest)/Transformation1_Customers.qvd] (qvd) 
+Where Exists(Customer_ID)
+;
+
+NoConcatenate
+
+Customers_temp1:
+Load *
+Resident Customers_temp
+where FranchiseWhereField = 0
+;
+
+NoConcatenate
+
+Customers:
+load *,
+Customer_ID as Customer_Key
+resident Customers_temp1
+//where CeTestData = 0
+;
+
+
+Drop Field DataType, FranchiseWhereField,FranchiseID,FranchiseIDFilter,IATFFlag
+//CeTestData 
+From Customers;
+
+Drop Table Customers_temp, Customers_temp1;
+
+//Left Join (Customers)
+
+//let vTableName = 'Contacts_Table';
+
+// //$(vTableName):
+// LOAD
+//     ContactID,
+//     CustomerID,
+//     Title,
+//     FirstName,
+//     LastName,
+//     JobTitle,
+//     Tel as [Contact Tel],
+//     //Fax,
+//     Mobile,
+//     Email as [Contact Email],
+//     Notes as [Contact Notes],
+//     ContactType,
+//     FinanceContact,
+//     ConsultantContact,
+//     SCC,
+//     "Password",
+//     LastLoggedIn,
+//     OptIn,
+//     pwdencrypt,
+//     vTigerID,
+//     IWLicenseHolder,
+//     GreenDealContact,
+//     //DataType,
+//     Contact_ID,
+//     Customer_ID
+// FROM [lib://$(vDataFiles)/Extract_tblContacts.qvd]
+// FROM [lib://$(vDataFilesTest)/Extract_tblContacts.qvd]
+// (qvd);
+
+
+
+
+
+Calendar:
+
+LOAD
+    '1' as CalendarFlag,
+    Calendar_Key,
+    //Calendar_Key as Hold_Calendar_Key,
+    "Calendar Date",
+    "Calendar Year",
+    "Calendar Month",
+    "Calendar Week",
+    "Calendar W/C",
+    "Calendar Week_ID",
+    "Calendar Month Number",
+    "Calendar Month_ID",
+    "Calendar Day Number of Month",
+    "Calendar Day Number of Year",
+    "Calendar Year-Month",
+    "Calendar Quarter",
+    "Calendar Quarter_ID",
+    "Calendar Year-Quarter",
+    "Calendar Month Start Date",
+    "Calendar Month End Date",
+    If(
+    Year(Date(Calendar_Key,'DD/MM/YYYY')) = Year(today())
+    AND Num(Month(Date(Calendar_Key,'DD/MM/YYYY'))) >= Num(Month(today())) - 2
+    AND Num(Month(Date(Calendar_Key,'DD/MM/YYYY'))) <= Num(Month(today())) - 1,
+    'Last 2 Months', 'Older'
+)as [Last 2 Months Check]
+    
+FROM [lib://$(vDataFiles)/Transformation1_Calendar.qvd]
+(qvd);
+
+Concatenate(Calendar)
+LOAD
+    '2' 					as CalendarFlag,
+    Calendar_Key,
+    //Calendar_Key as Hold_Calendar_Key,
+    Calendar_Key 			as "Calendar Date",    
+    "R12m Quarter" 			as "Calendar Quarter",
+    "R12m Year" 			as "Calendar Year",
+    "R12m Week" 			as "Calendar Week",
+    "R12m Month" 			as "Calendar Month",
+    "R12m Year-Month"		as "Calendar Year-Month",
+    "R12m Month Id" 		as "Calendar Month_ID",
+    "R12m Week Id"			as "Calendar Week_ID",
+    "R12m Quarter Id" 		as "Calendar Quarter_ID"
+FROM [lib://$(vDataFiles)/Transformation1_Calendar_Rolling12Months.qvd]
+(qvd);
+
+
+
+
+///$tab tblContacts
+let vTableName = 'Contacts_Table';
+
+$(vTableName):
+LOAD
+    ContactID,
+    CustomerID,
+    Title,
+    FirstName,
+    LastName,
+    JobTitle,
+    Tel as [Contact Tel],
+    //Fax,
+    Mobile,
+    Email as [Contact Email],
+    Notes as [Contact Notes],
+    ContactType,
+    FinanceContact,
+    ConsultantContact,
+    SCC,
+    "Password",
+    LastLoggedIn,
+    OptIn,
+    pwdencrypt,
+    vTigerID,
+    IWLicenseHolder,
+    GreenDealContact,
+    //DataType,
+    Contact_ID,
+    Customer_ID
+FROM [lib://$(vDataFiles)/Extract_tblContacts.qvd]
+// FROM [lib://$(vDataFilesTest)/Extract_tblContacts.qvd]
+(qvd);
+
+/* ************************************
+
+LEFT JOIN THIS ONTO THE CUSTOMERS TABLE?
+
+   ************************************ */
+///$tab ***** Exit Script *****
+Exit Script;
+///$tab tblNotes
+let vTableName = 'Notes_Table';
+
+$(vTableName):
+LOAD
+    ID,
+    created,
+    createdby,
+    //Title,
+    cnote,
+    OldValue,
+    NewValue,
+    Notecategory,
+    NoteParent,
+    IsParent,
+    CommuniqueID,
+    NotePublic,
+    TicketCategory,
+    AuditReportID,
+    NoteRejReason,
+    NoteRejClause,
+    //DataType,
+    Customer_ID
+FROM [lib://$(vDataFiles)/Extract_tblNotes.qvd]
+// FROM [lib://$(vDataFilesTest)/Extract_tblNotes.qvd]
+(qvd);
+
+
+///$tab Withdrawal Reason Mapping
+map1:
+mapping Load
+    WithdrawalReason_ID,
+    WithdrawalReason 
+  
+FROM [lib://$(vDataFiles)/Extract_tblWithdrawalReason.qvd]
+// FROM [lib://$(vDataFilesTest)/Extract_tblWithdrawalReason.qvd]
+(qvd);
+
+map2:
+mapping LOAD
+    with_ID,
+    withDesc
+    
+FROM [lib://$(vDataFiles)/Extract_tblWithdrawalReason2.qvd]
+// FROM [lib://$(vDataFilesTest)/Extract_tblWithdrawalReason2.qvd]
+(qvd);
+
+LatestVisitDate:
+Load 
+	Customer_ID,
+ 	"Date" 
+    
+FROM [lib://$(vDataFiles)/Extract_tblVisits.qvd]
+// FROM [lib://$(vDataFilesTest)/Extract_tblVisits.qvd]
+(qvd)
+
+;
+
+map3:
+mapping LOAD
+    Customer_ID,
+    Date("Date",'DD/MM/YYYY')
+    Resident LatestVisitDate
+ Order by "Date" desc;
+ 
+ Drop table LatestVisitDate;
+
+
+map4:
+mapping Load 
+
+    Customer_ID,
+    Date("ExpiryDate",'DD/MM/YYYY')
+    
+FROM [lib://$(vDataFiles)/Transformation1_Customers.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_Customers.qvd]
+(qvd);
+
+map5:
+mapping Load
+
+    "UnknownDates_Consolidated CustomerID",
+    Date("UnknownDates_Consolidated Date",'DD/MM/YYYY')
+    
+FROM [lib://$(vDataFiles)/Transformation1_UnknownDates_Consolidated.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_UnknownDates_Consolidated.qvd]
+(qvd);
+
+map6:
+mapping Load 
+
+    Customer_ID,
+    CompanyName
+    
+FROM [lib://$(vDataFiles)/Transformation1_Customers.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_Customers.qvd]
+(qvd);
+
+map7:
+mapping Load 
+
+    Customer_ID,
+    "Customer Proc Status"
+    
+FROM [lib://$(vDataFiles)/Transformation1_Customers.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_Customers.qvd]
+
+
+(qvd)
+//Where Match("Customer Proc Status",'WITHDRAWN','WITHDRAWN - New Business','Withdrawal Pending')
+;
+
+map8:
+mapping Load 
+
+    "UnknownDates_Consolidated CustomerID",
+    "UnknownDates_Consolidated Advisor"
+FROM [lib://$(vDataFiles)/Transformation1_UnknownDates_Consolidated.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_UnknownDates_Consolidated.qvd]
+(qvd);
+
+map10:
+mapping LOAD
+"Proposal Customer ID",
+    "Proposal BAB Contact"
+    
+FROM [lib://$(vDataFiles)/Transformation1_Proposals.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_Proposals.qvd]
+(qvd);
+
+
+
+
+map9:
+mapping Load
+
+	
+    "Proposal Customer ID",
+    "Proposal Type"
+    
+        
+FROM [lib://$(vDataFiles)/Transformation1_Proposals.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_Proposals.qvd]
+(qvd);
+
+///$tab Withdrawal
+WithdrawalReason_table:
+
+Load*,
+If(VisitDate = 'No visit' and ContractDate = 'No Contract Signed' and NOExpiryDateFlag = 'No Expiry','Yes','No') as NewBizQuoteClient
+;
+
+
+Load*,
+If(FinalWithVersion ='2',ApplyMap('map2', WithdrawalReason_ID,'<missing>'),If(FinalWithVersion='0',ApplyMap('map1',(WithdrawalReason_ID),'<missing>'))) as [Withdrawal Reason]
+;
+
+Load*,
+If(IsNull([Withdrawal ExpiryDate]),'No Expiry') as NOExpiryDateFlag
+;
+
+Load*,
+If(MATCH([Proc Stat],'WITHDRAWN','WITHDRAWN - New Business','Withdrawal Pending'),'1','0') AS [Current Status]
+;
+
+LOAD
+
+	1 as WithdrawalCount,	
+    Withdrawal_ID,
+    Customer_ID,
+    ApplyMap('map3',Customer_ID,'No visit') as VisitDate,
+    ApplyMap('map4',Customer_ID,'No Expiry') as [Withdrawal ExpiryDate],
+    ApplyMap('map5',Customer_ID,'No Contract Signed') as ContractDate,
+    ApplyMap('map6',Customer_ID,'<missing>') as [Company Name],
+    ApplyMap('map7',Customer_ID,'<missing>') as [Proc Stat],
+    ApplyMap('map8',Customer_ID,'<missing>') as [Sales Advisor],
+    ApplyMap('map9',Customer_ID,'<missing>') as [Proposal Type],
+    ApplyMap('map10',Customer_ID,'<missing>') as [Proposal Advisor],
+    Date(Floor(WithdrawalDate),'DD/MM/YYYY') as [Withdrawal_Calendar_Key (WithdrawalDate)],
+    Date(Floor(WithdrawalDate),'DD/MM/YYYY') as [WithdrawalDate],
+    Year(WithdrawalDate) as WithdrawalYear,
+    Month(WithdrawalDate) as WithdrawalMonth,
+    WithdrawalReason_ID,
+    WithVersion,
+   iF(IsNull(WithVersion),0,WithVersion) as FinalWithVersion
+    
+FROM [lib://$(vDataFiles)/Extract_tblWithdrawal.qvd]
+// FROM [lib://$(vDataFilesTest)/Extract_tblWithdrawal.qvd]
+(qvd)
+;
+
+WithdrawalReason_Final_Table:
+NoConcatenate
+Load
+*
+Resident WithdrawalReason_table
+Where [Current Status] ='1';
+Drop Table WithdrawalReason_table;
+
+//drop field ExpiryDate from Final_Table;
+
+// Exit Script;
+///$tab tblHold
+tblHoldandtblReason:
+LOAD
+    DataType as [tblHoldandtblReason],
+    HoldID,
+    CustomerID as Customer_ID,
+    HoldDate,
+    HoldReasonID,
+    holdJustification
+FROM [lib://$(vDataFiles)/Extract_tblHold.qvd]
+// FROM [lib://$(vDataFilesTest)/Extract_tblHold.qvd]
+(qvd);
+
+
+left join (tblHoldandtblReason)
+
+LOAD
+    HoldReasonID,
+    HoldReason,
+    HoldPreQuote,
+    HoldPostQuote,
+    HoldRemove
+FROM [lib://$(vDataFiles)/Extract_tblHoldReason.qvd]
+// FROM [lib://$(vDataFilesTest)/Extract_tblHoldReason.qvd]
+(qvd);
+
+
+
+///$tab Auditor Visits
+AuditorVisits:
+LOAD
+    //DataType,
+    "Actual Flag",
+    Source,
+    "Visits Audit Day Counter",
+    VisitsID,
+    Customer_ID as "Auditor Visits App Customer_ID",
+    "Visits RegionID",
+    Calendar_Key,
+    "Actual Visit Date",
+    "Visits Day Is In Future",
+    AuditorID,
+    VisitTypeID,
+    "Visits SiteVisit_ID",
+    "Visits Address_ID",
+    "Visits Visit Date Booked",
+    "Visits Visit Reason",
+    "Visits Visit Confirmed",
+    "Visits Auditor Day Counter",
+    "Visits # Days Booked Before Visit",
+    "Visits # Days Booked Before EoM",
+    "Visits Arrival Include Flag",
+    "Is Amended Date",
+    "Visits BABCOMAuditor",
+    "Visits Proposal_ID",
+    "Visits Proposal Net Amount",
+    "Visits Proposal Days",
+    "Visits Proposal Day Rate",
+    "Visits Proposal Day Revenue",
+    "Visits Invoice Paid Date",
+    "Visits Invoice Raised Date",
+    "Visits Invoice Cancelled",
+    "Visits Invoice Number",
+    "Visits New Business Contract Date",
+    "Visits New Business Contract Flag",
+    "Visits Days from Visit to Contract",
+    "Visits Original Enquiry Date",
+    "Visits Days from Visit to Enquiry",
+    "Visits Original Enquiry Date valid",
+    "Visits Post Code",
+    "Days between raised and visit booked",
+    ProposalID_Master_Key,
+    "Contract Date" as "Auditor Visits App Contract Date",
+    "Contract Type",
+    "Contract Sales Stat Classification",
+    "Auditor Category",
+    Calendar_Key as [Visit Date]
+    //,
+    //ApplyMap('Proposal_Discount',[Visits Proposal_ID],'<missing>') as "Proposal Discount Amount (SP load)"
+FROM [lib://$(vDataFiles)/AuditorVisitsApp_Auditor_Visits_Table.qvd]
+// FROM [lib://$(vDataFilesTest)/AuditorVisitsApp_Auditor_Visits_Table.qvd]
+(qvd);
+
+
+///$tab Auditors
+Auditors:
+LOAD
+    AuditorID,
+    Au_First,
+    Au_Surname,
+    "Auditor Name",
+    Au_IsFullyActiveStatus,
+    SSIP,
+    Au_SignedOffFor,
+    Au_IsFullyActive,
+    Au_ST1,
+    Au_Type,
+    Au_BigTicket,
+    Au_DiaryDisplay,
+    Au_VisitDiaryDisplay,
+    Au_AssessorOverviewDisplay,
+    Au_NonConform,
+    Au_SubContract,
+    Au_Grouping,
+    Agency_ID,
+    Au_Postcode,
+    Au_GeoPoint,
+    Au_Country,
+    Au_SecurityID,
+    Au_SubbyDays,
+    Au_Subby?,
+    AuditorType
+FROM [lib://$(vDataFiles)/AuditorVisitsApp_Auditors_Table.qvd]
+// FROM [lib://$(vDataFilesTest)/AuditorVisitsApp_Auditors_Table.qvd]
+(qvd);
+
+
+///$tab Complaints
+tblComplaintLogLoad:
+LOAD
+    ComplaintNature,
+    ComplaintManager,
+    ComplaintRoot,
+    ComplaintCorrective,
+    ComplaintStatus,
+    ComplaintDateOpen,
+    ComplaintDateClosed,
+    ComplaintCategory,
+    ComplaintAction,
+    ComplaintComment,
+    DataType,
+    Complaint_ID,
+    Customer_ID,
+    Note_ID,
+    Customer_ID&ComplaintDateOpen as Key
+FROM [lib://$(vDataFiles)/Extract_tblComplaintLog.qvd]
+// FROM [lib://$(vDataFilesTest)/Extract_tblComplaintLog.qvd]
+(qvd);
+Left Join(tblComplaintLogLoad)
+
+Load 
+Customer_ID,
+max(ComplaintDateOpen) as MaxComplaintDateOpen
+resident tblComplaintLogLoad
+Group by Customer_ID
+;
+
+drop field DataType from tblComplaintLogLoad;
+
+NoConcatenate
+
+tblComplaintMax:
+load
+*,
+if(IsNull(Complaint_ID)or Match(Complaint_ID,'-','-','','-'),'No complaint','Complaint raised') as [Customer Complained Check]
+resident tblComplaintLogLoad
+where ComplaintDateOpen=MaxComplaintDateOpen
+;
+
+drop table tblComplaintLogLoad;
+
