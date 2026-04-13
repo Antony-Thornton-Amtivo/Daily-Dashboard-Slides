@@ -1,0 +1,190 @@
+///$tab Main
+SET ThousandSep=',';
+SET DecimalSep='.';
+SET MoneyThousandSep=',';
+SET MoneyDecimalSep='.';
+SET MoneyFormat='£#,##0.;-£#,##0.';
+SET TimeFormat='hh:mm:ss';
+SET DateFormat='DD/MM/YYYY';
+SET TimestampFormat='DD/MM/YYYY hh:mm:ss[.fff]';
+SET FirstWeekDay=0;
+SET BrokenWeeks=0;
+SET ReferenceDay=4;
+SET FirstMonthOfYear=1;
+SET CollationLocale='en-GB';
+SET CreateSearchIndexOnReload=1;
+SET MonthNames='Jan;Feb;Mar;Apr;May;Jun;Jul;Aug;Sep;Oct;Nov;Dec';
+SET LongMonthNames='January;February;March;April;May;June;July;August;September;October;November;December';
+SET DayNames='Mon;Tue;Wed;Thu;Fri;Sat;Sun';
+SET LongDayNames='Monday;Tuesday;Wednesday;Thursday;Friday;Saturday;Sunday';
+SET NumericalAbbreviation='3:k;6:M;9:G;12:T;15:P;18:E;21:Z;24:Y;-3:m;-6:μ;-9:n;-12:p;-15:f;-18:a;-21:z;-24:y';
+
+
+//LIB CONNECT TO 'Microsoft_SQL_Server_18.130.159.247';
+
+//Store locations
+
+LET vDataFiles = 'QVD Files:DataFiles';
+
+Expressions:
+LOAD
+    Variable,
+    Expression,
+    Usage
+FROM [lib://Development:Office_365_Sharepoint - FP&A Folder/Shared Documents/Private/Spreadsheets for Qlik/Calendar Variables.xlsx]
+(ooxml, embedded labels, table is CalendarVariables);
+
+
+
+
+
+Let vNumberOfRows = NoOfRows('Expressions');
+For vI = 0 to (vNumberOfRows - 1)
+Let vVariable_Name = Peek('Variable',vI,'Expression');
+Let [$(vVariable_Name)] = Peek('Expression',vI,'Expression');
+Next
+
+
+///$tab Mapping - NetSuite
+NetSuiteLoad:
+LOAD
+    "tblFinance NetsuiteInvoiceID",
+    "tblFinance NetsuiteOrderReference",
+    "tblFinance NetsuiteDDSetupDate",
+    "tblFinance ProposalID",
+    "tblFinance NetSuiteInvoiceReference"
+FROM [lib://QVD Files:DataFiles/Transformation1_tblFinance.qvd]
+(qvd);
+
+NetSuiteInvoiceID:
+Mapping Load
+"tblFinance ProposalID",
+"tblFinance NetSuiteInvoiceReference"
+resident NetSuiteLoad;
+
+NetSuiteOrderRef:
+Mapping Load
+"tblFinance ProposalID",
+"tblFinance NetsuiteOrderReference"
+resident NetSuiteLoad;
+
+NetSuiteDDSetupDate:
+Mapping Load
+"tblFinance ProposalID",
+"tblFinance NetsuiteDDSetupDate"
+resident NetSuiteLoad;
+
+
+
+Drop table NetSuiteLoad;
+
+
+///$tab Mapping - Dates Info
+Load_DatesTables:
+
+///$tab Mapping - SP details
+Load_SPInfo:
+LOAD
+    ProposalID,
+    "Sales Stat Classification",
+    "Contract Amount",
+    [PAS Inspections]
+FROM [lib://QVD Files:DataFiles/Transformation2_SalesPerformance.qvd]
+(qvd) where [SP Source Flag] = 'Contract';
+
+
+Map_SSClassifications:
+Mapping load
+ProposalID,
+"Sales Stat Classification"
+Resident Load_SPInfo;
+
+Map_ContractAmount:
+Mapping load
+ProposalID,
+"Contract Amount"
+Resident Load_SPInfo;
+
+Map_PASInspections:
+Mapping load
+ProposalID,
+[PAS Inspections]
+Resident Load_SPInfo;
+
+
+Drop table Load_SPInfo;
+
+
+///$tab Dimensions
+Customers:
+LOAD * FROM [lib://$(vDataFiles)/Transformation1_Customers.qvd] (qvd) 
+// Where Exists(Customer_ID)
+// where DataType<>'AGT'
+;
+
+Drop Field DataType From Customers;
+
+Calendar:
+LOAD * FROM [lib://$(vDataFiles)/Transformation1_Calendar.qvd] (qvd)
+;
+
+Auditors:
+LOAD *,
+	 Auditor_ID as AuditorID
+FROM [lib://$(vDataFiles)/Transformation1_Auditors.qvd] (qvd)
+// where DataType<>'AGT'
+;// Where Exists(Auditor_ID);
+
+Drop Field DataType From Auditors;
+///$tab Mapping - Test Records
+Map_TestRecords:
+Mapping LOAD 
+Customer_ID,
+[Test Database Record (Delete)]
+FROM [lib://$(vDataFiles)/Transformation1_Customers.qvd] (qvd)
+;
+///$tab Mapping - Visits
+Load_VisitInfo:
+LOAD
+    "Visits Proposal_ID",
+    VisitDescription
+FROM [lib://QVD Files:DataFiles/Transformation2_AuditorVisits.qvd]
+(qvd);
+
+Map_VisitDesc:
+Mapping load
+    "Visits Proposal_ID",
+    VisitDescription
+resident Load_VisitInfo;
+
+
+
+drop table Load_VisitInfo;
+
+///$tab Fact
+Inspections:
+load *,
+if("Visits2030 Proposal_ID"='_UK',NULL(),"Visit Description1") 					as "Visit Description"
+where TestRecords='Keep'
+; 
+
+LOAD *,
+applymap('NetSuiteInvoiceID',"Visits2030 Proposal_ID",NULL()) 					as "NetSuite Invoice ID",
+applymap('NetSuiteOrderRef',"Visits2030 Proposal_ID",NULL()) 					as "NetSuite Order Ref",
+applymap('NetSuiteDDSetupDate',"Visits2030 Proposal_ID",NULL()) 				as "NetSuite DD SetupDate",
+ApplyMap('Map_SSClassifications',"Visits2030 Proposal_ID",NULL()) 				as "Sales Stat Classification",
+ApplyMap('Map_ContractAmount',"Visits2030 Proposal_ID",NULL()) 					as "Contract Amount",
+ApplyMap('Map_PASInspections',"Visits2030 Proposal_ID",NULL()) 					as "PAS Inspections",
+Applymap('Map_TestRecords',"Visits2030 Customer_ID",'Test Record') 				as "TestRecords",
+Applymap('Map_VisitDesc',"Visits2030 Proposal_ID",NULL())						as "Visit Description1"
+
+
+
+
+
+FROM [lib://$(vDataFiles)/Transformation2_Visits2030.qvd]
+(qvd)
+where DataType<>'AGT'
+;
+
+
