@@ -35,6 +35,31 @@ Let vCurrentYear = Year(today());
 
 
 
+///$tab Mapping - Currency
+Load_Currency:
+LOAD
+    id,
+    name,
+    iso_code,
+    html_code
+FROM [lib://QVD Files:DataFiles/Extract_tblCurrency.qvd]
+(qvd);
+
+Map_CurrencyShort:
+Mapping load
+id,
+iso_code
+resident Load_Currency;
+
+Map_CurrencyLong:
+Mapping load
+id,
+name
+resident Load_Currency;
+
+
+
+drop table Load_Currency;
 ///$tab Mapping Loads
 Curr_Map_EUUS:
 LOAD
@@ -628,6 +653,7 @@ LOAD
     ActivUserFee 						as [$(TableColumn) ActivUserFee],
     ConsultantLead 						as [$(TableColumn) ConsultantLead],
     TotalInspections 					as [$(TableColumn) PAS Total Inspections],
+    InspectionCount 					as [$(TableColumn) inspectioncount],
     BoltOnList							as [$(TableColumn) PAS BoltOnList],
     BoltOnInspections 					as [$(TableColumn) PAS BoltOnInspections],
     DayRateMin 							as [$(TableColumn) DayRateMin],
@@ -657,7 +683,10 @@ LOAD
     
 	if(match(DataType,'UK','US'),0,
 		if(AuditorTravelFees>0 and AuditorTravelDays>0,AuditorTravelDays,0)) as [$(TableColumn) AuditorTravelDays],
-        ApplyMap('Map_tblCustomersLeadPin',Customer_ID,'Sub Pin') as [$(TableColumn) LeadPin],
+    ApplyMap('Map_tblCustomersLeadPin',Customer_ID,'Sub Pin') as [$(TableColumn) LeadPin],
+    applymap('Map_CurrencyShort',Currency,'GBP') as [$(TableColumn) CurrencyShortDesc],
+    applymap('Map_CurrencyLong',Currency,'GBP') as [$(TableColumn) CurrencyLongDesc],
+        
         
     StandardsDesc as [$(TableColumn) Standard Description New] // See ticket 259902
 
