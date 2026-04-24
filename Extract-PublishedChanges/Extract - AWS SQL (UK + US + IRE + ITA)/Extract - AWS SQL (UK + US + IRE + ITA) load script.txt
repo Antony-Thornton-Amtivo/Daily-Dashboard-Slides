@@ -1,0 +1,5748 @@
+///$tab Main
+SET ThousandSep=',';
+SET DecimalSep='.';
+SET MoneyThousandSep=',';
+SET MoneyDecimalSep='.';
+SET MoneyFormat='#,##0.00;-#,##0.00';
+SET TimeFormat='hh:mm:ss';
+SET DateFormat='DD/MM/YYYY';
+SET TimestampFormat='DD/MM/YYYY hh:mm:ss[.fff]';
+SET FirstWeekDay=0;
+SET BrokenWeeks=0;
+SET ReferenceDay=4;
+SET FirstMonthOfYear=1;
+SET CollationLocale='en-GB';
+SET CreateSearchIndexOnReload=1;
+SET MonthNames='Jan;Feb;Mar;Apr;May;Jun;Jul;Aug;Sep;Oct;Nov;Dec';
+SET LongMonthNames='January;February;March;April;May;June;July;August;September;October;November;December';
+SET DayNames='Mon;Tue;Wed;Thu;Fri;Sat;Sun';
+SET LongDayNames='Monday;Tuesday;Wednesday;Thursday;Friday;Saturday;Sunday';
+SET NumericalAbbreviation='3:k;6:M;9:G;12:T;15:P;18:E;21:Z;24:Y;-3:m;-6:μ;-9:n;-12:p;-15:f;-18:a;-21:z;-24:y';
+
+//LIB CONNECT TO 'Microsoft_SQL_Server_18.130.159.247';
+
+
+//Store locations
+
+
+// LET vExtractQVDLocation = 'Extract_QVD';
+// LET vTrans1QVDLocation = 'Transformation1_QVD';
+// LET vTrans2QVDLocation = 'Transformation2_QVD';
+// LET vSourceSpreadsheets = 'Source_Spreadsheets';
+
+LET vExtractQVDLocation = 'DataFiles';
+LET vTrans1QVDLocation = 'DataFiles';
+LET vTrans2QVDLocation = 'DataFiles';
+LET vSourceSpreadsheets = 'DataFiles';
+LET vDataFiles = 'DataFiles';
+
+Let vCurrentMonth = num(Month(today()),'00');
+Let vCurrentYear = Year(today());
+
+
+//Store $(TableName) INTO [lib://$(vDataFiles)/$(TableName)_$(vCurrentYear)-$(vCurrentMonth).qvd] (qvd);
+
+///$tab tblFranchise
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+Let TableName = 'Extract_tblFranchiseLookup';
+
+
+
+$(TableName):
+LOAD
+*,
+if(domain_production='agency.connect.amtivo.com',1,0) as AgencyFlag
+;
+
+SELECT *
+FROM CertificationEuropeAC.dbo.tblFranchise;
+
+
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+///$tab ***** EXIT SCRIPT *****
+//  Exit Script;
+///$tab tblAuditors
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblAuditors';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+AuditorID&'_UK' as Auditor_ID,
+AgencyID&'_UK' as Agency_ID;
+SELECT  
+// * - See error below
+// (Connector error: Column size cannot be zero 68 for SQL_SS_UDT) - See Chat GPT/Conversation with mark for details.
+// The load * seems to generate the below error. I compared the old load script (loads the fields one by one like below) and it loads fine.
+// When I remove the load * and replace it with the fields one by one it loads without errors.
+// Mark mentioned - "I've been doing fixes on the diary system for the agencies which would have been querying the auditors table, but no changes have been made to it or the structure."
+// Not sure if this is related or not but my working theory is that there is a field/set of data in there that may not be visible to Mark that Qlik is trying to pull but cant.
+// This may be a raise with Qlik bug.
+AuditorID,
+Au_Title,
+Au_Gender,
+Au_First,
+Au_Surname,
+SSIP,
+Au_SignedOffFor,
+Au_ST1,
+Au_NACECompetence,
+Au_Map,
+Au_Competence_QMS,
+Au_Competence_EMS,
+Au_Competence_ISMS,
+Au_Competence_HSMS,
+//Au_Competence_eStewards,
+Au_Type,
+Au_BigTicket,
+Au_DiaryDisplay,
+Au_VisitDiaryDisplay,
+Au_Competence,
+Au_AssessorOverviewDisplay,
+Au_NonConform,
+Au_SubContract,
+Au_Grouping,
+Au_Remove,
+Au_Address1,
+Au_Address2,
+Au_Village,
+Au_Town,
+Au_County,
+Au_Postcode,
+Au_location,
+Au_Tel,
+Au_Fax,
+Au_Email,
+"Region(s)", //I think the brackets was causing an issue.
+
+Au_Password,
+Au_Username,
+Au_Notes,
+AgencyID,
+PAS43,
+DBSCheck,
+ShareUK2,
+ShareUK4,
+ShareWales,
+DecisionMaker,
+FranchiseAvail,
+BoltOnList,
+PAS2030,
+Au_Competence_BCM,
+CyberEssentials,
+Au_Competence_BIM,
+Au_Competence_EnMS,
+Au_Competence_ACS,
+Au_Competence_PSA,
+Au_Competence_SSS,
+Security,
+Au_Competence_DICS,
+InspectionIrishWater,
+AeroAA,
+AeroAEA,
+AeroAIEA,
+AeroITAR,
+AS9100D,
+AS9110C,
+AS9120B,
+AuditorNotes,
+Au_TechExpert,
+ISO270012022    
+FROM babclear.dbo.tblAuditors;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+AuditorID&'_US' as Auditor_ID,
+AgencyID&'_US' as Agency_ID;
+SELECT 
+// * - See error below
+// (Connector error: Column size cannot be zero 68 for SQL_SS_UDT) - See Chat GPT/Conversation with mark for details.
+// The load * seems to generate the below error. I compared the old load script (loads the fields one by one like below) and it loads fine.
+// When I remove the load * and replace it with the fields one by one it loads without errors.
+// Mark mentioned - "I've been doing fixes on the diary system for the agencies which would have been querying the auditors table, but no changes have been made to it or the structure."
+// Not sure if this is related or not but my working theory is that there is a field/set of data in there that may not be visible to Mark that Qlik is trying to pull but cant.
+// This may be a raise with Qlik bug.
+AuditorID,
+Au_Title,
+Au_Gender,
+Au_First,
+Au_Surname,
+SSIP,
+Au_SignedOffFor,
+Au_ST1,
+Au_NACECompetence,
+Au_Map,
+Au_Competence_QMS,
+Au_Competence_EMS,
+Au_Competence_ISMS,
+Au_Competence_HSMS,
+//Au_Competence_eStewards,
+Au_Type,
+Au_BigTicket,
+Au_DiaryDisplay,
+Au_VisitDiaryDisplay,
+Au_Competence,
+Au_AssessorOverviewDisplay,
+Au_NonConform,
+Au_SubContract,
+Au_Grouping,
+Au_Remove,
+Au_Address1,
+Au_Address2,
+Au_Village,
+Au_Town,
+Au_County,
+Au_Postcode,
+Au_location,
+Au_Tel,
+Au_Fax,
+Au_Email,
+"Region(s)", //I think the brackets was causing an issue.
+
+Au_Password,
+Au_Username,
+Au_Notes,
+AgencyID,
+PAS43,
+DBSCheck,
+ShareUK2,
+ShareUK4,
+ShareWales,
+DecisionMaker,
+FranchiseAvail,
+BoltOnList,
+PAS2030,
+Au_Competence_BCM,
+CyberEssentials,
+Au_Competence_BIM,
+Au_Competence_EnMS,
+Au_Competence_ACS,
+Au_Competence_PSA,
+Au_Competence_SSS,
+Security,
+Au_Competence_DICS,
+InspectionIrishWater,
+AeroAA,
+AeroAEA,
+AeroAIEA,
+AeroITAR,
+AS9100D,
+AS9110C,
+AS9120B,
+AuditorNotes,
+Au_TechExpert,
+ISO270012022    
+
+FROM USAmtivoConnect.dbo.tblAuditors;
+
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+AuditorID&'_IRE' as Auditor_ID,
+AgencyID&'_IRE' as Agency_ID;
+SELECT  
+// * - See error below
+// (Connector error: Column size cannot be zero 68 for SQL_SS_UDT) - See Chat GPT/Conversation with mark for details.
+// The load * seems to generate the below error. I compared the old load script (loads the fields one by one like below) and it loads fine.
+// When I remove the load * and replace it with the fields one by one it loads without errors.
+// Mark mentioned - "I've been doing fixes on the diary system for the agencies which would have been querying the auditors table, but no changes have been made to it or the structure."
+// Not sure if this is related or not but my working theory is that there is a field/set of data in there that may not be visible to Mark that Qlik is trying to pull but cant.
+// This may be a raise with Qlik bug.
+AuditorID,
+Au_Title,
+Au_Gender,
+Au_First,
+Au_Surname,
+SSIP,
+Au_SignedOffFor,
+Au_ST1,
+Au_NACECompetence,
+Au_Map,
+Au_Competence_QMS,
+Au_Competence_EMS,
+Au_Competence_ISMS,
+Au_Competence_HSMS,
+//Au_Competence_eStewards,
+Au_Type,
+Au_BigTicket,
+Au_DiaryDisplay,
+Au_VisitDiaryDisplay,
+Au_Competence,
+Au_AssessorOverviewDisplay,
+Au_NonConform,
+Au_SubContract,
+Au_Grouping,
+Au_Remove,
+Au_Address1,
+Au_Address2,
+Au_Village,
+Au_Town,
+Au_County,
+Au_Postcode,
+Au_location,
+Au_Tel,
+Au_Fax,
+Au_Email,
+"Region(s)", //I think the brackets was causing an issue.
+
+Au_Password,
+Au_Username,
+Au_Notes,
+AgencyID,
+PAS43,
+DBSCheck,
+ShareUK2,
+ShareUK4,
+ShareWales,
+DecisionMaker,
+FranchiseAvail,
+BoltOnList,
+PAS2030,
+Au_Competence_BCM,
+CyberEssentials,
+Au_Competence_BIM,
+Au_Competence_EnMS,
+Au_Competence_ACS,
+Au_Competence_PSA,
+Au_Competence_SSS,
+Security,
+Au_Competence_DICS,
+InspectionIrishWater,
+AeroAA,
+AeroAEA,
+AeroAIEA,
+AeroITAR,
+AS9100D,
+AS9110C,
+AS9120B,
+AuditorNotes,
+Au_TechExpert,
+ISO270012022    
+FROM CertificationEuropeAC.dbo.tblAuditors;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+AuditorID&'_AGT' as Auditor_ID,
+AgencyID&'_AGT' as Agency_ID;
+SELECT  
+// * - See error below
+// (Connector error: Column size cannot be zero 68 for SQL_SS_UDT) - See Chat GPT/Conversation with mark for details.
+// The load * seems to generate the below error. I compared the old load script (loads the fields one by one like below) and it loads fine.
+// When I remove the load * and replace it with the fields one by one it loads without errors.
+// Mark mentioned - "I've been doing fixes on the diary system for the agencies which would have been querying the auditors table, but no changes have been made to it or the structure."
+// Not sure if this is related or not but my working theory is that there is a field/set of data in there that may not be visible to Mark that Qlik is trying to pull but cant.
+// This may be a raise with Qlik bug.
+AuditorID,
+Au_Title,
+Au_Gender,
+Au_First,
+Au_Surname,
+SSIP,
+Au_SignedOffFor,
+Au_ST1,
+Au_NACECompetence,
+Au_Map,
+Au_Competence_QMS,
+Au_Competence_EMS,
+Au_Competence_ISMS,
+Au_Competence_HSMS,
+//Au_Competence_eStewards,
+Au_Type,
+Au_BigTicket,
+Au_DiaryDisplay,
+Au_VisitDiaryDisplay,
+Au_Competence,
+Au_AssessorOverviewDisplay,
+Au_NonConform,
+Au_SubContract,
+Au_Grouping,
+Au_Remove,
+Au_Address1,
+Au_Address2,
+Au_Village,
+Au_Town,
+Au_County,
+Au_Postcode,
+Au_location,
+Au_Tel,
+Au_Fax,
+Au_Email,
+"Region(s)", //I think the brackets was causing an issue.
+
+Au_Password,
+Au_Username,
+Au_Notes,
+AgencyID,
+PAS43,
+DBSCheck,
+ShareUK2,
+ShareUK4,
+ShareWales,
+DecisionMaker,
+FranchiseAvail,
+BoltOnList,
+PAS2030,
+Au_Competence_BCM,
+CyberEssentials,
+Au_Competence_BIM,
+Au_Competence_EnMS,
+Au_Competence_ACS,
+Au_Competence_PSA,
+Au_Competence_SSS,
+Security,
+Au_Competence_DICS,
+InspectionIrishWater,
+AeroAA,
+AeroAEA,
+AeroAIEA,
+AeroITAR,
+AS9100D,
+AS9110C,
+AS9120B,
+AuditorNotes,
+Au_TechExpert,
+ISO270012022
+FROM qaiclAC.dbo.tblAuditors;
+
+
+Drop Fields AuditorID,AgencyID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+drop Table $(TableName); 
+
+
+
+///$tab tblCustomerToStandard
+// /*
+// Was receiving an error this morning, 19/01/2026, sent to App Sup to review.
+
+
+
+
+Let TableName = 'Extract_tblCustomerToStandard';
+
+LIB CONNECT TO 'Development:Azure_SQL_Database_sql-amtivo-reporting.database.windows.net';
+
+
+$(TableName):
+
+LOAD CustomerID, 
+	DataType, 
+	ClientID, 
+	CompanyName, 
+	DatabaseSource, 
+	BoltOnDescs, 
+	StdDescs,
+    CustomerID&'_'&DataType as Customer_ID,
+    StdDescs as standard
+    ;
+
+SELECT CustomerID,
+	DataType,
+	ClientID,
+	CompanyName,
+	DatabaseSource,
+	BoltOnDescs,
+	StdDescs
+FROM "amtivo-dwh".ods.tblCustomerToStandarddDataCube;
+
+
+// MOVE THIS BIT TO ABOVE WHEN FIXED
+// */
+
+
+// Load 
+// 	"customer_id"&'_UK' as Customer_ID,
+// 	"client_id"&'_UK' as Client_ID,
+// 	standard,
+//     "customer_id" as CustomerID,
+//     'UK' as DataType,
+//     'BabCom Load' as Source
+//     ;
+// SELECT 
+// 	"customer_id",
+// 	"client_id",
+// 	standard
+// FROM Analytics.dbo.tblCustomerToStandard;
+
+// LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+// Concatenate($(TableName))
+
+// LOAD 
+// 	"customer_id"&'_IRE' as Customer_ID,
+// 	"client_id"&'_IRE' as Client_ID,
+// 	standard,
+//     customer_id as CustomerID,
+//     'IRE' as DataType,
+//     'BabCom Load' as Source
+//     ;
+
+// [tblCustomerToStandard_CE]:
+// SELECT 
+// 	"customer_id",
+// 	"client_id",
+// 	standard
+// FROM Analytics.dbo."tblCustomerToStandard_CE";
+
+
+
+
+// LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+// Concatenate($(TableName))
+// LOAD 	
+// 	"customer_id"&'_US' as Customer_ID,
+// 	"client_id"&'_US' as Client_ID,
+// 	standard,
+//     customer_id as CustomerID,
+//     'US' as DataType,
+//     'AmtivoConnect AnalyticsTable Load' as Source
+//     ;
+
+// [tblCustomerToStandard]:
+// SELECT "customer_id",
+// 	"client_id",
+// 	standard
+// FROM Analytics.dbo.tblCustomerToStandard;
+
+
+
+
+
+
+
+// LIB CONNECT TO 'Development:Azure_SQL_Database_sql-amtivo-reporting.database.windows.net';
+// Concatenate($(TableName))
+
+// [cr_main_certificate_report]:
+// LOAD 
+// //	CustomerID as Customer_ID, 
+// //	ClientID as Client_ID, 	
+
+//     if(Match(Source, 'ANAB (Advantage)','ANAB (Orion)'),CustomerID&'_US',
+//     	if(Match(Source,'CE Ireland'),CustomerID&'_IRE',
+//         	if(match(Source,
+//             	'UKAS China (QAICL)',
+// 				'UKAS Int (ACM)',
+// 				'UKAS Int (QAICL)',
+// 				'UKAS UK (ACM)',
+// 				'UKAS UK (BAB)',
+// 				'UKAS UK (QAICL) Packaging'),CustomerID&'_UK','Other'))) As Customer_ID,
+                
+// 	if(Match(Source, 'ANAB (Advantage)','ANAB (Orion)'),ClientID&'_US',
+//     	if(Match(Source,'CE Ireland'),ClientID&'_IRE',
+//         	if(match(Source,
+//             	'UKAS China (QAICL)',
+// 				'UKAS Int (ACM)',
+// 				'UKAS Int (QAICL)',
+// 				'UKAS UK (ACM)',
+// 				'UKAS UK (BAB)',
+// 				'UKAS UK (QAICL) Packaging'),ClientID&'_UK','Other'))) As Client_ID,
+	
+//     	if(Match(Source, 'ANAB (Advantage)','ANAB (Orion)'),'US',
+//     	if(Match(Source,'CE Ireland'),'IRE',
+//         	if(match(Source,
+//             	'UKAS China (QAICL)',
+// 				'UKAS Int (ACM)',
+// 				'UKAS Int (QAICL)',
+// 				'UKAS UK (ACM)',
+// 				'UKAS UK (BAB)',
+// 				'UKAS UK (QAICL) Packaging'),'UK','Other'))) As DataType,
+    
+    
+//     StandardDescription, 
+// 	PrimaryStandard,
+//     PrimaryStandard as standard,
+// 	Source
+    
+// 	;
+
+
+// SELECT 
+// 	CustomerID,
+//     ClientID,
+// 	CompanyName,
+// 	Employees,
+// 	EmployeeBanding,
+// 	Address1,
+// 	Address2,
+// 	Address3,
+// 	PostalCode,
+// 	Town,
+// 	Country,
+// 	StandardDescription,
+// 	ABid,
+// 	PrimaryStandard,
+// 	MasterStandard,
+// 	ConsolidatedStandard,
+// 	InitialCertDate,
+// 	CertStartDate,
+// 	ExpiryDate,
+// 	Scheme,
+// 	SchemeType,
+// 	Scope,
+// 	Agency,
+// 	Source,
+// 	SourceParent,
+// 	SourceGroup,
+// 	Priority,
+// 	ReportDate
+// FROM "amtivo-dwh".ods."cr_main_certificate_report";
+
+// //Unqualify *;
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+drop Table $(TableName); 
+
+
+
+
+///$tab tblClients
+Let TableName = 'Extract_tblClients';
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+ClientID&'_UK' as Client_ID;
+SELECT *
+FROM babclear.dbo.tblClients;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+ClientID&'_US' as Client_ID;
+SELECT *
+FROM USAmtivoConnect.dbo.tblClients;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+ClientID&'_IRE' as Client_ID,
+;
+
+SELECT *
+FROM CertificationEuropeAC.dbo.tblClients;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+ClientID&'_AGT' as Client_ID,
+;
+
+SELECT *
+FROM qaiclAC.dbo.tblClients;
+
+
+Drop Field ClientID From $(TableName);
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+drop Table $(TableName); 
+
+
+///$tab tblCustomers
+//LIB CONNECT TO 'Microsoft_SQL_Server_18.130.159.247';
+Let TableName = 'Extract_tblCustomers';
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+CustomerID&'_UK' as Customer_ID,
+ClientID&'_UK' as Client_ID,
+ConsultantID&'_UK' as Consultant_ID,
+EnquiryOwnerID&'_UK' as EnquiryOwner_ID,
+ProjectManager&'_UK' as ProjectManager_ID,
+ProcStat&'_UK' as ProcStat_ID
+;
+SELECT *
+FROM babclear.dbo.tblCustomers;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+CustomerID&'_US' as Customer_ID,
+ClientID&'_US' as Client_ID,
+ConsultantID&'_US' as Consultant_ID,
+EnquiryOwnerID&'_US' as EnquiryOwner_ID,
+ProjectManager&'_US' as ProjectManager_ID,
+ProcStat&'_US' as ProcStat_ID
+;
+SELECT *
+FROM USAmtivoConnect.dbo.tblCustomers;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+Concatenate($(TableName))
+$(TableName):
+Load *,
+'IRE' as DataType,
+CustomerID&'_IRE' as Customer_ID,
+ClientID&'_IRE' as Client_ID,
+ConsultantID&'_IRE' as Consultant_ID,
+EnquiryOwnerID&'_IRE' as EnquiryOwner_ID,
+ProjectManager&'_IRE' as ProjectManager_ID,
+ProcStat&'_IRE' as ProcStat_ID
+;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblCustomers;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+Concatenate($(TableName))
+$(TableName):
+Load *,
+'AGT' as DataType,
+CustomerID&'_AGT' as Customer_ID,
+ClientID&'_AGT' as Client_ID,
+ConsultantID&'_AGT' as Consultant_ID,
+EnquiryOwnerID&'_AGT' as EnquiryOwner_ID,
+ProjectManager&'_AGT' as ProjectManager_ID,
+ProcStat&'_AGT' as ProcStat_ID
+;
+SELECT *
+FROM qaiclAC.dbo.tblCustomers;
+
+Drop Field CustomerID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+
+drop Table $(TableName); 
+
+
+///$tab tblVisits
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+Let TableName = 'Extract_tblVisits';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+CustomerID&'_UK' as Customer_ID,
+ProposalID&'_UK' as Proposal_ID,
+VisitsID&'_UK' as Visits_ID,
+RegionID&'_UK' as Region_ID,
+VisitAuditorID&'_UK' as VisitAuditor_ID,
+AuditorID&'_UK' as Auditor_ID,
+ModeratorID&'_UK' as Moderator_ID,
+SecondAuditorID&'_UK' as SecondAuditor_ID,
+ObserverID&'_UK' as Observer_ID,
+MentorID&'_UK' as Mentor_ID,
+SiteVisitID&'_UK' as SiteVisit_ID,
+AddressID&'_UK' as Address_ID,
+//VisitType&'_UK' as VisitType_ID
+;
+SELECT *
+FROM babclear.dbo.tblVisits;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+CustomerID&'_US' as Customer_ID,
+ProposalID&'_US' as Proposal_ID,
+VisitsID&'_US' as Visits_ID,
+RegionID&'_US' as Region_ID,
+VisitAuditorID&'_US' as VisitAuditor_ID,
+AuditorID&'_US' as Auditor_ID,
+ModeratorID&'_US' as Moderator_ID,
+SecondAuditorID&'_US' as SecondAuditor_ID,
+ObserverID&'_US' as Observer_ID,
+MentorID&'_US' as Mentor_ID,
+SiteVisitID&'_US' as SiteVisit_ID,
+AddressID&'_US' as Address_ID,
+//VisitType&'_US' as VisitType_ID
+;
+SELECT *
+FROM USAmtivoConnect.dbo.tblVisits;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+
+Load *,
+'IRE' as DataType,
+CustomerID&'_IRE' as Customer_ID,
+ProposalID&'_IRE' as Proposal_ID,
+VisitsID&'_IRE' as Visits_ID,
+RegionID&'_IRE' as Region_ID,
+VisitAuditorID&'_IRE' as VisitAuditor_ID,
+AuditorID&'_IRE' as Auditor_ID,
+ModeratorID&'_IRE' as Moderator_ID,
+SecondAuditorID&'_IRE' as SecondAuditor_ID,
+ObserverID&'_IRE' as Observer_ID,
+MentorID&'_IRE' as Mentor_ID,
+SiteVisitID&'_IRE' as SiteVisit_ID,
+AddressID&'_IRE' as Address_ID,
+//VisitType&'_IRE' as VisitType_ID
+;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblVisits;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+
+Load *,
+'AGT' as DataType,
+CustomerID&'_AGT' as Customer_ID,
+ProposalID&'_AGT' as Proposal_ID,
+VisitsID&'_AGT' as Visits_ID,
+RegionID&'_AGT' as Region_ID,
+VisitAuditorID&'_AGT' as VisitAuditor_ID,
+AuditorID&'_AGT' as Auditor_ID,
+ModeratorID&'_AGT' as Moderator_ID,
+SecondAuditorID&'_AGT' as SecondAuditor_ID,
+ObserverID&'_AGT' as Observer_ID,
+MentorID&'_AGT' as Mentor_ID,
+SiteVisitID&'_AGT' as SiteVisit_ID,
+AddressID&'_AGT' as Address_ID,
+// VisitType&'_AGT' as VisitType_ID
+;
+SELECT *
+FROM qaiclAC.dbo.tblVisits;
+
+
+Drop Fields CustomerID,ProposalID, VisitsID,CustomerID,RegionID,VisitAuditorID,AuditorID,ModeratorID,SecondAuditorID,ObserverID,MentorID,SiteVisitID,AddressID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+drop Table $(TableName); 
+
+
+///$tab tblVisits2030
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblVisits2030';
+
+
+
+$(TableName):
+Load *,
+'UK' as DataType,
+CustomerID&'_UK' as Customer_ID,
+ProposalID&'_UK' as Proposal_ID,
+Visits2030ID&'_UK' as Visits2030_ID,
+AuditorID&'_UK' as Auditor_ID,
+SecondAuditorID&'_UK' as SecondAuditor_ID,
+ObserverID&'_UK' as Observer_ID,
+MentorID&'_UK' as Mentor_ID,
+AddressID&'_UK' as Address_ID,
+SiteVisitID&'_UK' as SiteVisit_ID,
+BoltOnID&'_UK' as BoltOn_ID,
+ModeratorID&'_UK' as Moderator_ID;
+SELECT *
+FROM babclear.dbo.tblVisits2030;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+CustomerID&'_US' as Customer_ID,
+ProposalID&'_US' as Proposal_ID,
+Visits2030ID&'_US' as Visits2030_ID,
+AuditorID&'_US' as Auditor_ID,
+SecondAuditorID&'_US' as SecondAuditor_ID,
+ObserverID&'_US' as Observer_ID,
+MentorID&'_US' as Mentor_ID,
+AddressID&'_US' as Address_ID,
+SiteVisitID&'_US' as SiteVisit_ID,
+BoltOnID&'_US' as BoltOn_ID,
+ModeratorID&'_US' as Moderator_ID;
+SELECT *
+FROM USAmtivoConnect.dbo.tblVisits2030;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+CustomerID&'_IRE' as Customer_ID,
+ProposalID&'_IRE' as Proposal_ID,
+Visits2030ID&'_IRE' as Visits2030_ID,
+AuditorID&'_IRE' as Auditor_ID,
+SecondAuditorID&'_IRE' as SecondAuditor_ID,
+ObserverID&'_IRE' as Observer_ID,
+MentorID&'_IRE' as Mentor_ID,
+AddressID&'_IRE' as Address_ID,
+SiteVisitID&'_IRE' as SiteVisit_ID,
+BoltOnID&'_IRE' as BoltOn_ID,
+ModeratorID&'_IRE' as Moderator_ID;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblVisits2030;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+CustomerID&'_AGT' as Customer_ID,
+ProposalID&'_AGT' as Proposal_ID,
+Visits2030ID&'_AGT' as Visits2030_ID,
+AuditorID&'_AGT' as Auditor_ID,
+SecondAuditorID&'_AGT' as SecondAuditor_ID,
+ObserverID&'_AGT' as Observer_ID,
+MentorID&'_AGT' as Mentor_ID,
+AddressID&'_AGT' as Address_ID,
+SiteVisitID&'_AGT' as SiteVisit_ID,
+BoltOnID&'_AGT' as BoltOn_ID,
+ModeratorID&'_AGT' as Moderator_ID;
+SELECT *
+FROM qaiclAC.dbo.tblVisits2030;
+
+
+Drop Fields Visits2030ID,CustomerID,AuditorID,ModeratorID,SecondAuditorID,ObserverID,MentorID,SiteVisitID,AddressID,ProposalID,BoltOnID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+// drop Table $(TableName);
+
+///$tab tblKeyFindings
+//LIB CONNECT TO 'Microsoft_SQL_Server_18.130.159.247';
+Let TableName = 'Extract_tblKeyFindings';
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+
+$(TableName):
+LOAD 
+	KeyFindingID, 
+	VisitsID&'_UK' as VisitsID, 
+	customerID, 
+	ConformType, 
+	ConformDetails, 
+	ConformAction, 
+	ConformSignedOff, 
+	ConformSignedDate, 
+	NCStatus, 
+	Indicator,
+    'UK' as DataType,
+    customerID&'_UK' as Customer_ID
+    ;
+
+SELECT *
+FROM babclear.dbo.tblKeyFindings;
+
+// LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+
+// Concatenate ($(TableName))
+
+// LOAD 
+// 	KeyFindingID, 
+// 	VisitsID, 
+// 	customerID, 
+// 	ConformType, 
+// 	ConformDetails, 
+// 	ConformAction, 
+// 	ConformSignedOff, 
+// 	ConformSignedDate, 
+// 	NCStatus, 
+// 	Indicator,
+//     'US' as DataType,
+//     customerID&'_US' as Customer_ID,
+//     ;
+
+// SELECT *FROM USAmtivoConnect.dbo.tblKeyFindings;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+Concatenate ($(TableName))
+
+
+LOAD 
+	KeyFindingID, 
+	VisitsID&'_IRE' as VisitsID, 
+	customerID, 
+	ConformType, 
+	ConformDetails, 
+	ConformAction, 
+	ConformSignedOff, 
+	ConformSignedDate, 
+	NCStatus, 
+	Indicator,
+    'IRE' as DataType,
+    customerID&'_IRE' as Customer_ID,
+    ;
+
+SELECT *
+FROM CertificationEuropeAC.dbo.tblKeyFindings;
+
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+
+drop Table $(TableName); 
+
+
+
+
+
+
+///$tab tblAB (aBid - Preffered Accreditation)
+//LIB CONNECT TO 'Microsoft_SQL_Server_18.130.159.247';
+Let TableName = 'Extract_tblaBid';
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+$(TableName):
+LOAD 
+	*,
+    'UK' as DataType,
+    ABid&'_UK' as A_Bid
+	;
+
+SELECT 
+*
+FROM babclear.dbo.tblAB;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+
+Concatenate ($(TableName))
+
+LOAD 
+	*,
+    'US' as DataType,
+    ABid&'_US' as A_Bid
+	;
+
+
+SELECT 
+*
+FROM USAmtivoConnect.dbo.tblAB;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+Concatenate ($(TableName))
+
+
+LOAD 
+	*,
+    'IRE' as DataType,
+    ABid&'_IRE' as A_Bid
+	;
+
+SELECT 
+*
+FROM CertificationEuropeAC.dbo.tblAB;
+
+
+
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+
+drop Table $(TableName); 
+
+
+
+
+
+
+///$tab tblTrainingDates
+//LIB CONNECT TO 'Microsoft_SQL_Server_18.130.159.247';
+Let TableName = 'Extract_tblTrainingDates';
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+$(TableName):
+LOAD 
+	*,
+    'UK' as DataType,
+    TrainingDateID&'_UK' as TrainingDate_ID, 
+	TrainingTypeID&'_UK' as TrainingType_ID, 
+	TrainingVenueID&'_UK' as TrainingVenue_ID
+	;
+
+SELECT 
+*
+FROM babclear.dbo.tblTrainingDates;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+
+Concatenate ($(TableName))
+
+LOAD 
+	*,
+    'US' as DataType,
+    TrainingDateID&'_US' as TrainingDate_ID, 
+	TrainingTypeID&'_US' as TrainingType_ID, 
+	TrainingVenueID&'_US' as TrainingVenue_ID 
+	;
+
+SELECT 
+*
+FROM USAmtivoConnect.dbo.tblTrainingDates;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+Concatenate ($(TableName))
+
+LOAD 
+	*,
+    'IRE' as DataType,
+    TrainingDateID&'_IRE' as TrainingDate_ID, 
+	TrainingTypeID&'_IRE' as TrainingType_ID, 
+	TrainingVenueID&'_IRE' as TrainingVenue_ID
+	;
+
+SELECT 
+*
+FROM CertificationEuropeAC.dbo.tblTrainingDates;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+Concatenate ($(TableName))
+
+LOAD 
+	*,
+    'AGT' as DataType,
+    TrainingDateID&'_IRE' as TrainingDate_ID, 
+	TrainingTypeID&'_IRE' as TrainingType_ID, 
+	TrainingVenueID&'_IRE' as TrainingVenue_ID
+	;
+
+SELECT 
+*
+FROM qaiclAC.dbo.tblTrainingDates;
+
+
+
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+
+drop Table $(TableName); 
+
+
+
+
+
+
+///$tab tblDecision
+//LIB CONNECT TO 'Microsoft_SQL_Server_18.130.159.247';
+Let TableName = 'Extract_tblDecision';
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+DecisionID&'_UK' as Decision_ID,
+CustomerID&'_UK' as Customer_ID
+;
+SELECT *
+FROM babclear.dbo.tblDecision;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+DecisionID&'_US' as Decision_ID,
+CustomerID&'_US' as Customer_ID
+;
+SELECT *
+FROM USAmtivoConnect.dbo.tblDecision;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+Concatenate($(TableName))
+$(TableName):
+Load *,
+'IRE' as DataType,
+DecisionID&'_IRE' as Decision_ID,
+CustomerID&'_IRE' as Customer_ID
+;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblDecision;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+Concatenate($(TableName))
+$(TableName):
+Load *,
+'AGT' as DataType,
+DecisionID&'_AGT' as Decision_ID,
+CustomerID&'_AGT' as Customer_ID
+;
+SELECT *
+FROM qaiclAC.dbo.tblDecision;
+
+Drop Field CustomerID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+
+drop Table $(TableName); 
+
+
+///$tab tblProposals
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+//tblProposals contains quotes
+Let TableName = 'Extract_tblProposals';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+CustomerID&'_UK' as Customer_ID,
+ProposalID&'_UK' as Proposal_ID;
+SELECT 
+	*
+FROM babclear.dbo.tblProposals;
+
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+CustomerID&'_US' as Customer_ID,
+ProposalID&'_US' as Proposal_ID;
+SELECT *
+FROM USAmtivoConnect.dbo.tblProposals;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+
+Load *,
+'IRE' as DataType,
+CustomerID&'_IRE' as Customer_ID,
+ProposalID&'_IRE' as Proposal_ID;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblProposals;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+
+Load *,
+'AGT' as DataType,
+CustomerID&'_AGT' as Customer_ID,
+ProposalID&'_AGT' as Proposal_ID;
+SELECT *
+FROM qaiclAC.dbo.tblProposals;
+
+
+Drop Fields CustomerID,ProposalID From $(TableName);
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+drop Table $(TableName); 
+
+
+
+
+///$tab tblTrainingVenue
+//LIB CONNECT TO 'Microsoft_SQL_Server_18.130.159.247';
+Let TableName = 'Extract_tblTrainingVenues';
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+$(TableName):
+LOAD 
+	*,
+    'UK' as DataType,
+    TrainingVenueID&'_UK' as TrainingVenue_ID
+	;
+
+SELECT 
+*
+FROM babclear.dbo.tblTrainingVenues;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+
+Concatenate ($(TableName))
+
+LOAD 
+	*,
+    'US' as DataType,
+    TrainingVenueID&'_US' as TrainingVenue_ID
+	;
+
+SELECT 
+*
+FROM USAmtivoConnect.dbo.tblTrainingVenues;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+Concatenate ($(TableName))
+
+LOAD 
+	*,
+    'IRE' as DataType,
+    TrainingVenueID&'_IRE' as TrainingVenue_ID
+	;
+
+SELECT 
+*
+FROM CertificationEuropeAC.dbo.tblTrainingVenues;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+Concatenate ($(TableName))
+
+LOAD 
+	*,
+    'AGT' as DataType,
+    TrainingVenueID&'_AGT' as TrainingVenue_ID
+	;
+
+SELECT 
+*
+FROM qaiclAC.dbo.tblTrainingVenues;
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+
+drop Table $(TableName); 
+
+
+///$tab tblTrainingType
+//LIB CONNECT TO 'Microsoft_SQL_Server_18.130.159.247';
+Let TableName = 'Extract_tblTrainingType';
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+$(TableName):
+LOAD 
+	*,
+    'UK' as DataType,
+    TrainingTypeID&'_UK' as TrainingType_ID
+	;
+
+SELECT 
+*
+FROM babclear.dbo.tblTrainingType;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+
+Concatenate ($(TableName))
+
+LOAD 
+	*,
+    'US' as DataType,
+    TrainingTypeID&'_US' as TrainingType_ID
+	;
+
+SELECT 
+*
+FROM USAmtivoConnect.dbo.tblTrainingType;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+Concatenate ($(TableName))
+
+LOAD 
+	*,
+    'IRE' as DataType,
+    TrainingTypeID&'_IRE' as TrainingType_ID
+	;
+
+SELECT 
+*
+FROM CertificationEuropeAC.dbo.tblTrainingType;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+Concatenate ($(TableName))
+
+LOAD 
+	*,
+    'AGT' as DataType,
+    TrainingTypeID&'_AGT' as TrainingType_ID
+	;
+
+SELECT 
+*
+FROM qaiclAC.dbo.tblTrainingType;
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+
+drop Table $(TableName); 
+
+
+///$tab tblTrainingBooking
+//LIB CONNECT TO 'Microsoft_SQL_Server_18.130.159.247';
+Let TableName = 'Extract_tblTrainingBooking';
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+$(TableName):
+LOAD 
+	*,
+    'UK' as DataType,
+    TrainingBookingID&'_UK' as TrainingBooking_ID, 
+	TrainingDateID&'_UK' as TrainingDate_ID, 
+	ContactID&'_UK' as Contact_ID, 
+	FinanceID&'_UK' as Finance_ID, 
+	;
+
+SELECT 
+*
+FROM babclear.dbo.tblTrainingBooking;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+
+Concatenate ($(TableName))
+
+LOAD 
+	*,
+    'US' as DataType,
+    TrainingBookingID&'_US' as TrainingBooking_ID, 
+	TrainingDateID&'_US' as TrainingDate_ID, 
+	ContactID&'_US' as Contact_ID, 
+	FinanceID&'_US' as Finance_ID, 
+	;
+
+SELECT 
+*
+FROM USAmtivoConnect.dbo.tblTrainingBooking;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+Concatenate ($(TableName))
+
+LOAD 
+	*,
+    'IRE' as DataType,
+    TrainingBookingID&'_IRE' as TrainingBooking_ID, 
+	TrainingDateID&'_IRE' as TrainingDate_ID, 
+	ContactID&'_IRE' as Contact_ID, 
+	FinanceID&'_IRE' as Finance_ID, 
+	;
+
+SELECT 
+*
+FROM CertificationEuropeAC.dbo.tblTrainingBooking;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+Concatenate ($(TableName))
+
+LOAD 
+	*,
+    'AGT' as DataType,
+    TrainingBookingID&'_AGT' as TrainingBooking_ID, 
+	TrainingDateID&'_AGT' as TrainingDate_ID, 
+	ContactID&'_AGT' as Contact_ID, 
+	FinanceID&'_AGT' as Finance_ID, 
+	;
+
+SELECT 
+*
+FROM qaiclAC.dbo.tblTrainingBooking;
+
+
+
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+
+drop Table $(TableName); 
+
+
+///$tab tblVisitTypes
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblVisitTypes';
+
+$(TableName):
+Load *,
+	'UK' as DataType,
+	VisitTypeID&'_UK' as VisitType_ID;
+SELECT *
+FROM babclear.dbo.tblVisitTypes;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+Load *,
+	'US' as DataType,
+	VisitTypeID&'_US' as VisitType_ID;
+SELECT *
+FROM USAmtivoConnect.dbo.tblVisitTypes;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+Concatenate($(TableName))
+Load *,
+	'IRE' as DataType,
+	VisitTypeID&'_IRE' as VisitType_ID;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblVisitTypes;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+Concatenate($(TableName))
+Load *,
+	'AGT' as DataType,
+	VisitTypeID&'_AGT' as VisitType_ID;
+SELECT *
+FROM qaiclAC.dbo.tblVisitTypes;
+
+
+//Drop Fields VisitTypeID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+drop Table $(TableName);
+
+
+
+
+
+
+
+
+
+
+
+
+
+///$tab tblCurrency
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblCurrency';
+
+$(TableName):
+
+// We do not need the data type here as tblCurrency is the same across the servers.
+LOAD id, 
+	name, 
+	iso_code, 
+	html_code;
+
+SELECT id,
+	name,
+	"iso_code",
+	"html_code"
+FROM babclear.dbo.tblCurrency;
+
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+drop Table $(TableName);
+///$tab tblUnknownDates_Surv
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblUnknownDates_Surv';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+CustomerID&'_UK' as Customer_ID,
+ProposalID&'_UK' as Proposal_ID,
+rowno() as rowno
+;
+SELECT 
+	*
+FROM babclear.dbo.tblUnknownDates_Surv;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+CustomerID&'_US' as Customer_ID,
+ProposalID&'_US' as Proposal_ID;
+SELECT *
+FROM USAmtivoConnect.dbo.tblUnknownDates_Surv;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+CustomerID&'_IRE' as Customer_ID,
+ProposalID&'_IRE' as Proposal_ID;
+SELECT 
+	*
+FROM CertificationEuropeAC.dbo.tblUnknownDates_Surv;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+CustomerID&'_AGT' as Customer_ID,
+ProposalID&'_AGT' as Proposal_ID;
+SELECT 
+	*
+FROM qaiclAC.dbo.tblUnknownDates_Surv;
+
+
+Drop Fields CustomerID,ProposalID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+drop Table $(TableName); 
+///$tab tblWithdrawalReason
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblWithdrawalReason';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+WithdrawalReasonID&'_UK' as WithdrawalReason_ID
+;
+SELECT *
+FROM babclear.dbo.tblWithdrawalReason;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+Load *,
+'US' as DataType,
+WithdrawalReasonID&'_US' as WithdrawalReason_ID,
+;
+SELECT *
+FROM USAmtivoConnect.dbo.tblWithdrawalReason;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+WithdrawalReasonID&'_IRE' as WithdrawalReason_ID
+;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblWithdrawalReason;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+WithdrawalReasonID&'_AGT' as WithdrawalReason_ID
+;
+SELECT *
+FROM qaiclAC.dbo.tblWithdrawalReason;
+
+
+
+
+
+Drop Fields WithdrawalReasonID From $(TableName);
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+
+
+
+
+
+
+
+
+
+
+///$tab tblWithdrawalReason2
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblWithdrawalReason2';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+withID&'_UK' as with_ID
+;
+SELECT *
+FROM babclear.dbo.tblWithdrawalReason2;
+
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+Load *,
+'US' as DataType,
+withID&'_US' as with_ID,
+;
+SELECT *
+FROM USAmtivoConnect.dbo.tblWithdrawalReason2;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+withID&'_IRE' as with_ID
+;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblWithdrawalReason2;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+withID&'_AGT' as with_ID
+;
+SELECT *
+FROM qaiclAC.dbo.tblWithdrawalReason2;
+
+
+Drop Fields withID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+
+///$tab tblWithdrawal
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblWithdrawal';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+WithdrawalReasonID&'_UK' as WithdrawalReason_ID,
+WithdrawalID&'_UK' as Withdrawal_ID,
+CustomerID&'_UK' as Customer_ID
+
+;
+SELECT *
+FROM babclear.dbo.tblWithdrawal;
+
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+Load *,
+'US' as DataType,
+WithdrawalReasonID&'_US' as WithdrawalReason_ID,
+WithdrawalID&'_US' as Withdrawal_ID,
+CustomerID&'_US' as Customer_ID
+;
+SELECT *
+FROM USAmtivoConnect.dbo.tblWithdrawal;
+
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+WithdrawalReasonID&'_IRE' as WithdrawalReason_ID,
+WithdrawalID&'_IRE' as Withdrawal_ID,
+CustomerID&'_IRE' as Customer_ID
+;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblWithdrawal;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+WithdrawalReasonID&'_AGT' as WithdrawalReason_ID,
+WithdrawalID&'_AGT' as Withdrawal_ID,
+CustomerID&'_AGT' as Customer_ID
+;
+SELECT *
+FROM qaiclAC.dbo.tblWithdrawal;
+
+
+Drop Fields WithdrawalReasonID,WithdrawalID,CustomerID From $(TableName);
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+drop Table $(TableName);
+
+
+
+
+
+
+
+
+
+
+
+
+///$tab tblFinance
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+Let TableName = 'Extract_tblFinance';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+CustomerID&'_UK' as Customer_ID,
+ProposalID&'_UK' as Proposal_ID,
+FinanceID&'_UK' as Finance_ID;
+SELECT 
+	*
+FROM babclear.dbo.tblFinance;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+CustomerID&'_US' as Customer_ID,
+ProposalID&'_US' as Proposal_ID,
+FinanceID&'_US' as Finance_ID;
+SELECT *
+FROM USAmtivoConnect.dbo.tblFinance;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+CustomerID&'_IRE' as Customer_ID,
+ProposalID&'_IRE' as Proposal_ID,
+FinanceID&'_IRE' as Finance_ID;
+SELECT 
+	*
+FROM CertificationEuropeAC.dbo.tblFinance;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+CustomerID&'_AGT' as Customer_ID,
+ProposalID&'_AGT' as Proposal_ID,
+FinanceID&'_AGT' as Finance_ID;
+SELECT 
+	*
+FROM qaiclAC.dbo.tblFinance;
+
+Drop Fields CustomerID,ProposalID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+
+drop Table $(TableName); 
+
+
+
+///$tab tblProcStats
+Let TableName = 'Extract_tblProcStats';
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+ProcStatID&'_UK' as ProcStat_ID,;
+SELECT 
+	*
+FROM babclear.dbo.tblProcStats;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+ProcStatID&'_US' as ProcStat_ID;
+SELECT *
+FROM USAmtivoConnect.dbo.tblProcStats;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+ProcStatID&'_IRE' as ProcStat_ID,;
+SELECT 
+	*
+FROM CertificationEuropeAC.dbo.tblProcStats;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+ProcStatID&'_AGT' as ProcStat_ID,;
+SELECT 
+	*
+FROM qaiclAC.dbo.tblProcStats;
+
+
+
+Drop Field ProcStatID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+
+drop Table $(TableName);
+
+
+///$tab tblContacts
+Let TableName = 'Extract_tblContacts';
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+$(TableName):
+LOAD 
+	*,
+	'UK' as DataType,
+	ContactID&'_UK' as Contact_ID, 
+	CustomerID&'_UK' as Customer_ID,
+;
+SELECT 
+*
+FROM babclear.dbo.tblContacts;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD 
+	*,
+    'US' as DataType,
+	ContactID&'_US' as Contact_ID, 
+	CustomerID&'_US' as Customer_ID,
+	;
+SELECT *
+FROM USAmtivoConnect.dbo.tblContacts;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+LOAD 
+	*,
+	'IRE' as DataType,
+	ContactID&'_IRE' as Contact_ID, 
+	CustomerID&'_IRE' as Customer_ID,
+;
+SELECT 
+*
+FROM CertificationEuropeAC.dbo.tblContacts;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+LOAD 
+	*,
+	'AGT' as DataType,
+	ContactID&'_AGT' as Contact_ID, 
+	CustomerID&'_AGT' as Customer_ID,
+;
+SELECT 
+*
+FROM qaiclAC.dbo.tblContacts;
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+
+drop Table $(TableName); 
+
+///$tab tblUnknownDatesConsolidated (New view)
+// LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+// Let TableName = 'Extract_tblUnknownDatesConsolidated';
+
+// $(TableName):
+// LOAD CustomerID&'_UK' as CustomerID, 
+// 	ProposalID&'_UK' as ProposalID, 
+// 	newdate, 
+// 	OrderCancelled, 
+// 	OrderPricingQueried, 
+// 	QuoteType,
+//     'UK' as DataType
+//     ;
+
+// SELECT CustomerID,
+// 	ProposalID,
+// 	newdate,
+// 	OrderCancelled,
+// 	OrderPricingQueried,
+// 	QuoteType
+// FROM babclear.dbo.viewUnknownDates;
+
+
+
+// LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+// $(TableName):
+// LOAD CustomerID&'_IRE' as CustomerID, 
+// 	ProposalID&'_IRE' as ProposalID, 
+// 	newdate, 
+// 	OrderCancelled, 
+// 	OrderPricingQueried, 
+// 	QuoteType,
+//     'IRE' as DataType;
+
+// SELECT CustomerID,
+// 	ProposalID,
+// 	newdate,
+// 	OrderCancelled,
+// 	OrderPricingQueried,
+// 	QuoteType
+// FROM CertificationEuropeAC.dbo.viewUnknownDates;
+
+// //Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+// //Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+// drop Table $(TableName);
+
+///$tab tblUser_new
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblUser_new';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+	userid&'_UK' as user_id
+
+;
+SELECT *
+FROM babclear.dbo."tblUser_new";
+
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+Load *,
+'US' as DataType,
+userid&'_US' as user_id
+;
+SELECT *
+FROM USAmtivoConnect.dbo."tblUser_new";
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+Concatenate($(TableName))
+Load *,
+	'IRE' as DataType,
+	userid&'_IRE' as user_id
+
+;
+SELECT *
+FROM CertificationEuropeAC.dbo."tblUser_new";
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+Concatenate($(TableName))
+Load *,
+	'AGT' as DataType,
+	userid&'_AGT' as user_id
+
+;
+SELECT *
+FROM qaiclAC.dbo."tblUser_new";
+
+
+Drop Fields userid From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+drop Table $(TableName);
+
+
+
+
+
+
+
+
+
+
+
+
+
+///$tab tblStandardBoltOn
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblStandardBoltOn';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+BoltOnID&'_UK' as BoltOn_ID
+
+;
+SELECT *
+FROM babclear.dbo.tblStandardBoltOn;
+
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+Load *,
+'US' as DataType,
+BoltOnID&'_US' as BoltOn_ID
+;
+SELECT *
+FROM USAmtivoConnect.dbo.tblStandardBoltOn;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+BoltOnID&'_IRE' as BoltOn_ID
+
+;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblStandardBoltOn;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+BoltOnID&'_AGT' as BoltOn_ID
+
+;
+SELECT *
+FROM qaiclAC.dbo.tblStandardBoltOn;
+
+drop Fields BoltOnID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+drop Table $(TableName);
+
+
+
+
+
+
+
+
+
+
+
+
+
+///$tab tblUnknownDates
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblUnknownDates';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+CustomerID&'_UK' as Customer_ID,
+ProposalID&'_UK' as Proposal_ID;
+SELECT *
+FROM babclear.dbo.tblUnknownDates;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+CustomerID&'_US' as Customer_ID,
+ProposalID&'_US' as Proposal_ID;
+SELECT *
+FROM USAmtivoConnect.dbo.tblUnknownDates;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+CustomerID&'_IRE' as Customer_ID,
+ProposalID&'_IRE' as Proposal_ID;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblUnknownDates;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+CustomerID&'_AGT' as Customer_ID,
+ProposalID&'_AGT' as Proposal_ID;
+SELECT *
+FROM qaiclAC.dbo.tblUnknownDates;
+
+
+Drop Fields CustomerID,ProposalID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+
+drop Table $(TableName); 
+
+
+///$tab tblFranchise_qaiclAC
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblFranchise_qaiclAC';
+
+$(TableName):
+
+
+SELECT 
+	FranchiseID,
+	FranchiseName,
+	FranchiseCurrency,
+	FranchiseDiaryEmail,
+	FranchiseFinanceEmail,
+	FranchiseSalesEmail,
+	FranchiseRenewEmail,
+	FranchiseAddress,
+	FranchiseCompanyNumber,
+	FranchiseNameShort,
+	FranchiseRegIn,
+	FranchiseMainEmail,
+	FranchiseLocalLaw,
+	FranchiseDayRate,
+	FranchiseVATNumber,
+	FranchiseBankAcc,
+	FranchiseBankSort,
+	FranchiseVATRate,
+	FranchisePreferredAB,
+	FranchiseTel,
+	GoCardlessAccessToken,
+	FranchiseAB,
+	FranchiseFieldEmail,
+	BABCOMPIN,
+	InitialReg,
+	InitialPrem,
+	SurvReg,
+	SurvPrem,
+	FranchiseDayRateHigh
+FROM qaiclAC.dbo.tblFranchise;
+
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName); 
+
+
+///$tab tblCustomerAddresses
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblCustomerAddresses';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+	AddressID&'_UK' as Address_ID,
+    CustomerID&'_UK' as Customer_ID,
+    ContactID&'_UK' as Contact_ID,
+    
+
+;
+SELECT *
+FROM babclear.dbo.tblCustomerAddresses;
+
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+Load *,
+'US' as DataType,
+	AddressID&'_US' as Address_ID,
+    CustomerID&'_US' as Customer_ID,
+    ContactID&'_US' as Contact_ID,
+;
+SELECT *
+FROM USAmtivoConnect.dbo.tblCustomerAddresses;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+	'IRE' as DataType,
+	AddressID&'_IRE' as Address_ID,
+    CustomerID&'_IRE' as Customer_ID,
+    ContactID&'_IRE' as Contact_ID;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblCustomerAddresses;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+	'AGT' as DataType,
+	AddressID&'_AGT' as Address_ID,
+    CustomerID&'_AGT' as Customer_ID,
+    ContactID&'_AGT' as Contact_ID;
+SELECT *
+FROM qaiclAC.dbo.tblCustomerAddresses;
+
+
+
+Drop Fields AddressID, CustomerID, ContactID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+
+drop Table $(TableName);
+///$tab tblHowHeard
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblHowHeard';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+howheardid&'_UK' as howheard_id;
+SELECT *
+FROM babclear.dbo.tblHowHeard;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+howheardid&'_US' as howheard_id,;
+SELECT *
+FROM USAmtivoConnect.dbo.tblHowHeard;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+howheardid&'_IRE' as howheard_id;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblHowHeard;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+howheardid&'_AGT' as howheard_id;
+SELECT *
+FROM qaiclAC.dbo.tblHowHeard;
+
+
+
+Drop Field howheardid From $(TableName);
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+
+drop Table $(TableName); 
+
+
+///$tab Dates Non Distinct
+// UnknownDatesNonDistinct:
+// LOAD
+//     newdate,
+//     Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates_Activ.qvd]
+// (qvd);
+
+// Concatenate(UnknownDatesNonDistinct)
+// LOAD
+//     newdate,
+//      null() as Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates_Cyber.qvd]
+// (qvd);
+
+// Concatenate(UnknownDatesNonDistinct)
+
+// LOAD
+//     newdate,
+//     Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates_eLearn.qvd]
+// (qvd);
+
+// Concatenate(UnknownDatesNonDistinct)
+
+// LOAD
+//     newdate,
+//     Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates_GDPR.qvd]
+// (qvd);
+
+// Concatenate(UnknownDatesNonDistinct)
+
+// LOAD
+//     newdate,
+//     Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates_General.qvd]
+// (qvd);
+
+// Concatenate(UnknownDatesNonDistinct)
+
+
+// LOAD
+//     newdate,
+//     Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates_HC.qvd]
+// (qvd);
+
+// Concatenate(UnknownDatesNonDistinct)
+
+
+// LOAD
+//     newdate,
+//     Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates_PAS2030.qvd]
+// (qvd);
+
+// Concatenate(UnknownDatesNonDistinct)
+
+// LOAD
+//     newdate,
+//     Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates_PreAss.qvd]
+// (qvd);
+
+// Concatenate(UnknownDatesNonDistinct)
+
+// LOAD
+//     newdate,
+//     //Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates_Security.qvd]
+// (qvd);
+
+// Concatenate(UnknownDatesNonDistinct)
+
+// LOAD
+//     newdate,
+//     Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates_Surv.qvd]
+// (qvd);
+
+// Concatenate(UnknownDatesNonDistinct)
+
+// LOAD
+//     newdate,
+//     Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates_train.qvd]
+// (qvd);
+
+// Concatenate(UnknownDatesNonDistinct)
+
+// LOAD
+//     newdate,
+//     Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates_Trans.qvd]
+// (qvd);
+
+// Concatenate(UnknownDatesNonDistinct)
+
+// LOAD
+//     newdate,
+//      null() as Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates_Transmittal.qvd]
+// (qvd);
+
+// Concatenate(UnknownDatesNonDistinct)
+
+// LOAD
+//     newdate,
+//     Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates.qvd]
+// (qvd);
+
+
+
+///$tab Dates Distinct
+// NoConcatenate
+
+// UnknownDatesDistinct:
+// LOAD DISTINCT
+//     newdate,
+//     Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates_Activ.qvd]
+// (qvd);
+
+// Concatenate(UnknownDatesDistinct)
+// LOAD DISTINCT
+//     newdate,
+//     //Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates_Cyber.qvd]
+// (qvd);
+
+// Concatenate(UnknownDatesDistinct)
+
+// LOAD DISTINCT
+//     newdate,
+//     Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates_eLearn.qvd]
+// (qvd);
+
+// Concatenate(UnknownDatesDistinct)
+
+// LOAD DISTINCT
+//     newdate,
+//     Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates_GDPR.qvd]
+// (qvd);
+
+// Concatenate(UnknownDatesDistinct)
+
+// LOAD DISTINCT
+//     newdate,
+//     Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates_General.qvd]
+// (qvd);
+
+// Concatenate(UnknownDatesDistinct)
+
+
+// LOAD DISTINCT
+//     newdate,
+//     Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates_HC.qvd]
+// (qvd);
+
+// Concatenate(UnknownDatesDistinct)
+
+
+// LOAD DISTINCT
+//     newdate,
+//     Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates_PAS2030.qvd]
+// (qvd);
+
+// Concatenate(UnknownDatesDistinct)
+
+// LOAD DISTINCT
+//     newdate,
+//     Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates_PreAss.qvd]
+// (qvd);
+
+// Concatenate(UnknownDatesDistinct)
+
+// LOAD DISTINCT
+//     newdate,
+//     //Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates_Security.qvd]
+// (qvd);
+
+// Concatenate(UnknownDatesDistinct)
+
+// LOAD DISTINCT
+//     newdate,
+//     Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates_Surv.qvd]
+// (qvd);
+
+// Concatenate(UnknownDatesDistinct)
+
+// LOAD DISTINCT
+//     newdate,
+//     Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates_train.qvd]
+// (qvd);
+
+// Concatenate(UnknownDatesDistinct)
+
+// LOAD DISTINCT
+//     newdate,
+//     Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates_Trans.qvd]
+// (qvd);
+
+// Concatenate(UnknownDatesDistinct)
+
+// LOAD DISTINCT
+//     newdate,
+//     //Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates_Transmittal.qvd]
+// (qvd);
+
+// Concatenate(UnknownDatesDistinct)
+
+// LOAD DISTINCT
+//     newdate,
+//     Package,
+//     OrderCancelled,
+//     OrderPricingQueried,
+//     DataType,
+//     Customer_ID,
+//     Proposal_ID
+// FROM [lib://QVD Files:DataFiles/Extract_tblUnknownDates.qvd]
+// (qvd);
+
+
+///$tab tblAuditReport
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblAuditReport';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+AuditReportID&'_UK' as AuditReport_ID,
+VisitsID&'_UK' as Visits_ID,
+CustProcessID&'_UK' as CustProcess_ID;
+SELECT 
+	*
+FROM babclear.dbo.tblAuditReport;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+AuditReportID&'_US' as AuditReport_ID,
+VisitsID&'_US' as Visits_ID,
+CustProcessID&'_US' as CustProcess_ID;
+SELECT *
+FROM USAmtivoConnect.dbo.tblAuditReport;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+AuditReportID&'_IRE' as AuditReport_ID,
+VisitsID&'_IRE' as Visits_ID,
+CustProcessID&'_IRE' as CustProcess_ID;
+SELECT 
+	*
+FROM CertificationEuropeAC.dbo.tblAuditReport;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+AuditReportID&'_AGT' as AuditReport_ID,
+VisitsID&'_AGT' as Visits_ID,
+CustProcessID&'_AGT' as CustProcess_ID;
+SELECT 
+	*
+FROM qaiclAC.dbo.tblAuditReport;
+
+Drop Fields 
+AuditReportID,
+VisitsID,
+CustProcessID 
+From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+
+Drop Table $(TableName);
+
+
+
+///$tab tblComplexityAssessmentAns
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+//tblProposals contains quotes
+Let TableName = 'Extract_tblComplexityAssessmentAns';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+CustomerID&'_UK' as Customer_ID
+
+;
+SELECT 
+	*
+FROM babclear.dbo.tblComplexityAssessmentAns;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+CustomerID&'_US' as Customer_ID
+;
+SELECT *
+FROM USAmtivoConnect.dbo.tblComplexityAssessmentAns;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+
+Load *,
+'IRE' as DataType,
+CustomerID&'_IRE' as Customer_ID;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblComplexityAssessmentAns;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+
+Load *,
+'AGT' as DataType,
+CustomerID&'_AGT' as Customer_ID;
+SELECT *
+FROM qaiclAC.dbo.tblComplexityAssessmentAns;
+
+
+Drop Fields CustomerID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+
+
+
+///$tab tblNaceNew
+Let TableName = 'Extract_tblNACE_NEW';
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+NACEID&'_UK' as NACE_ID;
+SELECT *
+FROM babclear.dbo."tblEA-NACE-NEW";
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+NACEID&'_US' as NACE_ID,;
+SELECT *
+FROM USAmtivoConnect.dbo."tblEA-NACE-NEW";
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+NACEID&'_IRE' as NACE_ID;
+SELECT *
+FROM CertificationEuropeAC.dbo."tblEA-NACE-NEW";
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+NACEID&'_AGT' as NACE_ID;
+SELECT *
+FROM qaiclAC.dbo."tblEA-NACE-NEW";
+
+
+
+Drop Field NACEID From $(TableName);
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+drop Table $(TableName);
+
+
+///$tab tblUnknownDates_Trans
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+//Trans relates to GAAP Analysis
+
+Let TableName = 'Extract_tblUnknownDates_Trans';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+CustomerID&'_UK' as Customer_ID,
+ProposalID&'_UK' as Proposal_ID;
+SELECT *
+FROM babclear.dbo.tblUnknownDates_Trans;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+CustomerID&'_US' as Customer_ID,
+ProposalID&'_US' as Proposal_ID;
+SELECT *
+FROM USAmtivoConnect.dbo.tblUnknownDates_Trans;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+CustomerID&'_IRE' as Customer_ID,
+ProposalID&'_IRE' as Proposal_ID;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblUnknownDates_Trans;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+CustomerID&'_AGT' as Customer_ID,
+ProposalID&'_AGT' as Proposal_ID;
+SELECT *
+FROM qaiclAC.dbo.tblUnknownDates_Trans;
+
+
+
+Drop Fields CustomerID,ProposalID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+///$tab tblHold
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblHold';
+
+$(TableName):
+
+LOAD 
+	'UK' as DataType,
+    HoldID&'_UK' as HoldID, 
+	CustomerID&'_UK' as CustomerID, 
+	HoldDate, 
+	HoldReasonID&'_UK' as HoldReasonID, 
+	holdJustification;
+
+
+SELECT HoldID,
+	CustomerID,
+	HoldDate,
+	HoldReasonID,
+	holdJustification
+FROM babclear.dbo.tblHold;
+
+
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+Concatenate($(TableName))
+
+LOAD 
+	'US' as DataType,
+    HoldID&'_US'as HoldID, 
+	CustomerID&'_US' as CustomerID, 
+	HoldDate, 
+	HoldReasonID&'_US' as HoldReasonID;
+
+
+SELECT HoldID,
+	CustomerID,
+	HoldDate,
+	HoldReasonID
+FROM USAmtivoConnect.dbo.tblHold;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+
+LOAD 
+	'IRE' as DataType,
+    HoldID&'_IRE'as HoldID, 
+	CustomerID&'_IRE' as CustomerID, 
+	HoldDate, 
+	HoldReasonID&'_IRE' as HoldReasonID, 
+	holdJustification;
+
+
+SELECT HoldID,
+	CustomerID,
+	HoldDate,
+	HoldReasonID,
+	holdJustification
+FROM CertificationEuropeAC.dbo.tblHold;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+
+LOAD 
+	'AGT' as DataType,
+    HoldID&'_AGT'as HoldID, 
+	CustomerID&'_AGT' as CustomerID, 
+	HoldDate, 
+	HoldReasonID&'_AGT' as HoldReasonID, 
+	holdJustification;
+
+
+SELECT HoldID,
+	CustomerID,
+	HoldDate,
+	HoldReasonID,
+	holdJustification
+FROM qaiclAC.dbo.tblHold;
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+
+
+
+///$tab tblHoldReason
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+Let TableName = 'Extract_tblHoldReason';
+
+
+$(TableName):
+LOAD 
+	'UK' as DataType,
+	HoldReasonID&'_UK' as HoldReasonID, 
+	HoldReason, 
+	HoldPreQuote, 
+	HoldPostQuote, 
+	HoldRemove;
+
+
+SELECT HoldReasonID,
+	HoldReason,
+	HoldPreQuote,
+	HoldPostQuote,
+	HoldRemove
+FROM babclear.dbo.tblHoldReason;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+Concatenate($(TableName))
+
+
+LOAD 
+	'US' as DataType,
+    HoldReasonID&'_US' as HoldReasonID, 
+	HoldReason;
+
+
+SELECT HoldReasonID,
+	HoldReason
+FROM USAmtivoConnect.dbo.tblHoldReason;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+
+LOAD 
+	'IRE' as DataType,
+    HoldReasonID&'_IRE' as HoldReasonID, 
+	HoldReason, 
+	HoldPreQuote, 
+	HoldPostQuote, 
+	HoldRemove;
+
+[tblHoldReason]:
+SELECT HoldReasonID,
+	HoldReason,
+	HoldPreQuote,
+	HoldPostQuote,
+	HoldRemove
+FROM CertificationEuropeAC.dbo.tblHoldReason;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+
+LOAD 
+	'AGT' as DataType,
+    HoldReasonID&'_AGT' as HoldReasonID, 
+	HoldReason, 
+	HoldPreQuote, 
+	HoldPostQuote, 
+	HoldRemove;
+
+[tblHoldReason]:
+SELECT HoldReasonID,
+	HoldReason,
+	HoldPreQuote,
+	HoldPostQuote,
+	HoldRemove
+FROM qaiclAC.dbo.tblHoldReason;
+
+
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+///$tab tblMD5GWO
+/*
+
+Mark Nutburn - Application Support Manager
+20/03/2024, 18:05 GMT 
+Hi Antony,
+The lookup on the Orion system links into tblMD5GWO instead of the bolt ons.
+For instance:
+1001 = 
+Basic Safety Training Standard	First Aid
+1002=
+Basic Safety Training Standard	Manual Handling
+Can you add that into the import on Qlik?
+________________________________________
+Antony Thornton
+15/03/2024, 16:30 GMT 
+Hi Team,
+
+Me again sorry.
+
+I just wanted to check if the values in these two tables should be the same? Our map works for the UK and Ire not the US. Is it possible that bolton_ID for visits was loaded with 1 0 missing? I.e. it should be 10001_US instead of 1001_US?
+
+*/
+
+
+Let TableName = 'Extract_tblMD5GWO';
+
+$(TableName):
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+LOAD 
+	gwoID&'_US' as gwoID, 
+	GWOCategory, 
+	GWOTraining;
+SELECT gwoID,
+	GWOCategory,
+	GWOTraining
+FROM USAmtivoConnect.dbo.tblMD5GWO;
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+///$tab tblAgency-Agency
+/* 
+
+Discontinued 05/03/2026. 
+
+If required please speak to App Supp.
+
+https://teams.microsoft.com/l/message/19:07cb4ffc-5dfc-4b6f-85a4-2056da946e35_37a4dfdf-f314-4af8-a23c-e14010492e0d@unq.gbl.spaces/1772715856804?context=%7B%22contextType%22%3A%22chat%22%7D
+
+*/
+
+
+
+// LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+// Let TableName = 'Extract_Agent_tblAgency';
+
+// $(TableName):
+
+
+// SELECT 
+// 	AgencyID,
+// 	AgencyName,
+// 	AgencySignUp,
+// 	AgencyRemove,
+// 	AgencyCountry,
+// 	AgencyCurrency
+// FROM Agency.dbo.tblAgency;
+
+
+// Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+// Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+// Drop Table $(TableName);
+///$tab tblTrialPricing
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+Let TableName = 'Extract_tblTrialPricing';
+
+
+$(TableName):
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+LOAD 
+	*,
+    'UK' as DataType,
+	PricingID&'_UK' as Pricing_ID, 
+	ClientID&'_UK' as Client_ID, 
+	CustomerID&'_UK' as Customer_ID
+    ;
+SELECT
+*
+FROM babclear.dbo.tblTrialPricing;
+
+drop fields PricingID, ClientID, CustomerID from $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+
+Drop Table $(TableName);
+
+///$tab tblCustomers_qaiclAC
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+Let TableName = 'Extract_tblCustomers_qaiclAC';
+
+$(TableName):
+
+
+SELECT 
+	CustomerID,
+	CompanyPIN,
+	Agency,
+	CustomerType,
+	CompanyName,
+	Address1,
+	Address2,
+	Address3,
+	Town,
+	County,
+	PostalCode,
+	Country,
+	RegionID,
+	LocalKnowledge,
+	Tel,
+	Ext,
+	Fax,
+	Email,
+	Web,
+	Notes,
+	CompanyNumber,
+	VATNumber,
+	CharityNumber,
+	MembershipNumber,
+	MembershipType,
+	NoOfEmployees,
+	ApplicableEmployees,
+	NoOfSites,
+	TotalSites,
+	Turnover,
+	ProcStat,
+	InitialCertDate,
+	ExpiryDate,
+	PrevExpiryDate,
+	CertStartDate,
+	NextVisitDate,
+	Scope,
+	ScopeJustify,
+	LowRisk,
+	Risk,
+	IndustrySectors,
+	BusinessSectors,
+	NACE,
+	TechnicalAreas,
+	HowHeard,
+	enquirysource,
+	ProjectManager,
+	InitialContact,
+	ReferredBy,
+	LinkedStandards,
+	MultiAudit,
+	EnquiryOwnerID,
+	CustomerStandards,
+	CorpManagement,
+	SameOutputs,
+	SampleNo,
+	ST2Visits,
+	"Cust_AuditLength",
+	"UKASAccredited_CertificationStart",
+	"UKASAccredited_CertificationExpire",
+	UKASAccredited,
+	NonUKASAccredited,
+	"UKASAccredited_Certificate",
+	"UKASAccredited_Transfer",
+	ConsultantName,
+	ConsultantID,
+	Sampled,
+	Relationships,
+	EnquiryFrom,
+	Overseas,
+	LatestPO,
+	LatestPODate,
+	Reference,
+	CRActivity,
+	CRLegal,
+	CRLegalDetails,
+	CRCompetency,
+	CRCompetencyDetails,
+	CRUpdateDate,
+	CRUpdateUser,
+	CRAllFields,
+	CRAllFieldsReason,
+	CRUnaccredited,
+	CRUnaccreditedKnow,
+	CRVerifiedDate,
+	CRVerifiedBy,
+	CRVerifiedReason,
+	CRExclusions,
+	CRDateAgreement,
+	CRLogoConfirmed,
+	CRUnaccreditedReason,
+	AuditorDays,
+	Declined,
+	UKASRequired,
+	BigTicketAllocate,
+	CROutsourced,
+	CREnvironmental,
+	CROffSite,
+	CRSiteVisit,
+	CRAspects,
+	SMTRefer,
+	PDP,
+	AccreditedCertificate,
+	AuditorNotes,
+	CRSuggestedDays,
+	CREnergyConsumption,
+	CREnergySources,
+	CREnergyUses,
+	TransferReason,
+	TransferComplaints,
+	TransferLegal,
+	TransferLegalDetails,
+	TransferReturn,
+	Emp1,
+	Emp2,
+	Emp3,
+	Emp4,
+	Emp5,
+	Emp6,
+	Emp7,
+	Emp8,
+	Emp9,
+	Emp10,
+	TransferSignOff,
+	TransferNextVisit,
+	CRSubmit,
+	CRDontSign,
+	IntQs1,
+	IntQs2,
+	IntQs3,
+	IntQs4,
+	IntQs5,
+	IntQs6,
+	IntQs7,
+	IntQs8,
+	ST1RepRec,
+	ST1RepCon,
+	ST1RepClient,
+	ST1RepBMS,
+	ST1RepToolkit,
+	ST1RepHelp,
+	ST1RepInv,
+	ST1RepAnyQs,
+	ST1RepQs,
+	TandCVersion,
+	TandCDate,
+	HeatRating,
+	PackageItems1,
+	PackageItems2,
+	PackageItems3,
+	PackageItems4,
+	PackageItems5,
+	PackageItems6,
+	PackageItems7,
+	PackageItems8,
+	PackageItems9,
+	MigratedPIN,
+	ReferredByAuditor,
+	LastUser,
+	LastAccessed,
+	Emp11,
+	createcompletionpack,
+	MD5Justification,
+	HSMSRisk,
+	TransCertNumber,
+	TransMessageSent,
+	ADRedPrep,
+	ADRedWrite,
+	ADRedNCs,
+	AuditorDaysST1,
+	AuditorDaysST2,
+	AuditorDaysSurv,
+	CROffSiteLocations,
+	CRAddedServices,
+	CRAddedServicesName,
+	CRNotesForCompliance,
+	CorrectSurvDate,
+	Initial18001,
+	CBIntegrated,
+	RemDocs,
+	RemSkype,
+	RemContact,
+	ActivEssentials,
+	ActivComply,
+	ActivOther,
+	CertificateValidationCode,
+	ActivSystemDate,
+	ComplianceAllocationID,
+	ActivSystemRevoke,
+	ActivSystemRemove,
+	ExtensionDateCV,
+	AddToHolding,
+	ExtensionDateCVRemote,
+	InterimCertificateStart,
+	RiskOverride,
+	RiskOverrideJustify,
+	RiskOverrideLevel,
+	FinancePriorityOverride,
+	CertificateHeld,
+	LeadScoring,
+	Emp20,
+	Emp21,
+	Emp22,
+	Emp23,
+	ComplexityValidationCode,
+	ComplexityValidationStd,
+	AuditorDaysST2v2,
+	AuditorDaysSurvv2,
+	ClientID,
+	ActivComplyTrialDate,
+	ActivComplyDate,
+	AccountManReqd,
+	ActivComplyTrialReq,
+	ActivComplyTrialName,
+	ActivComplyTrialJT,
+	ActivComplyTrialDur,
+	LeadStatus,
+	ReStartStatus,
+	CorpEnt,
+	CustServAllocationID,
+	SurvCycle,
+	Rev2017Expiry,
+	TrustMarkRef,
+	TrustMarkInitialDate,
+	BoltOns,
+	TMSubLicence,
+	TMLicenceNumber,
+	PAS2030Revision,
+	PAS2030Renewal,
+	PASeco2017,
+	PAS2030ecoghg,
+	PASSignedOff,
+	PASInspecComplete,
+	OrbSubLicence,
+	ActivComplyRevokeDate,
+	PASApplied,
+	ActivValue,
+	CyberEssDeclaration,
+	ReasonForOrbStatusChange,
+	ACDayRate,
+	ABid,
+	EnMSAnnualEnergy,
+	EnMSEnergySources,
+	EnMSEnergyUses,
+	empEnMS1,
+	empEnMS2,
+	empEnMS3,
+	empEnMS4,
+	empEnMS5,
+	empEnMS6,
+	empEnMS7,
+	emp20IT,
+	auditfreq,
+	PrefCurr,
+	ThreeYearProg,
+	ToolkitSent,
+	PaymentTerms,
+	pas2030ChangeJustify,
+	AnnualRegFee,
+	DaysST1Rem,
+	DaysST1On,
+	DaysST2Rem,
+	DaysST2On,
+	DaysSurvCombRem,
+	DaysSurvCombOn,
+	DaysSurv1Rem,
+	DaysSurv1On,
+	DaysSurv2Rem,
+	DaysSurv2On,
+	DaysRecertRem,
+	DaysRecertOn,
+	CyberAssessor,
+	DateOfDeactivation,
+	ActivWebinarDate,
+	ActivDemoDate,
+	ActivComplyWebinarDate,
+	ActivComplyDemoDate,
+	CREscalate,
+	CR27701DC,
+	CR27701DP,
+	"hubspot_contact_id",
+	PASDocReceived,
+	UnifiedSocialCreditCode,
+	RecertDue,
+	CRAssessorAppropriate,
+	ProcessIncManagement,
+	ProcessIncDesign,
+	ProcessIncControlExt,
+	ProcessIncControlProd,
+	ITAR,
+	ActivCertify
+FROM qaiclAC.dbo.tblCustomers;
+
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName); 
+
+
+
+///$tab tblBusinessSectors
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblBusinessSectors';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+IndustryID&'_UK' as Industry_ID;
+SELECT *
+FROM babclear.dbo.tblBusinessSectors;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+IndustryID&'_US' as Industry_ID,;
+SELECT *
+FROM USAmtivoConnect.dbo.tblBusinessSectors;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))Load *,
+'IRE' as DataType,
+IndustryID&'_IRE' as Industry_ID;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblBusinessSectors;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))Load *,
+'AGT' as DataType,
+IndustryID&'_AGT' as Industry_ID;
+SELECT *
+FROM qaiclAC.dbo.tblBusinessSectors;
+
+Drop Field IndustryID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+
+///$tab tblPencilledDates
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblPencilledDates';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+customerID&'_UK' as customer_ID,
+pencilledID&'_UK' as pencilled_ID,
+pencilledAuditorID&'_UK' as pencilledAuditor_ID;
+SELECT *
+FROM babclear.dbo.tblPencilledDates;
+
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+Load *,
+'US' as DataType,
+customerID&'_US' as customer_ID,
+pencilledID&'_US' as pencilled_ID,
+pencilledAuditorID&'_US' as pencilledAuditor_ID;SELECT *
+FROM USAmtivoConnect.dbo.tblPencilledDates;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+customerID&'_IRE' as customer_ID,
+pencilledID&'_IRE' as pencilled_ID,
+pencilledAuditorID&'_IRE' as pencilledAuditor_ID;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblPencilledDates;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+customerID&'_AGT' as customer_ID,
+pencilledID&'_AGT' as pencilled_ID,
+pencilledAuditorID&'_AGT' as pencilledAuditor_ID;
+SELECT *
+FROM qaiclAC.dbo.tblPencilledDates;
+
+
+Drop Fields customerID,pencilledID, pencilledAuditorID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+
+
+
+///$tab tblSecurityCustomer
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblSecurityCustomer';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+SecurityID&'_UK' as Security_ID,
+customerID&'_UK' as Customer_ID
+
+;
+SELECT *
+FROM babclear.dbo.tblSecurityCustomer;
+
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+// Concatenate($(TableName))
+// Load *,
+// 'US' as DataType,
+// SecurityID&'_US' as Security_ID,
+// customerID&'_US' as Customer_ID
+// ;
+// SELECT *
+// FROM USAmtivoConnect.dbo.tblSecurityCustomer;
+
+
+// LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+// Concatenate($(TableName))
+// Load *,
+// 'IRE' as DataType,
+// SecurityID&'_IRE' as Security_ID,
+// customerID&'_IRE' as Customer_ID
+
+// ;
+// SELECT *
+// FROM CertificationEuropeAC.dbo.tblSecurityCustomer;
+
+
+Drop Fields SecurityID,customerID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+
+
+
+
+
+
+
+
+
+
+
+
+///$tab tblOFIs
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblOFIs';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+	OFIID&'_UK' as OFI_ID,
+    VisitsID&'_UK' as Visits_ID
+    
+
+;
+SELECT *
+FROM babclear.dbo.tblOFIs;
+
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+Load *,
+'US' as DataType,
+	OFIID&'_US' as OFI_ID,
+    VisitsID&'_US' as Visits_ID
+;
+SELECT *
+FROM USAmtivoConnect.dbo.tblOFIs;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+	'IRE' as DataType,
+	OFIID&'_IRE' as OFI_ID,
+    VisitsID&'_IRE' as Visits_ID;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblOFIs;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+	'AGT' as DataType,
+	OFIID&'_AGT' as OFI_ID,
+    VisitsID&'_AGT' as Visits_ID;
+SELECT *
+FROM qaiclAC.dbo.tblOFIs;
+
+
+Drop Fields OFIID, VisitsID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+
+
+
+
+
+
+
+
+
+
+
+
+///$tab tblNonConformance
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblNonConformance';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+	NonconformanceID&'_UK' as Nonconformance_ID,
+    CustomerID&'_UK' as Customer_ID,
+    VisitsID&'_UK' as Visits_ID;
+SELECT *
+FROM babclear.dbo.tblNonConformance;
+
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+Load *,
+'US' as DataType,
+	NonconformanceID&'_US' as Nonconformance_ID,
+    CustomerID&'_US' as Customer_ID,
+    VisitsID&'_US' as Visits_ID
+;
+SELECT *
+FROM USAmtivoConnect.dbo.tblNonConformance;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+	'IRE' as DataType,
+	NonconformanceID&'_IRE' as Nonconformance_ID,
+    CustomerID&'_IRE' as Customer_ID,
+    VisitsID&'_IRE' as Visits_ID;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblNonConformance;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+	'AGT' as DataType,
+	NonconformanceID&'_AGT' as Nonconformance_ID,
+    CustomerID&'_AGT' as Customer_ID,
+    VisitsID&'_AGT' as Visits_ID;
+SELECT *
+FROM qaiclAC.dbo.tblNonConformance;
+
+
+Drop Fields NonconformanceID, CustomerID, VisitsID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+
+
+
+
+
+
+
+
+
+
+
+
+///$tab tblRiskAssessment
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblRiskAssessment';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+	RiskID&'_UK' as Risk_ID,
+    CustomerID&'_UK' as Customer_ID,
+    UserID&'_UK' as User_ID;
+SELECT *
+FROM babclear.dbo.tblRiskAssessment;
+
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+Load *,
+'US' as DataType,
+	RiskID&'_US' as Risk_ID,
+    CustomerID&'_US' as Customer_ID,
+    UserID&'_US' as User_ID;
+SELECT *
+FROM USAmtivoConnect.dbo.tblRiskAssessment;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+	'IRE' as DataType,
+	RiskID&'_IRE' as Risk_ID,
+    CustomerID&'_IRE' as Customer_ID,
+    UserID&'_IRE' as User_ID;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblRiskAssessment;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+	'AGT' as DataType,
+	RiskID&'_AGT' as Risk_ID,
+    CustomerID&'_AGT' as Customer_ID,
+    UserID&'_AGT' as User_ID;
+SELECT *
+FROM qaiclAC.dbo.tblRiskAssessment;
+
+
+
+Drop Fields RiskID, CustomerID, UserID From $(TableName);
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+
+
+
+
+
+
+
+
+
+
+
+
+///$tab tblActivities
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblActivities';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+	ActivityID&'_UK' as Activity_ID,
+    CustomerID&'_UK' as Customer_ID,
+    ContactID&'_UK' as Contact_ID,
+    UserID&'_UK' as User_ID,
+    UpdatedByID&'_UK' as UpdatedBy_ID;
+SELECT *
+FROM babclear.dbo.tblActivities;
+
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+Load *,
+'US' as DataType,
+	ActivityID&'_UK' as Activity_ID,
+    CustomerID&'_UK' as Customer_ID,
+    ContactID&'_UK' as Contact_ID,
+    UserID&'_UK' as User_ID,
+    UpdatedByID&'_UK' as UpdatedBy_ID
+;
+SELECT *
+FROM USAmtivoConnect.dbo.tblActivities;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+	'IRE' as DataType,
+	ActivityID&'_IRE' as Activity_ID,
+    CustomerID&'_IRE' as Customer_ID,
+    ContactID&'_IRE' as Contact_ID,
+    UserID&'_IRE' as User_ID,
+    UpdatedByID&'_IRE' as UpdatedBy_ID;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblActivities;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+	'AGT' as DataType,
+	ActivityID&'_AGT' as Activity_ID,
+    CustomerID&'_AGT' as Customer_ID,
+    ContactID&'_AGT' as Contact_ID,
+    UserID&'_AGT' as User_ID,
+    UpdatedByID&'_AGT' as UpdatedBy_ID;
+SELECT *
+FROM qaiclAC.dbo.tblActivities;
+
+
+Drop Fields ActivityID, CustomerID,ContactID, UserID, UpdatedByID From $(TableName);
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+
+
+
+
+
+
+
+
+
+
+
+
+///$tab tblCustomer--Agency
+/* 
+
+Discontinued 05/03/2026. 
+
+If required please speak to App Supp.
+
+https://teams.microsoft.com/l/message/19:07cb4ffc-5dfc-4b6f-85a4-2056da946e35_37a4dfdf-f314-4af8-a23c-e14010492e0d@unq.gbl.spaces/1772715856804?context=%7B%22contextType%22%3A%22chat%22%7D
+
+*/
+
+// LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+// Let TableName = 'Extract_Agency_tblCustomers';
+
+// $(TableName):
+
+
+// SELECT 
+// 	CustomerID,
+// 	Agency,
+// 	CompanyName,
+// 	Address1,
+// 	Address2,
+// 	Address3,
+// 	Town,
+// 	County,
+// 	PostalCode,
+// 	Country,
+// 	RegionID,
+// 	LocalKnowledge,
+// 	Tel,
+// 	Ext,
+// 	Fax,
+// 	Email,
+// 	Web,
+// 	Notes,
+// 	CompanyNumber,
+// 	VATNumber,
+// 	CharityNumber,
+// 	MembershipNumber,
+// 	MembershipType,
+// 	NoOfEmployees,
+// 	ApplicableEmployees,
+// 	NoOfSites,
+// 	TotalSites,
+// 	Turnover,
+// 	ProcStat,
+// 	InitialCertDate,
+// 	ExpiryDate,
+// 	PrevExpiryDate,
+// 	NextVisitDate,
+// 	Scope,
+// 	LowRisk,
+// 	Risk,
+// 	IndustrySectors,
+// 	BusinessSectors,
+// 	NACE,
+// 	TechnicalAreas,
+// 	HowHeard,
+// 	enquirysource,
+// 	ProjectManager,
+// 	InitialContact,
+// 	ReferredBy,
+// 	LinkedStandards,
+// 	MultiAudit,
+// 	EnquiryOwnerID,
+// 	CustomerStandards,
+// 	CorpManagement,
+// 	SameOutputs,
+// 	SampleNo,
+// 	ST2Visits,
+// 	"Cust_AuditLength",
+// 	"UKASAccredited_CertificationStart",
+// 	"UKASAccredited_CertificationExpire",
+// 	UKASAccredited,
+// 	NonUKASAccredited,
+// 	"UKASAccredited_Certificate",
+// 	"UKASAccredited_Transfer",
+// 	ConsultantName,
+// 	Sampled,
+// 	Relationships,
+// 	EnquiryFrom,
+// 	Overseas,
+// 	LatestPO,
+// 	LatestPODate,
+// 	Reference,
+// 	CRActivity,
+// 	CRLegal,
+// 	CRLegalDetails,
+// 	CRCompetency,
+// 	CRCompetencyDetails,
+// 	CRUpdateDate,
+// 	CRUpdateUser,
+// 	CRAllFields,
+// 	CRAllFieldsReason,
+// 	CRUnaccredited,
+// 	CRUnaccreditedKnow,
+// 	CRVerifiedDate,
+// 	CRVerifiedBy,
+// 	CRVerifiedReason,
+// 	CRExclusions,
+// 	CRDateAgreement,
+// 	CRLogoConfirmed,
+// 	CRUnaccreditedReason,
+// 	AuditorDays,
+// 	Declined,
+// 	UKASRequired,
+// 	BigTicketAllocate,
+// 	CROutsourced,
+// 	CREnvironmental,
+// 	CROffSite,
+// 	CRSiteVisit,
+// 	CRAspects,
+// 	CRAuditor,
+// 	SMTRefer,
+// 	AccreditedCertificate,
+// 	SubmitForApproval,
+// 	TransferReason,
+// 	TransferComplaints,
+// 	TransferLegal,
+// 	TransferLegalDetails,
+// 	TransferReturn,
+// 	ConsultantID,
+// 	CompanyPIN,
+// 	AuditorNotes,
+// 	CRSuggestedDays,
+// 	CREnergyConsumption,
+// 	CREnergySources,
+// 	CREnergyUses,
+// 	PDP,
+// 	Emp1,
+// 	Emp2,
+// 	Emp3,
+// 	Emp4,
+// 	Emp5,
+// 	Emp6,
+// 	Emp7,
+// 	Emp8,
+// 	Emp9,
+// 	Emp10,
+// 	CRDontSign,
+// 	ScopeJustify,
+// 	CRSubmit,
+// 	CustomerType,
+// 	TransferSignOff,
+// 	TransferNextVisit,
+// 	CertStartDate,
+// 	IntQs1,
+// 	IntQs2,
+// 	IntQs3,
+// 	IntQs4,
+// 	IntQs5,
+// 	IntQs6,
+// 	IntQs7,
+// 	IntQs8,
+// 	ST1RepRec,
+// 	ST1RepCon,
+// 	ST1RepClient,
+// 	ST1RepBMS,
+// 	ST1RepToolkit,
+// 	ST1RepHelp,
+// 	ST1RepInv,
+// 	ST1RepAnyQs,
+// 	ST1RepQs,
+// 	TandCVersion,
+// 	TandCDate,
+// 	HeatRating,
+// 	PackageItems1,
+// 	PackageItems2,
+// 	PackageItems3,
+// 	PackageItems4,
+// 	PackageItems5,
+// 	PackageItems6,
+// 	PackageItems7,
+// 	PackageItems8,
+// 	PackageItems9,
+// 	MigratedPIN,
+// 	ReferredByAuditor,
+// 	LastUser,
+// 	LastAccessed,
+// 	HSHSRisk,
+// 	Emp11,
+// 	MD5Justification,
+// 	TransCertNumber,
+// 	TransMessageSent,
+// 	ADRedPrep,
+// 	ADRedWrite,
+// 	ADRedNCs,
+// 	AuditorDaysST1,
+// 	AuditorDaysST2,
+// 	AuditorDaysSurv,
+// 	CROffSiteLocations,
+// 	CRAddedServices,
+// 	CRAddedServicesName,
+// 	CRNotesForCompliance,
+// 	CorrectSurvDate,
+// 	HSMSRisk,
+// 	CBIntegrated,
+// 	Createcompletionpack,
+// 	Initial18001,
+// 	RemDocs,
+// 	RemSkype,
+// 	RemContact
+// FROM Agency.dbo.tblCustomers;
+
+
+// Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+// Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+// Drop Table $(TableName);
+///$tab tblFinance-Agency
+/* 
+
+Discontinued 05/03/2026. 
+
+If required please speak to App Supp.
+
+https://teams.microsoft.com/l/message/19:07cb4ffc-5dfc-4b6f-85a4-2056da946e35_37a4dfdf-f314-4af8-a23c-e14010492e0d@unq.gbl.spaces/1772715856804?context=%7B%22contextType%22%3A%22chat%22%7D
+
+*/
+
+
+
+// LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+// Let TableName = 'Extract_Agency_tblFinance';
+
+// $(TableName):
+
+
+// SELECT 
+// 	FinanceID,
+// 	InvoiceNumber,
+// 	CustomerID,
+// 	Description,
+// 	DateRaised,
+// 	DatePaid,
+// 	AppFee,
+// 	AdditionalFee,
+// 	Quantity,
+// 	SubTotal,
+// 	VATPaid,
+// 	TotalFeePaid,
+// 	BalanceDue,
+// 	CreditCard,
+// 	ProcessedBy,
+// 	Type,
+// 	VATReceiptDone,
+// 	PurchaseOrder,
+// 	AddressID,
+// 	AdditionalDescription,
+// 	Standards,
+// 	PaymentType,
+// 	PaymentTerms,
+// 	CCAuthCode,
+// 	BadDebt,
+// 	BadDebtDate,
+// 	InvoiceCancel,
+// 	InvoiceCancelDate,
+// 	PaidHSBC
+// FROM Agency.dbo.tblFinance;
+
+
+
+// Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+// Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+// Drop Table $(TableName);
+
+
+///$tab tblRegions
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblRegions';
+
+$(TableName):
+
+SELECT 
+	RegionID,
+	Region,
+	Postcodes,
+	SurroundRegion
+FROM babclear.dbo.tblRegions;
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+
+///$tab tblNotices
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblNotices';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+NoticeID&'_UK' as Notice_ID;
+SELECT *
+FROM babclear.dbo.tblNotice;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+NoticeID&'_US' as Notice_ID,;
+SELECT *
+FROM USAmtivoConnect.dbo.tblNotice;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+NoticeID&'_IRE' as Notice_ID;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblNotice;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+NoticeID&'_AGT' as Notice_ID;
+SELECT *
+FROM qaiclAC.dbo.tblNotice;
+
+
+Drop Field NoticeID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName); 
+///$tab tblEA
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblEA';
+
+
+$(TableName):
+Load *,
+'UK' as DataType,
+EACode&'_UK' as EA_Code;
+SELECT *
+FROM babclear.dbo.tblEA;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+EACode&'_US' as EA_Code,;
+SELECT *
+FROM USAmtivoConnect.dbo.tblEA;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+EACode&'_IRE' as EA_Code;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblEA;
+
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+EACode&'_AGT' as EA_Code;
+SELECT *
+FROM qaiclAC.dbo.tblEA;
+
+Drop Field EACode From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+
+
+///$tab tblCountryList
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblCountryList';
+
+$(TableName):
+
+SELECT 
+	countryid,
+	"country_label"
+FROM babclear.dbo.tblCountryList;
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+
+///$tab tblUnknownDates_Cyber
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblUnknownDates_Cyber';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+CustomerID&'_UK' as Customer_ID,
+ProposalID&'_UK' as Proposal_ID;
+SELECT *
+FROM babclear.dbo.tblUnknownDates_Cyber;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+CustomerID&'_US' as Customer_ID,
+ProposalID&'_US' as Proposal_ID;
+SELECT *
+FROM USAmtivoConnect.dbo.tblUnknownDates_Cyber;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+CustomerID&'_IRE' as Customer_ID,
+ProposalID&'_IRE' as Proposal_ID;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblUnknownDates_Cyber;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+CustomerID&'_AGT' as Customer_ID,
+ProposalID&'_AGT' as Proposal_ID;
+SELECT *
+FROM qaiclAC.dbo.tblUnknownDates_Cyber;
+
+Drop Fields CustomerID,ProposalID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+
+///$tab tblUnknownDates_PAS2030
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblUnknownDates_PAS2030';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+CustomerID&'_UK' as Customer_ID,
+ProposalID&'_UK' as Proposal_ID;
+SELECT *
+FROM babclear.dbo.tblUnknownDates_PAS2030;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+CustomerID&'_US' as Customer_ID,
+ProposalID&'_US' as Proposal_ID;
+SELECT *
+FROM USAmtivoConnect.dbo.tblUnknownDates_PAS2030;
+
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+CustomerID&'_IRE' as Customer_ID,
+ProposalID&'_IRE' as Proposal_ID;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblUnknownDates_PAS2030;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+CustomerID&'_AGT' as Customer_ID,
+ProposalID&'_AGT' as Proposal_ID;
+SELECT *
+FROM qaiclAC.dbo.tblUnknownDates_PAS2030;
+
+
+
+Drop Fields CustomerID,ProposalID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+///$tab tblUnknownDates_HC
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+///HC = Health Check
+
+Let TableName = 'Extract_tblUnknownDates_HC';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+CustomerID&'_UK' as Customer_ID,
+ProposalID&'_UK' as Proposal_ID;
+SELECT *
+FROM babclear.dbo.tblUnknownDates_HC;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+CustomerID&'_US' as Customer_ID,
+ProposalID&'_US' as Proposal_ID;
+SELECT *
+FROM USAmtivoConnect.dbo.tblUnknownDates_HC;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+CustomerID&'_IRE' as Customer_ID,
+ProposalID&'_IRE' as Proposal_ID;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblUnknownDates_HC;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+CustomerID&'_AGT' as Customer_ID,
+ProposalID&'_AGT' as Proposal_ID;
+SELECT *
+FROM qaiclAC.dbo.tblUnknownDates_HC;
+
+
+Drop Fields CustomerID,ProposalID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+
+///$tab tblUnknownDates_GDPR
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblUnknownDates_GDPR';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+CustomerID&'_UK' as Customer_ID,
+ProposalID&'_UK' as Proposal_ID;
+SELECT *
+FROM babclear.dbo.tblUnknownDates_GDPR;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+CustomerID&'_US' as Customer_ID,
+ProposalID&'_US' as Proposal_ID;
+SELECT *
+FROM USAmtivoConnect.dbo.tblUnknownDates_GDPR;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+CustomerID&'_IRE' as Customer_ID,
+ProposalID&'_IRE' as Proposal_ID;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblUnknownDates_GDPR;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+CustomerID&'_AGT' as Customer_ID,
+ProposalID&'_AGT' as Proposal_ID;
+SELECT *
+FROM qaiclAC.dbo.tblUnknownDates_GDPR;
+
+Drop Fields CustomerID,ProposalID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+///$tab tblUnknownDates_eLearn
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblUnknownDates_eLearn';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+CustomerID&'_UK' as Customer_ID,
+ProposalID&'_UK' as Proposal_ID;
+SELECT *
+FROM babclear.dbo.tblUnknownDates_eLearn;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+CustomerID&'_US' as Customer_ID,
+ProposalID&'_US' as Proposal_ID;
+SELECT *
+FROM USAmtivoConnect.dbo.tblUnknownDates_eLearn;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+CustomerID&'_IRE' as Customer_ID,
+ProposalID&'_IRE' as Proposal_ID;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblUnknownDates_eLearn;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+CustomerID&'_AGT' as Customer_ID,
+ProposalID&'_AGT' as Proposal_ID;
+SELECT *
+FROM qaiclAC.dbo.tblUnknownDates_eLearn;
+
+
+Drop Fields CustomerID,ProposalID From $(TableName);
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName); 
+
+
+
+
+
+
+///$tab tblUnknownDates_train
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblUnknownDates_train';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+CustomerID&'_UK' as Customer_ID,
+ProposalID&'_UK' as Proposal_ID;
+SELECT *
+FROM babclear.dbo.tblUnknownDates_train;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+CustomerID&'_US' as Customer_ID,
+ProposalID&'_US' as Proposal_ID;
+SELECT *
+FROM USAmtivoConnect.dbo.tblUnknownDates_train;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+CustomerID&'_IRE' as Customer_ID,
+ProposalID&'_IRE' as Proposal_ID;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblUnknownDates_train;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+CustomerID&'_AGT' as Customer_ID,
+ProposalID&'_AGT' as Proposal_ID;
+SELECT *
+FROM qaiclAC.dbo.tblUnknownDates_train;
+
+
+
+Drop Fields CustomerID,ProposalID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName); 
+///$tab tblUnknownDates_Transmittal
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblUnknownDates_Transmittal';
+
+// $(TableName):
+// Load *,
+// 'UK' as DataType,
+// CustomerID&'_UK' as Customer_ID,
+// ProposalID&'_UK' as Proposal_ID;
+// SELECT *
+// FROM babclear.dbo.tblUnknownDates_Transmittal;
+
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+//Concatenate($(TableName))
+$(TableName):
+LOAD *,
+'US' as DataType,
+CustomerID&'_US' as Customer_ID,
+ProposalID&'_US' as Proposal_ID;
+SELECT *
+FROM USAmtivoConnect.dbo.tblUnknownDates_Transmittal;
+
+//LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+//Concatenate($(TableName))
+// Load *,
+// 'IRE' as DataType,
+// CustomerID&'_IRE' as Customer_ID,
+// ProposalID&'_IRE' as Proposal_ID;
+// SELECT *
+// FROM CertificationEuropeAC.dbo.tblUnknownDates_Transmittal;
+
+// LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+// Concatenate($(TableName))
+// Load *,
+// 'AGT' as DataType,
+// CustomerID&'_AGT' as Customer_ID,
+// ProposalID&'_AGT' as Proposal_ID;
+// SELECT *
+// FROM qaiclAC.dbo.tblUnknownDates_Transmittal;
+
+// Drop Fields CustomerID,ProposalID From $(TableName);
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+
+
+
+///$tab tblUnknownDates_PreAss
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblUnknownDates_PreAss';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+CustomerID&'_UK' as Customer_ID,
+ProposalID&'_UK' as Proposal_ID;
+SELECT *
+FROM babclear.dbo.tblUnknownDates_PreAss;
+
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+CustomerID&'_US' as Customer_ID,
+ProposalID&'_US' as Proposal_ID;
+SELECT *
+FROM USAmtivoConnect.dbo.tblUnknownDates_PreAss;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+CustomerID&'_IRE' as Customer_ID,
+ProposalID&'_IRE' as Proposal_ID;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblUnknownDates_PreAss;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+CustomerID&'_AGT' as Customer_ID,
+ProposalID&'_AGT' as Proposal_ID;
+SELECT *
+FROM qaiclAC.dbo.tblUnknownDates_PreAss;
+
+
+
+Drop Fields CustomerID,ProposalID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+
+
+
+///$tab tblUnknownDates_Security
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblUnknownDates_Security';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+CustomerID&'_UK' as Customer_ID,
+ProposalID&'_UK' as Proposal_ID;
+SELECT *
+FROM babclear.dbo.tblUnknownDates_Security;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+// Concatenate($(TableName))
+// LOAD *,
+// 'US' as DataType,
+// CustomerID&'_US' as Customer_ID,
+// ProposalID&'_US' as Proposal_ID;
+// SELECT *
+// FROM USAmtivoConnect.dbo.tblUnknownDates_Security;
+
+
+// LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+// Concatenate($(TableName))
+// Load *,
+// 'IRE' as DataType,
+// CustomerID&'_IRE' as Customer_ID,
+// ProposalID&'_IRE' as Proposal_ID;
+// SELECT *
+// FROM CertificationEuropeAC.dbo.tblUnknownDates_Security;
+
+// LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+// Concatenate($(TableName))
+// Load *,
+// 'AGT' as DataType,
+// CustomerID&'_AGT' as Customer_ID,
+// ProposalID&'_AGT' as Proposal_ID;
+// SELECT *
+// FROM qaiclAC.dbo.tblUnknownDates_Security;
+
+
+Drop Fields CustomerID,ProposalID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+
+
+
+///$tab tblVisitGhost
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblVisitGhost';
+
+
+
+$(TableName):
+Load *,
+'UK' as DataType,
+CustomerID&'_UK' as Customer_ID,
+ProposalID&'_UK' as Proposal_ID,
+GhostVisitID&'_UK' as GhostVisit_ID,
+userID&'_UK' as user_ID,
+AuditorID&'_UK' as Auditor_ID,
+SecondAuditorID&'_UK' as SecondAuditor_ID,
+ObserverID&'_UK' as Observer_ID,
+MentorID&'_UK' as Mentor_ID,
+AddressID&'_UK' as Address_ID,
+VisitsID&'_UK' as Visits_ID,
+ModeratorID&'_UK' as Moderator_ID;
+SELECT *
+FROM babclear.dbo.tblVisitGhost;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+CustomerID&'_US' as Customer_ID,
+ProposalID&'_US' as Proposal_ID,
+GhostVisitID&'_US' as GhostVisit_ID,
+userID&'_US' as user_ID,
+AuditorID&'_US' as Auditor_ID,
+SecondAuditorID&'_US' as SecondAuditor_ID,
+ObserverID&'_US' as Observer_ID,
+MentorID&'_US' as Mentor_ID,
+AddressID&'_US' as Address_ID,
+VisitsID&'_US' as Visits_ID,
+ModeratorID&'_US' as Moderator_ID;
+SELECT *
+FROM USAmtivoConnect.dbo.tblVisitGhost;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))Load *,
+'IRE' as DataType,
+CustomerID&'_IRE' as Customer_ID,
+ProposalID&'_IRE' as Proposal_ID,
+GhostVisitID&'_IRE' as GhostVisit_ID,
+userID&'_IRE' as user_ID,
+AuditorID&'_IRE' as Auditor_ID,
+SecondAuditorID&'_IRE' as SecondAuditor_ID,
+ObserverID&'_IRE' as Observer_ID,
+MentorID&'_IRE' as Mentor_ID,
+AddressID&'_IRE' as Address_ID,
+VisitsID&'_IRE' as Visits_ID,
+ModeratorID&'_IRE' as Moderator_ID;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblVisitGhost;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))Load *,
+'AGT' as DataType,
+CustomerID&'_AGT' as Customer_ID,
+ProposalID&'_AGT' as Proposal_ID,
+GhostVisitID&'_AGT' as GhostVisit_ID,
+userID&'_AGT' as user_ID,
+AuditorID&'_AGT' as Auditor_ID,
+SecondAuditorID&'_AGT' as SecondAuditor_ID,
+ObserverID&'_AGT' as Observer_ID,
+MentorID&'_AGT' as Mentor_ID,
+AddressID&'_AGT' as Address_ID,
+VisitsID&'_AGT' as Visits_ID,
+ModeratorID&'_AGT' as Moderator_ID;
+SELECT *
+FROM qaiclAC.dbo.tblVisitGhost;
+
+
+
+
+Drop Fields
+	GhostVisitID,userID,CustomerID,AuditorID,SecondAuditorID,ObserverID,MentorID,AddressID,ProposalID,VisitsID,ModeratorID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+
+
+///$tab tblDates
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+//tblDates contains all enquiries received
+Let TableName = 'Extract_tblDates';
+
+
+$(TableName):
+Load *,
+'UK' as DataType,
+CustomerID&'_UK' as Customer_ID;
+SELECT 
+	*
+FROM babclear.dbo.tblDates;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+CustomerID&'_US' as Customer_ID;
+SELECT *
+FROM USAmtivoConnect.dbo.tblDates;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+CustomerID&'_IRE' as Customer_ID;
+SELECT 
+	*
+FROM CertificationEuropeAC.dbo.tblDates;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+CustomerID&'_AGT' as Customer_ID;
+SELECT 
+	*
+FROM qaiclAC.dbo.tblDates;
+
+Drop Field CustomerID From $(TableName);
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+
+
+
+
+
+///$tab tblPartPayment
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblPartPayment';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+CustomerID&'_UK' as Customer_ID,
+PartPaymentID&'_UK' as PartPayment_ID,
+FinanceID&'_UK' as Finance_ID,
+UserID&'_UK' as User_ID,
+PaymentID&'_UK' as Payment_ID;
+SELECT 
+	*
+FROM babclear.dbo.tblPartPayment;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+CustomerID&'_US' as Customer_ID,
+PartPaymentID&'_US' as PartPayment_ID,
+FinanceID&'_US' as Finance_ID,
+UserID&'_US' as User_ID,
+PaymentID&'_US' as Payment_ID;
+SELECT *
+FROM USAmtivoConnect.dbo.tblPartPayment;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Load *,
+'IRE' as DataType,
+CustomerID&'_IRE' as Customer_ID,
+PartPaymentID&'_IRE' as PartPayment_ID,
+FinanceID&'_IRE' as Finance_ID,
+UserID&'_IRE' as User_ID,
+PaymentID&'_IRE' as Payment_ID;
+SELECT 
+	*
+FROM CertificationEuropeAC.dbo.tblPartPayment;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Load *,
+'AGT' as DataType,
+CustomerID&'_AGT' as Customer_ID,
+PartPaymentID&'_AGT' as PartPayment_ID,
+FinanceID&'_AGT' as Finance_ID,
+UserID&'_AGT' as User_ID,
+PaymentID&'_AGT' as Payment_ID;
+SELECT 
+	*
+FROM qaiclAC.dbo.tblPartPayment;
+
+Drop Fields CustomerID,PartPaymentID,FinanceID,UserID,PaymentID From $(TableName);
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+///$tab tblStandardTypes
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+Temp:
+SELECT *
+FROM babclear.dbo.tblStandardTypes;
+
+Concatenate(Temp)
+LOAD
+    StandardType,
+    Description,
+    StandardHide,
+    StandardCode,
+    StandardOrder,
+    DescriptionShort
+FROM [lib://Development:Office_365_Sharepoint - FP&A Folder/Shared Documents/Private/Spreadsheets for Qlik/tblStandardTypes - Additions.xlsx]
+(ooxml, embedded labels, table is tblStandardTypes);
+
+
+Let TableName = 'Extract_tblStandardTypes';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+StandardType as Standard_Type
+Resident Temp;
+
+Drop Table Temp;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+StandardType as Standard_Type,;
+SELECT *
+FROM USAmtivoConnect.dbo.tblStandardTypes;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+Concatenate($(TableName))
+LOAD *,
+'IRE' as DataType,
+StandardType as Standard_Type,;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblStandardTypes;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+Concatenate($(TableName))
+LOAD *,
+'AGT' as DataType,
+StandardType as Standard_Type,;
+SELECT *
+FROM qaiclAC.dbo.tblStandardTypes;
+
+
+
+Drop Field StandardType From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+///$tab tblUnknownDates_General
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblUnknownDates_General';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+CustomerID&'_UK' as Customer_ID,
+ProposalID&'_UK' as Proposal_ID;
+SELECT *
+FROM babclear.dbo.tblUnknownDates_General;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+// Concatenate($(TableName))
+// LOAD *,
+// 'US' as DataType,
+// CustomerID&'_US' as Customer_ID,
+// ProposalID&'_US' as Proposal_ID;
+// SELECT *
+// FROM USAmtivoConnect.dbo.tblUnknownDates_General;
+
+
+// LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+// Concatenate($(TableName))
+// Load *,
+// 'IRE' as DataType,
+// CustomerID&'_IRE' as Customer_ID,
+// ProposalID&'_IRE' as Proposal_ID;
+// SELECT *
+// FROM CertificationEuropeAC.dbo.tblUnknownDates_General;
+
+// LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+// Concatenate($(TableName))
+// Load *,
+// 'AGT' as DataType,
+// CustomerID&'_AGT' as Customer_ID,
+// ProposalID&'_AGT' as Proposal_ID;
+// SELECT *
+// FROM qaiclAC.dbo.tblUnknownDates_General;
+
+
+Drop Fields CustomerID,ProposalID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+
+
+
+
+
+
+
+///$tab tblConsultant
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblConsultant';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+ConsultantID&'_UK' as Consultant_ID;
+SELECT *
+FROM babclear.dbo.tblConsultant;
+
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+ConsultantID&'_US' as Consultant_ID;
+SELECT *
+FROM USAmtivoConnect.dbo.tblConsultant;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+ConsultantID&'_IRE' as Consultant_ID;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblConsultant;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+ConsultantID&'_AGT' as Consultant_ID;
+SELECT *
+FROM qaiclAC.dbo.tblConsultant;
+
+
+Drop Fields ConsultantID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+
+
+
+
+
+
+
+
+///$tab tblUnknownDates_Activ
+Let TableName = 'Extract_tblUnknownDates_Activ';
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+$(TableName):
+Load *,
+'UK' as DataType,
+CustomerID&'_UK' as Customer_ID,
+ProposalID&'_UK' as Proposal_ID;
+SELECT *
+FROM babclear.dbo.tblUnknownDates_Activ;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+CustomerID&'_US' as Customer_ID,
+ProposalID&'_US' as Proposal_ID;
+SELECT *
+FROM USAmtivoConnect.dbo.tblUnknownDates_Activ;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+CustomerID&'_IRE' as Customer_ID,
+ProposalID&'_IRE' as Proposal_ID;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblUnknownDates_Activ;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+CustomerID&'_AGT' as Customer_ID,
+ProposalID&'_AGT' as Proposal_ID;
+SELECT *
+FROM qaiclAC.dbo.tblUnknownDates_Activ;
+
+Drop Fields CustomerID,ProposalID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+///$tab tblComplaints
+Let TableName = 'Extract_tblComplaintLog';
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+$(TableName):
+LOAD 
+	*,
+	'UK' as DataType,
+    ComplaintID&'_UK' as Complaint_ID,
+	CustomerID&'_UK' as Customer_ID, 
+	NoteID&'_UK' as Note_ID;
+SELECT *
+FROM babclear.dbo.tblComplaintLog;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD
+	*,
+	'US' as DataType,
+    ComplaintID&'_US' as Complaint_ID,
+	CustomerID&'_US' as Customer_ID, 
+	NoteID&'_US' as Note_ID;
+SELECT *
+FROM USAmtivoConnect.dbo.tblComplaintLog;
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+Concatenate($(TableName))
+$(TableName):
+LOAD 
+	*,
+	'IRE' as DataType,
+    ComplaintID&'_IRE' as Complaint_ID,
+	CustomerID&'_IRE' as Customer_ID, 
+	NoteID&'_IRE' as Note_ID;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblComplaintLog;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+Concatenate($(TableName))
+$(TableName):
+LOAD 
+	*,
+	'AGT' as DataType,
+    ComplaintID&'_AGT' as Complaint_ID,
+	CustomerID&'_AGT' as Customer_ID, 
+	NoteID&'_AGT' as Note_ID;
+SELECT *
+FROM qaiclAC.dbo.tblComplaintLog;
+
+
+Drop Fields ComplaintID, CustomerID, NoteID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+
+///$tab tblClients_qaiclAC
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+Let TableName = 'Extract_tblClients_qaiclAC';
+
+$(TableName):
+
+SELECT 
+	ClientID,
+	CustomerType,
+	CompanyName,
+	Address1,
+	Address2,
+	Address3,
+	Town,
+	County,
+	PostalCode,
+	Country,
+	RegionID,
+	LocalKnowledge,
+	Tel,
+	Fax,
+	Web,
+	Notes,
+	CompanyNumber,
+	VATNumber,
+	CharityNumber,
+	MembershipNumber,
+	MembershipType,
+	NoOfEmployees,
+	ApplicableEmployees,
+	NoOfSites,
+	TotalSites,
+	Turnover,
+	BusinessSectors,
+	CustomerStandards,
+	Emp1,
+	Emp2,
+	Emp3,
+	Emp4,
+	Emp5,
+	Emp6,
+	Emp7,
+	Emp8,
+	Emp9,
+	Emp10,
+	Emp11,
+	Emp20,
+	Emp21,
+	Emp22,
+	FranchiseID
+FROM qaiclAC.dbo.tblClients;
+
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+
+Drop Table $(TableName); 
+
+
+///$tab tblFinance_qaiclAC
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+Let TableName = 'Extract_tblFinance_qaiclAC';
+
+$(TableName):
+
+SELECT 
+	FinanceID,
+	InvoiceNumber,
+	CustomerID,
+	Description,
+	DateRaised,
+	DatePaid,
+	AppFee,
+	AdditionalFee,
+	Quantity,
+	SubTotal,
+	VATPaid,
+	TotalFeePaid,
+	BalanceDue,
+	CreditCard,
+	ProcessedBy,
+	Type,
+	VATReceiptDone,
+	PurchaseOrder,
+	AddressID,
+	AdditionalDescription,
+	Standards,
+	PaymentType,
+	PaymentTerms,
+	CCAuthCode,
+	BadDebt,
+	BadDebtDate,
+	InvoiceCancel,
+	InvoiceCancelDate,
+	PaidHSBC,
+	LastPaymentDate,
+	DirectDebit,
+	LastEventID,
+	DDCustomerRef,
+	DDMandateID,
+	DDSubscriptionID,
+	FinanceEmail,
+	FinanceSort,
+	FinanceAccount,
+	FinanceAd1,
+	FinanceAd2,
+	FinanceTown,
+	FinancePostcode,
+	FinanceConfirm,
+	FinanceCompanyName,
+	FinanceCancelReason,
+	CommitDate,
+	FinalNoticeDate,
+	AgencyInvNo,
+	AgencyInvNoDate,
+	Sage4020,
+	Sage4021,
+	Sage4022,
+	Sage4023,
+	Sage4024,
+	Sage4025,
+	Sage4026,
+	Sage4027,
+	Sage4028,
+	Sage4029,
+	Sage4030,
+	Sage4031,
+	Sage4032,
+	Sage4033,
+	ProposalID,
+	ServicesFee,
+	ExpensesFee,
+	DateReleased,
+	GreenRegister
+FROM qaiclAC.dbo.tblFinance;
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName); 
+
+///$tab tblDecision_qaiclAC
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+
+Let TableName = 'Extract_tblDecision_qaiclAC';
+
+$(TableName):
+
+SELECT 
+	DecisionID,
+	CustomerID,
+	ScopeCorrect,
+	ScopeCorrectNotes,
+	StandardCovered,
+	StandardCoveredNotes,
+	ReportFindings,
+	ReportFindingsNotes,
+	CorrectiveActions,
+	CorrectiveActionsNotes,
+	DecisionDate,
+	SOA,
+	RiskVerified,
+	GAGapsIdentifiedNotes,
+	GAGapsIdentified,
+	GALanguageNotes,
+	GALanguage
+FROM qaiclAC.dbo.tblDecision;
+
+
+
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName); 
+
+///$tab tblNotes
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Let TableName = 'Extract_tblNotes';
+
+$(TableName):
+Load *,
+'UK' as DataType,
+ID&'_UK' as Notes_ID,
+CommuniqueID&'_UK' as Communique_ID,
+AuditReportID&'_UK' as AuditReport_ID,
+CustomerID&'_UK' as Customer_ID;
+SELECT *
+FROM babclear.dbo.tblNotes;
+
+
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.214.86.188 - Amtivo Connect (USA)';
+
+Concatenate($(TableName))
+LOAD *,
+'US' as DataType,
+ID&'_US' as Notes_ID,
+CommuniqueID&'_US' as Communique_ID,
+AuditReportID&'_US' as AuditReport_ID,
+CustomerID&'_US' as Customer_ID;
+SELECT *
+FROM USAmtivoConnect.dbo.tblNotes;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'IRE' as DataType,
+ID&'_IRE' as Notes_ID,
+CommuniqueID&'_IRE' as Communique_ID,
+AuditReportID&'_IRE' as AuditReport_ID,
+CustomerID&'_IRE' as Customer_ID;
+SELECT *
+FROM CertificationEuropeAC.dbo.tblNotes;
+
+LIB CONNECT TO 'Development:Microsoft_SQL_Server_3.11.245.25 - BABcom (UK)';
+
+Concatenate($(TableName))
+Load *,
+'AGT' as DataType,
+ID&'_AGT' as Notes_ID,
+CommuniqueID&'_AGT' as Communique_ID,
+AuditReportID&'_AGT' as AuditReport_ID,
+CustomerID&'_AGT' as Customer_ID;
+SELECT *
+FROM qaiclAC.dbo.tblNotes;
+
+
+Drop Fields CustomerID From $(TableName);
+
+Store $(TableName) INTO [lib://QVD Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://QVD Test Files:$(vDataFiles)/$(TableName).qvd] (qvd);
+
+Drop Table $(TableName);
+
+
+
+///$tab ***** EXIT SCRIPT *****
+Exit Script;
+
