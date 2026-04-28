@@ -1777,12 +1777,27 @@ FROM [lib://$(vDataFiles)/Extract_TestRecords_CustomerID.qvd]
 
 
 ///$tab Mapping - FranchiseName
+Load_tblFranchise:
+load
+FranchiseID,
+FranchiseName,
+AgencyFlag
+FROM [lib://QVD Files:DataFiles/Extract_tblFranchiseLookup.qvd]
+(qvd);
+
+
+
 Map_ActualFranchiseName:
 mapping LOAD
     FranchiseID,
     FranchiseName
-FROM [lib://QVD Files:DataFiles/Extract_tblFranchiseLookup.qvd]
-(qvd);
+resident Load_tblFranchise;
+
+Map_AgencyFlag:
+Mapping load
+FranchiseID,
+AgencyFlag
+resident Load_tblFranchise;
 
 
 // See notes by the applymap.
@@ -1807,6 +1822,10 @@ mapping load * inline [
 'Amtivo Italia','Keep'
 'Ergo','Keep'
 ];
+
+drop table 
+Load_tblFranchise
+;
 ///$tab Mapping - tblProposals Extract
 Load_tblProposals:
 LOAD
@@ -2017,6 +2036,28 @@ NACERev2
 Resident [tblEA-NACE-Full];
 
 Drop table [tblEA-NACE-Full];
+
+///$tab Mapping - tblProposals Standard
+Map_tblProposalsStandardDesc:
+Mapping LOAD
+    [Proposal Client_ID],
+	[Proposal Standard Description]
+FROM [lib://QVD Files:DataFiles/Transformation1_Proposals.qvd]
+(qvd)
+where [Proposal LeadPin]='Lead Pin' and Date([Proposal Terms Accepted],'YYYYMMDD')=Date(MostRecentSignedProposal,'DD/MM/YYYY')
+;
+
+Map_tblProposalsStandardDescCustomer:
+Mapping LOAD
+    [Proposal Customer ID],
+	[Proposal Standard Description]
+FROM [lib://QVD Files:DataFiles/Transformation1_Proposals.qvd]
+(qvd)
+where Date([Proposal Terms Accepted],'YYYYMMDD')=Date(MostRecentSignedProposal,'DD/MM/YYYY')
+;
+
+
+
 
 ///$tab Customers
 // Let TableName = 'Transformation1_Customers';
@@ -2625,7 +2666,10 @@ if(DataType='AGT','Agency',
             
      ApplyMap('Map_ActualFranchiseName',FranchiseID,'Other')       as [$(TableColumn) RealFranchiseName],
      // QAICL is moving into the IRE data base so the line below is a fail safe for removing them short term until the data can be reviewed. We are only keeping franchise names that already exisit in SP apps.
-     Applymap('Map_KeepFranchiseForNow',ApplyMap('Map_ActualFranchiseName',FranchiseID,'Other'),'Hide')       as [$(TableColumn) RealFranchiseNameToKeep]
+     Applymap('Map_KeepFranchiseForNow',ApplyMap('Map_ActualFranchiseName',FranchiseID,'Other'),'Hide')       as [$(TableColumn) RealFranchiseNameToKeep],
+	 if(applymap('Map_AgencyFlag',FranchiseID,'<missing>')=0,'Non Agency','Agency') as AgencyFlagDescription,
+	 applymap('Map_AgencyFlag',FranchiseID,'<missing>') as AgencyFlag
+     
     ;
 
 
@@ -2796,6 +2840,8 @@ LOAD
     Emp8,
     Emp9,
     Emp10,
+    Emp20,
+    Emp21,
     TransferSignOff,
     TransferNextVisit,
     CRSubmit,
@@ -2906,6 +2952,8 @@ LOAD
     hubspot_contact_id as HubspotContactID,
     vTigerProjectID as vTigerProjectID,
     
+    if(LeadPIN=1,'Lead Pin','Sub Pin') as CustomerLeadPin,
+    
     ApplyMap('tblCustomerToStandard_Standard',Customer_ID,'Send to application support to check. Potential issue with Azure tblCustomerToStandard.') as [$(TableColumn) Standard Description (New IT table)],
 // 	if(ApplyMap('tblCustomerToStandard_Standard',Customer_ID,'Send to application support to check')=ApplyMap('tblCustomerToStandard_BoltOn',Customer_ID,'Send to application support to check'),NULL(),
      	ApplyMap('tblCustomerToStandard_BoltOn',Customer_ID,'Send to application support to check')
@@ -2925,7 +2973,9 @@ LOAD
 // "R2V3517" value="3" >Shared Facilties
 // "R2V3517" value="4" >Common Parent Facilities
 // "R2V3517" value="5" >Group
-    applymap('Map_CertStructure',R2V3517,'No Structure Found') as CertificationStructre
+    applymap('Map_CertStructure',R2V3517,'No Structure Found') as CertificationStructre,
+    R2V3517
+    
     
     
 FROM [lib://$(vDataFiles)/Extract_tblCustomers.qvd]
@@ -2935,23 +2985,46 @@ FROM [lib://$(vDataFiles)/Extract_tblCustomers.qvd]
 
 ;
 
+left join($(TableName)_temp)
 
+Load
+Client_ID,
+Count(Client_ID) as CountOfLeadPins
+resident $(TableName)_temp
+where CustomerLeadPin='Lead Pin'
+group by Client_ID
+;
 
 
 
 NoConcatenate
 $(TableName):
-load *
+LOAD 
+*,
+IF(Left(ClientProposalStandardDescription1, 3) = ' + ',
+    Right(ClientProposalStandardDescription1, Len(ClientProposalStandardDescription1) - 3),
+    IF(Right(ClientProposalStandardDescription1, 3) = ' + ',
+        Left(ClientProposalStandardDescription1, Len(ClientProposalStandardDescription1) - 3),
+        ClientProposalStandardDescription1
+    )
+) AS [ClientStandardDescription(Proposal)]
+;
+
+
+load 
+*,
+if(LeadPINCount='No Lead Pin',Applymap('Map_tblProposalsStandardDescCustomer',Customer_ID,'No contract found for customer')&' + '&[$(TableColumn) BoltOn Description (New IT table)],Applymap('Map_tblProposalsStandardDesc',Client_ID,'No contract found for client')&' + '&[$(TableColumn) BoltOn Description (New IT table)]) as ClientProposalStandardDescription1
 where Not FranchiseID='<missing>'
 ;
 
 Load
 *,
-if([$(TableColumn) Standard Description]='IATF 16949:2016','IATF Temporary Flag','Not IATF') as IATFFlag
+if([$(TableColumn) Standard Description]='IATF 16949:2016','IATF Temporary Flag','Not IATF') as IATFFlag,
+if(CountOfLeadPins=0 or isnull(CountOfLeadPins),'No Lead Pin',CustomerLeadPin) as LeadPINCount
 Resident $(TableName)_temp
-where [Test Database Record (Delete)]='Keep'
-// where itTestFlag=0
-and itTestFlag=0
+// where [Test Database Record (Delete)]='Keep'
+// // where itTestFlag=0
+// and itTestFlag=0
 ;
 
 Store $(TableName) INTO [lib://$(vDataFiles)/$(TableName).qvd] (qvd);
