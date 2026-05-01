@@ -1,0 +1,440 @@
+///$tab Main
+SET ThousandSep=',';
+SET DecimalSep='.';
+SET MoneyThousandSep=',';
+SET MoneyDecimalSep='.';
+SET MoneyFormat='£ #,##0.00;-£ #,##0.00';
+SET TimeFormat='hh:mm:ss TT';
+SET DateFormat='DD/MM/YYYY';
+SET TimestampFormat='DD/MM/YYYY h:mm:ss[.fff] TT';
+SET FirstWeekDay=6;
+SET BrokenWeeks=1;
+SET ReferenceDay=0;
+SET FirstMonthOfYear=1;
+SET CollationLocale='en-GB';
+SET CreateSearchIndexOnReload=1;
+SET MonthNames='Jan;Feb;Mar;Apr;May;Jun;Jul;Aug;Sep;Oct;Nov;Dec';
+SET LongMonthNames='January;February;March;April;May;June;July;August;September;October;November;December';
+SET DayNames='Mon;Tue;Wed;Thu;Fri;Sat;Sun';
+SET LongDayNames='Monday;Tuesday;Wednesday;Thursday;Friday;Saturday;Sunday';
+SET NumericalAbbreviation='3:k;6:M;9:G;12:T;15:P;18:E;21:Z;24:Y;-3:m;-6:μ;-9:n;-12:p;-15:f;-18:a;-21:z;-24:y';
+
+// **************************************LIVE STORE LOCATIONS******************************************
+LET vDataFiles = 'QVD Files:DataFiles';
+
+
+
+// **************************************TEST APP STORE LOCATIONS**************************************
+LET vDataFilesTest = 'QVD Test Files:DataFiles';
+
+
+Let vCurrentMonth = num(Month(today()),'00');
+Let vCurrentYear = Year(today());
+///$tab Mapping - Customer information
+Load_VisitIDwithCustomerID:
+LOAD
+
+    Visits_ID,
+    //VisitsID as Visits_ID,
+    Customer_ID
+    
+
+// FROM [lib://QVD Files:DataFiles/Transformation2_AuditorVisits.qvd]
+// (qvd);
+FROM [lib://QVD Files:DataFiles/Extract_tblVisits.qvd]
+(qvd);
+
+
+
+Map_VisitIDwithCustomerID:
+Mapping load
+Visits_ID,
+Customer_ID
+resident Load_VisitIDwithCustomerID;
+
+
+drop table Load_VisitIDwithCustomerID;
+
+
+
+///$tab Mapping - tblCustomers
+Load_tblCustomers:
+LOAD
+    
+    Customer_ID,
+    CompanyName,
+    "Customer Certifying Body"
+FROM [lib://QVD Files:DataFiles/Transformation1_Customers.qvd]
+(qvd);
+
+Map_tblCustomers:
+Mapping load
+Customer_ID,
+CompanyName
+Resident Load_tblCustomers;
+
+
+Map_CustomerOffice:
+Mapping load
+Customer_ID,
+"Customer Certifying Body"
+Resident Load_tblCustomers;
+
+
+drop table Load_tblCustomers;
+///$tab Mapping - tblNotes
+Notes:
+Load 
+	"tblNotes AuditReport_ID",
+    "Compliance Officer",
+    "tblNotes Customer_ID"
+//     ,
+    
+//     Notecategory,
+//     "Rejection Flag",
+//     NoteRejReason,
+//     NoteRejClause,
+//     "Report Status",
+    
+//     if(isnull([tblNotes AuditReport_ID]) or match([tblNotes AuditReport_ID],'_UK','_US','_IRE'),"tblNotes Customer_ID",[tblNotes AuditReport_ID]) as AuditReport_ID,
+//     [Decision Date] as [tblNotes NoteDate]
+FROM [lib://QVD Files:DataFiles/Transformation2_AuditRejectionReport_Notes.qvd]
+(qvd);
+
+
+Map_ComplianceOfficer:
+mapping load
+"tblNotes AuditReport_ID",
+"Compliance Officer"
+resident Notes;
+
+Map_CustomerID:
+Mapping Load
+"tblNotes AuditReport_ID",
+"tblNotes Customer_ID"
+resident Notes;
+
+
+drop table Notes;
+///$tab Mapping - Snapshot Dates
+Load_SnapShotDates:
+LOAD
+    AuditReport_ID,
+    DateSubmitted,
+    DateSignedOff,
+    DateReviewed,
+    DateComplianceReview,
+    DateCertificate,
+    SnapshotDate
+FROM [lib://QVD Files:DataFiles/Extract_tblAuditReport_Snapshot.qvd]
+(qvd);
+
+
+Map_FirstDateSeen:
+mapping Load
+AuditReport_ID,
+min(DateSubmitted) as FirstDateSubmitted
+resident Load_SnapShotDates
+group by AuditReport_ID;
+
+
+Map_FirstSnapshotDateSeen:
+mapping Load
+AuditReport_ID,
+min(SnapshotDate) as FirstSnapshotDateSubmitted
+resident Load_SnapShotDates
+group by AuditReport_ID;
+
+
+
+drop table Load_SnapShotDates;
+
+///$tab Mapping - Test Records
+Load_tblCustomersTestRecords:
+LOAD
+    Customer_ID,
+    "Test Database CustomerID",
+    "Test Database FranchiseID",
+    "Test Database CB IntegratedID",
+    "Test Database Record (Delete)",
+    deleteTestRecord
+FROM [lib://QVD Files:DataFiles/Transformation1_Customers.qvd]
+(qvd);
+
+Map_TestRecords:
+mapping load
+    Customer_ID,
+    "Test Database Record (Delete)"
+resident Load_tblCustomersTestRecords;
+
+drop table Load_tblCustomersTestRecords;
+
+///$tab tblAuditReports
+let TableName ='Transformation2_tblAuditReports';
+
+$(TableName)_Temp1:
+load *,
+
+applymap('Map_tblCustomers',Customer_ID,'ID not found.') as CompanyName,
+applymap('Map_CustomerOffice',Customer_ID,'<missing>') as "Customer Certifying Body"
+where TestRecordsToDelete='Keep'    
+;
+
+load
+*,
+DateSubmitted-DateFirstSubmitted as "Days between firt submission and most recent submission",
+If(DateSignedOffCheck='Not Signed Off',date(today(),'DD/MM/YYYY')-DateFirstSubmitted,
+	DateSignedOff-DateFirstSubmitted) as ReportOpenDays,
+    applymap('Map_TestRecords',Customer_ID,'Delete') as TestRecordsToDelete,
+    
+    date(DateFirstSubmitted,'YYYYMMDD')  as Calendar_Key
+    
+
+;
+
+
+LOAD
+    Date(DateSubmitted,'DD/MM/YYYY') as DateSubmitted,
+    if(isnull(DateSubmitted),'Not Submitted','Submitted') as DateSubmittedCheck,
+    Date(DateSignedOff,'DD/MM/YYYY') as DateSignedOff,
+    if(isnull(DateSignedOff),'Not Signed Off','Signed Off') as DateSignedOffCheck,
+    DateEdited,
+    DateComplianceReview,
+    RecertPerformReview,
+    ReviewDate,
+    TechReviewer,
+    DateReviewed,
+    DateSent,
+    DateCertificate,
+    
+    
+    DataType,
+    AuditReport_ID,
+    Visits_ID,
+    CustProcess_ID,
+    
+    applymap('Map_VisitIDwithCustomerID',Visits_ID,'Check applymap') as Customer_ID,
+    applymap('Map_ComplianceOfficer',AuditReport_ID,'') as "Compliance Officer",
+    if(isnull(Date(applymap('Map_FirstDateSeen',AuditReport_ID,'DD/MM/YYYY'))),Date(ApplyMap('Map_FirstSnapshotDateSeen',AuditReport_ID,''),'DD/MM/YYYY'),
+    	Date(applymap('Map_FirstDateSeen',AuditReport_ID,'DD/MM/YYYY')))
+    as DateFirstSubmitted
+    
+    
+    
+    
+    
+    // Date(today()-365,'DD/MM/YYYY') as "Date Originally Submitted",
+    
+    
+    
+FROM [lib://QVD Files:DataFiles/Extract_tblAuditReport.qvd]
+(qvd);
+
+
+left join($(TableName)_Temp1)
+
+RejectedAuditReports:
+Load
+*
+where ReportRejectedCheck1='Report Rejected'
+
+;
+
+
+Load
+AuditReport_ID,
+created as RejectedDate,
+createdby,
+If(WildMatch(cnote,'*REPORT NOT SIGNED OFF*'),'Report Rejected','n/a') as ReportRejectedCheck1
+FROM [lib://QVD Files:DataFiles/Extract_tblNotes.qvd]
+(qvd);
+
+NoConcatenate
+
+$(TableName):
+load
+*,
+if(DateSignedOffCheck='Signed Off','Signed Off',ReportRejectedCheck2) as ReportRejectedCheck
+
+;
+
+load 
+*,
+
+if(isnull(ReportRejectedCheck1),'n/a',ReportRejectedCheck1) as ReportRejectedCheck2
+
+resident $(TableName)_Temp1;
+
+
+Store $(TableName) INTO [lib://$(vDataFiles)/$(TableName).qvd] (qvd);
+Store $(TableName) INTO [lib://$(vDataFilesTest)/$(TableName).qvd] (qvd);
+
+
+drop table $(TableName)_Temp1;
+
+
+
+
+///$tab Exit Script
+Exit Script;
+///$tab All Fields - tblAuditReports
+Qualify *;
+tblAuditReports:
+LOAD
+    DateSubmitted,
+    DateSignedOff,
+    SuggestedScope,
+    ExclusionJustification,
+    Recommend,
+    RecommendJustification,
+    Standard,
+    Contacts,
+    DateEdited,
+    Sites,
+    Employees,
+    Finding1,
+    Finding2,
+    Finding3,
+    Finding4,
+    Finding5,
+    Finding6,
+    Finding7,
+    Finding8,
+    Finding9,
+    Finding10,
+    Finding11,
+    Finding12,
+    FindingUpdate,
+    "Previous",
+    Trend,
+    Emp1,
+    Emp2,
+    Emp3,
+    Emp4,
+    Emp5,
+    Emp6,
+    Emp7,
+    Emp8,
+    Emp9,
+    Emp10,
+    NonConformances,
+    Attachments,
+    ScopeJustify,
+    Finding13,
+    Finding14,
+    Finding15,
+    Finding16,
+    Finding17,
+    Finding18,
+    Finding19,
+    Finding20,
+    Finding21,
+    Finding22,
+    Finding23,
+    Finding24,
+    Finding25,
+    Finding26,
+    Finding27,
+    Finding28,
+    Finding29,
+    Finding30,
+    Finding31,
+    Finding32,
+    Finding33,
+    Finding34,
+    Finding35,
+    Finding36,
+    Finding37,
+    Finding38,
+    Finding39,
+    Finding40,
+    Finding41,
+    Finding42,
+    Finding43,
+    identifier,
+    Accred,
+    OFIs,
+    Exclusions,
+    ReportVersion,
+    TargetSignOff,
+    NonConLock,
+    TimeStart,
+    TimeEnd,
+    NextVisitNotes,
+    Emp20,
+    Emp21,
+    Emp22,
+    BoltOnList,
+    PAS2030Summary,
+    PAS2030OpsNo,
+    PAS2030AddNotes,
+    RecommendPAS2030,
+    DateComplianceReview,
+    RecertPerformReview,
+    ReviewDate,
+    TechReviewer,
+    DateReviewed,
+    DateSent,
+    DateCertificate,
+    Limitations,
+    SchemeSpecific,
+    Emp30,
+    Emp31,
+    Emp32,
+    Emp33,
+    SIASummarySent,
+    busover,
+    SIAFullSent,
+    svA,
+    svB,
+    svC,
+    svD,
+    SIAShortSent,
+    DateSubmittedSummary,
+    DateSignedOffSummary,
+    ReadyForDecision,
+    Screening,
+    SOASame,
+    Interviews,
+    ObjectiveFulfilled,
+    emp20IT,
+    ComplianceResponsibleID,
+    Conflict,
+    NCRCount,
+    NCRSigned,
+    Report_CompanyName,
+    NCRCountMajor,
+    NCRCountMinor,
+    NCRSubmittedBy,
+    NCRSubmitted,
+    NCRCountMinor100,
+    Report_FullAddress,
+    AutoSignOff,
+    ScopeChange,
+    Report_FullName,
+    ReviewAutoSignOff,
+    Expenses,
+    DecisionMaker,
+    CheckReadiness,
+    CheckMove,
+    RecommendChanges,
+    RecommendStrengths,
+    RecommendST1,
+    ScopeTOC,
+    ScopeTOC_OtherDesc,
+    CertChangesNeeded,
+    EmployeeChange,
+    DataType,
+    AuditReport_ID,
+    Visits_ID,
+    CustProcess_ID
+FROM [lib://QVD Files:DataFiles/Extract_tblAuditReport.qvd]
+(qvd);
+
+
+UnQualify *;
+
+
+
+
+
