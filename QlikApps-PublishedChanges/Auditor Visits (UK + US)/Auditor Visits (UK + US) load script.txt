@@ -1,0 +1,847 @@
+///$tab Main
+SET ThousandSep=',';
+SET DecimalSep='.';
+SET MoneyThousandSep=',';
+SET MoneyDecimalSep='.';
+SET MoneyFormat='£#,##0.00;-£#,##0.00';
+SET TimeFormat='hh:mm:ss';
+SET DateFormat='DD/MM/YYYY';
+SET TimestampFormat='DD/MM/YYYY hh:mm:ss[.fff]';
+SET FirstWeekDay=0;
+SET BrokenWeeks=0;
+SET ReferenceDay=4;
+SET FirstMonthOfYear=1;
+SET CollationLocale='en-GB';
+SET CreateSearchIndexOnReload=1;
+SET MonthNames='Jan;Feb;Mar;Apr;May;Jun;Jul;Aug;Sep;Oct;Nov;Dec';
+SET LongMonthNames='January;February;March;April;May;June;July;August;September;October;November;December';
+SET DayNames='Mon;Tue;Wed;Thu;Fri;Sat;Sun';
+SET LongDayNames='Monday;Tuesday;Wednesday;Thursday;Friday;Saturday;Sunday';
+SET NumericalAbbreviation='3:k;6:M;9:G;12:T;15:P;18:E;21:Z;24:Y;-3:m;-6:μ;-9:n;-12:p;-15:f;-18:a;-21:z;-24:y';
+
+// **************************************LIVE STORE LOCATIONS******************************************
+LET vDataFiles = 'QVD Files:DataFiles';
+LET vDataStore = 'QVD Files:DataFiles';
+
+
+// **************************************TEST APP STORE LOCATIONS**************************************
+LET vDataFilesTest = 'QVD Test Files:DataFiles';
+LET vDataStoreTest = 'QVD Test Files:DataFiles';
+
+
+
+Expressions:
+LOAD
+    Variable,
+    Expression,
+    Usage
+FROM [lib://Development:Office_365_Sharepoint - FP&A Folder/Shared Documents/Private/Spreadsheets for Qlik/Variables Qlik.xlsx]
+(ooxml, embedded labels, table is CalendarVariables);
+
+LOAD
+    Variable,
+    Expression
+FROM [lib://Development:Office_365_Sharepoint - FP&A Folder/Shared Documents/Private/Spreadsheets for Qlik/Variables Qlik.xlsx]
+(ooxml, embedded labels, table is [Auditor Visits App]);
+
+
+Let vNumberOfRows = NoOfRows('Expressions');
+For vI = 0 to (vNumberOfRows - 1)
+Let vVariable_Name = Peek('Variable',vI,'Expression');
+Let [$(vVariable_Name)] = Peek('Expression',vI,'Expression');
+Next
+
+Drop Table Expressions;
+
+
+Variable_Temp:
+LOAD
+    Variable as Name,
+    Expression
+FROM [lib://Development:Office_365_Sharepoint - FP&A Folder/Shared Documents/Private/Spreadsheets for Qlik/Variables Qlik.xlsx]
+(ooxml, embedded labels, table is [Auditor Visits App]);
+
+FOR i = 0 TO NoOfRows('Variable_Temp')-1
+    Let vName = PEEK('Name',i,'Variable_Temp');
+    Let vValue = PEEK('Expression',i,'Variable_Temp');
+NEXT
+
+Drop Table Variable_Temp;
+///$tab Mapping - tblCustomerAddress
+LOAD
+//     AdditionalCompanyName,
+    Address1 as [tblCustomerAddress Address1],
+    Address2 as [tblCustomerAddress Address2],
+    Address3 as [tblCustomerAddress Address3],
+    Town as [tblCustomerAddress Town],
+    County as [tblCustomerAddress County],
+    Postcode as [tblCustomerAddress Postcode],
+    Country as [tblCustomerAddress Country],
+//     AddressCategory,
+//     Telephone,
+//     AddressCertification,
+//     Personnel,
+//     AddressActivities,
+//     AddressDeleted,
+//     VehicleCount,
+//     Emp1,
+//     Emp2,
+//     Emp20,
+//     Emp21,
+//     Category,
+//     tbaDate,
+//     AddressOrder,
+//     AddressScopeExt,
+//     AddressDescription,
+//     EmpMed1,
+//     EmpMed2,
+//     EmpMed20,
+//     EmpMed21,
+//     SubContractorInfo,
+//     BRCSiteSize,
+//     StorageMods,
+//     AdvancedLocationID,
+//     PSACertnumber,
+//     ClientID,
+//     OIN,
+//     USI,
+//     ISO37001Emps,
+//     EnMSAnnualEnergy,
+//     EnMSEnergySources,
+//     EnMSEnergyUses,
+//     EmpISMS001,
+//     EmpISMS002,
+//     EmpISMS003,
+//     EmpISMS004,
+//     EmpISMS005,
+//     Virtual_Online,
+//     Virtual_Physical,
+//     Virtual_Warehouse,
+//     Virtual_Manufacturing,
+//     Virtual_Testing,
+//     Virtual_Installation,
+//     vtigerID,
+//     ShiftNumber,
+//     EmpsShift1,
+//     EmpsShift2,
+//     EmpsShift3,
+//     ProcessIncManagement,
+//     ProcessIncDesign,
+//     ProcessIncControlExt,
+//     ProcessIncControlProd,
+//     GWOEnvironment,
+//     ShiftInfo,
+//     EQAAddressID,
+//     EQACompanyNumber,
+//     vTigerAddressID,
+//     empMEd,
+//     CampusAddress,
+//     R2V3Appendices,
+//     AuditorNotes,
+//     HunterLocationID,
+//     PrimaryLanguage,
+//     empEnMS7,
+//     empEnMS6,
+//     empEnMS5,
+//     empEnMS4,
+//     empEnMS3,
+//     empEnMS2,
+//     empEnMS1,
+//     GWOModules,
+//     emp20IT,
+//     DataType,
+//     Address_ID,
+    Customer_ID
+//    ,
+//     Contact_ID,
+//     empMed,
+//     ASR,
+//     FullAddress
+FROM [lib://$(vDataFiles)/Extract_tblCustomerAddresses.qvd]
+// FROM [lib://$(vDataFilesTest)/Extract_tblCustomerAddresses.qvd]
+(qvd);
+
+
+///$tab Mapping
+CustomerRegion_Map:
+Mapping
+LOAD
+    Customer_ID,
+    RegionID
+FROM [lib://$(vDataFiles)/Transformation1_Customers.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_Customers.qvd]
+(qvd);
+
+SubbyWorkingDays_SubbyDays:
+Mapping
+LOAD
+    "AuditorWD AuditorID",
+    "AuditorWD Subby Days"
+FROM [lib://$(vDataFiles)/Transformation1_AuditorWorkingDays.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_AuditorWorkingDays.qvd]
+(qvd);
+
+
+SubbyWorkingDays_Subby?:
+Mapping
+LOAD
+    "AuditorWD AuditorID",
+    "AuditorWD Sub Contractor?"
+FROM [lib://$(vDataFiles)/Transformation1_AuditorWorkingDays.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_AuditorWorkingDays.qvd]
+(qvd);
+
+
+
+
+GWOInspectionDays:
+Mapping LOAD
+//     AuditorID1,
+//     Calendar_Key1,
+//     "Visits Proposal_ID1",
+    Key,
+//     recordNum,
+    "GWO Days"
+FROM [lib://$(vDataFiles)/Transformation2_AuditorVisits_GWOInspections.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation2_AuditorVisits_GWOInspections.qvd]
+(qvd);
+
+
+///$tab Mapping - Budget
+Map_VisitBudget:
+Mapping load
+Customer_ID,
+Count(Customer_ID) as Count
+FROM [lib://QVD Files:DataFiles/Extract_VisitsBudget.qvd]
+(qvd)
+Group By Customer_ID
+;
+
+///$tab NetSuite Invoices
+NetSuiteLoad:
+LOAD
+    "tblFinance CustomerID" as Customer_ID,
+    "tblFinance NetsuiteInvoiceID" as NetsuiteInvoiceID,
+    "tblFinance NetsuiteOrderReference" as NetsuiteOrderReference,
+    "tblFinance ProposalID" as ProposalID,
+    [tblFinance NetsuiteInvoiceRaisedDate] as NetsuiteInvoiceRaisedDate,
+    [tblFinance NetsuiteInvoiceStatus] as NetsuiteInvoiceStatus,
+    [tblFinance NetsuiteOrderCreatedDate] as NetsuiteOrderCreatedDate,
+    [tblFinance NetsuiteOrderFulfilledDate] as NetsuiteOrderFulfilledDate,
+    [tblFinance NetsuiteOrderID] as NetsuiteOrderID,
+    [tblFinance Legacy Invoice Number] as LegacyInvoiceNumber,
+    [tblFinance NetSuiteInvoiceReference] as NetSuiteInvoiceReference
+FROM [lib://$(vDataFiles)/Transformation1_tblFinance.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_tblFinance.qvd]
+(qvd);
+
+
+NSInvoiceLoad:
+mapping
+load
+	ProposalID,
+	NetSuiteInvoiceReference
+Resident NetSuiteLoad;
+
+NSReferenceLoad:
+mapping
+Load
+	ProposalID,
+	NetsuiteOrderReference
+Resident NetSuiteLoad;
+
+
+drop table NetSuiteLoad;
+///$tab Sales Performance Mapping
+[Sales Performance_temp]:
+
+LOAD
+	*,
+    'T2 Sales Performance' as [Table Source 1]
+
+FROM [lib://$(vDataFiles)/Transformation2_SalesPerformance.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation2_SalesPerformance.qvd]
+(qvd)
+Where "SP CB Integrated" < 1000
+;
+
+
+NoConcatenate
+
+[Sales Performance]:
+Load *,
+Customer_ID as [SP Customer_ID],
+FranchiseID as [SP FranchiseID],
+FranchiseIDFilter as [SP FranchiseIDFilter],
+FranchiseWhereField as [SP FranchiseWhereField],
+DataType as [SP DataType],
+ProposalID as ProposalID_Master_Key
+Resident [Sales Performance_temp]
+where FranchiseWhereField = 0
+;
+
+Drop field Customer_ID, FranchiseID, FranchiseIDFilter, FranchiseWhereField, DataType, Calendar_Key, IATFFlag from [Sales Performance];
+
+Drop Table [Sales Performance_temp];
+
+
+ContractDate_Map:
+Mapping load
+	ProposalID,
+    [Contract Date]
+Resident [Sales Performance];
+
+
+ContractType_Map:
+Mapping load
+	ProposalID,
+    [Proposal Type Summary]
+Resident [Sales Performance];
+
+SalesStatClass_Map:
+Mapping load
+	ProposalID,
+    [Sales Stat Classification]
+Resident [Sales Performance];
+
+
+drop table [Sales Performance];
+
+///$tab Customer and Mapping
+Customer:
+LOAD 
+	*,
+	PostalCode as PostCodeNoSpace_Key
+//     If(substringcount(Lower(Address1&'-'&Address2&'-'&Address3&'-'&County&'-'&[Customer Country Description]&'-'&[Customer Region Description]&'-'&Town&'-'&PostalCode),'irela')>=1,1) as IrelandFlag
+FROM [lib://$(vDataFiles)/Transformation1_Customers.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_Customers.qvd]
+(qvd)
+where not Match(FranchiseIDFilter,'Test Record (Delete)')
+;
+DataTypeSubMapping:
+mapping load
+Customer_ID,
+[DataType Sub Region]
+resident Customer;
+
+Drop field DataType, [DataType Sub Region],IATFFlag
+//[Customer Preferred Accreditation Body],[Customer Preferred Accreditation Body (Short)] 
+from Customer;
+
+PostCodeLocations:
+LOAD * 
+FROM [lib://$(vDataFiles)/Transformation1_Postcodes.qvd] (qvd) 
+// FROM [lib://$(vDataFilesTest)/Transformation1_Postcodes.qvd] (qvd) 
+Where Exists(PostCodeNoSpace_Key)
+;
+
+
+
+Map_PrefAccredBody:
+mapping 
+LOAD
+  Customer_ID,
+  [Customer Preferred Accreditation Body]
+resident Customer;
+
+Map_PrefAccredBodyShort:
+mapping 
+LOAD
+  Customer_ID,
+  [Customer Preferred Accreditation Body (Short)]
+resident Customer;
+
+
+///$tab Auditor Visits v2
+/*
+<<< Load 1 = Actual booked visits >>>
+<<< Load 2 = Loading "Future" visits to be booked for surveillance, recertifications, and stage 2's >>>
+<<< Load 3 = Loading "Future" visits to be booked for Stage 1's only >>>
+<<< Load 4 = Auditor Working Days >>>
+*/
+
+[Auditor Visits]:
+
+LOAD
+	DataType,
+    "Actual Flag",
+    Source,
+    "Visits Audit Day Counter",
+    VisitsID,
+    Customer_ID,
+    "Visits RegionID",
+    Calendar_Key,
+    Calendar_Key as "Actual Visit Date",
+    "Visits Day Is In Future",
+    AuditorID,
+    VisitTypeID,
+    "Visits SiteVisit_ID",
+    "Visits Address_ID",
+    "Visits Visit Date Booked",
+    "Visits Visit Reason",
+    "Visits Visit Confirmed",
+    "Visits Auditor Day Counter",
+    "Visits # Days Booked Before Visit",
+    "Visits # Days Booked Before EoM",
+    "Visits Arrival Include Flag",
+    0 as [Is Amended Date],
+    "Visits BABCOMAuditor",
+    "Visits Proposal_ID",
+    "Visits Proposal Net Amount",
+    "Visits Proposal Days",
+    "Visits Proposal Day Rate",
+    "Visits Proposal Day Revenue",
+    "Visits Invoice Paid Date",
+    "Visits Invoice Raised Date",
+    "Visits Invoice Cancelled",
+    "Visits Invoice Number",
+    "Visits New Business Contract Date",
+    "Visits New Business Contract Flag",
+    "Visits Days from Visit to Contract",
+    "Visits Original Enquiry Date",
+    "Visits Days from Visit to Enquiry",
+    "Visits Original Enquiry Date valid",
+    "Visits Post Code",
+    (Calendar_Key-"Visits Invoice Raised Date") as "Days between raised and visit booked",
+    "Visits Proposal_ID" as ProposalID_Master_Key,
+    ApplyMap('ContractDate_Map',"Visits Proposal_ID",'<missing>') as [Contract Date],
+    ApplyMap('ContractType_Map',"Visits Proposal_ID",'<missing>') as [Contract Type],
+    ApplyMap('SalesStatClass_Map',"Visits Proposal_ID",'<missing>') as [Contract Sales Stat Classification],
+    [Visits Audit Report Submitted],
+    [Visits Audit Report Signed Off],
+    [Visits Visit Date Originally Booked],
+    ApplyMap('GWOInspectionDays',AuditorID&Calendar_Key&"Visits Proposal_ID"&VisitTypeID,0) as GWODays,
+    
+    applymap('NSInvoiceLoad',"Visits Proposal_ID",'No Invoice Found') as [NetSuite Invoices],
+    applymap('NSReferenceLoad',"Visits Proposal_ID",'No Invoice Found') as [NetSuite References],
+    "Visits Contracted Customer ID",
+    If(Calendar_Key>=Date(today(),'YYYYMMDD') and Calendar_Key<Date(today()+120,'YYYYMMDD'),'Visit within 4 months','n/a') as [Visit within 4 months of today flag],
+    If(Calendar_Key>=Date(today()+121,'YYYYMMDD') and Calendar_Key<Date(today()+270,'YYYYMMDD'),'Visit after 4 months','n/a') as [Visit after 4 months of today up to 9 months flag],
+    
+    ApplyMap('DataTypeSubMapping',Customer_ID,'<missing>') as [DataType Sub Region],
+    [Visits Auditor Day Counter Overstated Flag],
+    'Transformation2_AuditorVisits' as SourceOfData,
+    BookingErrorFlag,
+    if(Applymap('Map_VisitBudget',Customer_ID,0)=0,'False','True') as CustomerHasBudget,
+    IATFFlag,
+    BookingErrorCheck,
+    VisitBookedCheck,
+    VisitFoundin365,
+    VisitDescriptionin365,
+    "Proposal RetentionYear",
+    CheckForBookingError,
+    FranchiseToKeepQAICLintoIRE
+    // ,
+    
+//     ApplyMap('Map_PrefAccredBody',Customer_ID,'Check') as [Customer Preferred Accreditation Body],
+// 	ApplyMap('Map_PrefAccredBodyShort',Customer_ID,'Check') as [Customer Preferred Accreditation Body (Short)]
+
+    
+    
+// FROM [lib://$(vDataFiles)/Transformation2_AuditorVisits.qvd]
+FROM [lib://$(vDataFilesTest)/Transformation2_AuditorVisits.qvd]
+// FROM [lib://$(vDataFiles)/Transformation2_AuditorVisits_Agency.qvd]
+// // FROM [lib://$(vDataFilesTest)/Transformation2_AuditorVisits_Agency.qvd]
+(qvd)
+Where "Visits Customer CBIntegrated" <1000 
+;
+
+LEFT JOIN ([Auditor Visits])
+LOAD
+    "Visits Proposal_ID",
+    BookingErrorFlag AS [Visits Booking Error Flag],
+    COUNT(BookingErrorFlag) AS [Count of Booking Errors]
+RESIDENT [Auditor Visits]
+WHERE BookingErrorFlag <> 'OK'
+GROUP BY
+    "Visits Proposal_ID",
+    BookingErrorFlag;
+
+
+
+/*
+//Load 2 = Loading "Future" visits to be booked for surveillance, recertifications, and stage 2's
+Concatenate([Auditor Visits])
+
+Load*,
+	If(Calendar_Key = "Pipeline Visits Date",0,1) as [Is Amended Date]
+    ;
+
+Load
+	If(Calendar_Key < Date(Today())+30, (Date(Today()) + 60),Calendar_Key) as Calendar_Key, //If Calendar_Key is within the next 30 days, add 60 as it probably won't be visited within the next 30 days
+    Customer_ID,
+	Source,
+    "Actual Flag",
+    AuditorID,
+    "Pipeline Visits Date",
+    "Visits Day Is In Future",
+    "Visits Auditor Day Counter",
+    VisitsID,
+    "Visits RegionID",
+    VisitTypeID,
+    "Pipeline Visits Future Visit Classification"
+;
+
+Load
+	"Pipeline Visits CustomerID" as Customer_ID,
+    'Future' as Source,
+    'Future' as "Actual Flag",
+    'Future' as AuditorID,
+    "Pipeline Visits Date", 
+        
+    If("Pipeline Visits Future Visit Classification" = 'Stage One & Two - Outstanding',("Pipeline Visits Date" + (30*6)), 	//adding 6 months on to the to get the stage 2 visit date
+    	If("Pipeline Visits Future Visit Classification" = 'Stage Two - Outstanding',("Pipeline Visits Date" + (30*4)), 	//adding 4 months on to the stage 1 visit date
+        	If("Pipeline Visits Future Visit Classification" = 'Surveillance - Outstanding',("Pipeline Visits Date" + 365),
+            	If("Pipeline Visits Future Visit Classification" = 'Surv/Recert - Outstanding',("Pipeline Visits Date" + 365)
+    ))))  as Calendar_Key,    
+    
+    "Pipeline Visits Visit In Future Flag" as "Visits Day Is In Future",
+    
+    //"Pipeline Visits Future Visit Outstanding Days" as "Visits Auditor Day Counter", //Need to amend this
+    If("Pipeline Visits Future Visit Classification" = 'Stage One & Two - Outstanding',"Pipeline Visits Future Visit Outstanding Days"-1, 
+    	"Pipeline Visits Future Visit Outstanding Days") as "Visits Auditor Day Counter", //subtracting 1 because of the stage 1 visit
+    
+    Applymap('CustomerRegion_Map',"Pipeline Visits CustomerID",'<missing>') as "Visits RegionID",
+    'Future' as VisitsID,
+    
+    If("Pipeline Visits Future Visit Classification" = 'Stage One & Two - Outstanding',4,		//Stage 1 and 2's (new business) which are yet to be booked have been lumped under stage 2 visits
+    	If("Pipeline Visits Future Visit Classification" = 'Stage Two - Outstanding',4,
+        	If("Pipeline Visits Future Visit Classification" = 'Surveillance - Outstanding',8,
+            	If("Pipeline Visits Future Visit Classification" = 'Surv/Recert - Outstanding',8
+    )))) as VisitTypeID,
+    
+    "Pipeline Visits Future Visit Classification",
+    "Pipeline Visits Future Visit Outstanding Is Contracted" as [Future Visit Is Contracted]
+    
+FROM [lib://$(vDataFiles)/Transformation2_PipelineVisits.qvd]
+(qvd)
+Where "Pipeline Visits Is Pipeline Visit" = 1 and "Pipeline Visits Future Visit Classification Flag" = 1
+and "Pipeline Visits Future Visit Active Client Flag" = 1
+and match("Pipeline Visits Future Visit Outstanding Is Contracted",0,1)
+and match("Pipeline Visits Future Visit Classification",'Stage One & Two - Outstanding','Stage Two - Outstanding','Surveillance - Outstanding','Surv/Recert - Outstanding')
+;
+
+
+//Load 3 = Loading "Future" visits to be booked for Stage 1's only
+Concatenate([Auditor Visits])
+
+Load*,
+	If(Calendar_Key = "Pipeline Visits Date",0,1) as [Is Amended Date]
+    ;
+
+Load
+	If(Calendar_Key < Date(Today())+30, (Date(Today()) + 60),Calendar_Key) as Calendar_Key, //If Calendar_Key is within the next 30 days, add 60 as it probably won't be visited within the next 30 days
+    Customer_ID,
+	Source,
+    "Actual Flag",
+    AuditorID,
+    "Pipeline Visits Date",
+    "Visits Day Is In Future",
+    "Visits Auditor Day Counter",
+    VisitsID,
+    "Visits RegionID",
+    VisitTypeID,
+    "Pipeline Visits Future Visit Classification"
+;
+
+Load
+	"Pipeline Visits CustomerID" as Customer_ID,
+    'Future' as Source,
+    'Future' as "Actual Flag",
+    'Future' as AuditorID,
+    "Pipeline Visits Date", 
+        
+    If("Pipeline Visits Future Visit Classification" = 'Stage One & Two - Outstanding',("Pipeline Visits Date" + (30*2)), 	//adding 2 months on to the to get the stage 1 visit date
+    	If("Pipeline Visits Future Visit Classification" = 'Stage Two - Outstanding',("Pipeline Visits Date" + (30*4)), 	//adding 4 months on to the stage 1 visit date
+        	If("Pipeline Visits Future Visit Classification" = 'Surveillance - Outstanding',("Pipeline Visits Date" + 365),
+            	If("Pipeline Visits Future Visit Classification" = 'Surv/Recert - Outstanding',("Pipeline Visits Date" + 365)
+    ))))  as Calendar_Key,    
+    
+    "Pipeline Visits Visit In Future Flag" as "Visits Day Is In Future",
+    
+    //"Pipeline Visits Future Visit Outstanding Days" as "Visits Auditor Day Counter", //Need to amend this
+    If("Pipeline Visits Future Visit Classification" = 'Stage One & Two - Outstanding',1,0) as "Visits Auditor Day Counter", //Only 1 day for stage 1 visits
+    
+    Applymap('CustomerRegion_Map',"Pipeline Visits CustomerID",'<missing>') as "Visits RegionID",
+    'Future' as VisitsID,
+    
+    If("Pipeline Visits Future Visit Classification" = 'Stage One & Two - Outstanding',2,		//Booked under a stage 1 visit
+    	If("Pipeline Visits Future Visit Classification" = 'Stage Two - Outstanding',4,
+        	If("Pipeline Visits Future Visit Classification" = 'Surveillance - Outstanding',8,
+            	If("Pipeline Visits Future Visit Classification" = 'Surv/Recert - Outstanding',8
+    )))) as VisitTypeID,
+    
+    "Pipeline Visits Future Visit Classification",
+    "Pipeline Visits Future Visit Outstanding Is Contracted" as [Future Visit Is Contracted]
+    
+FROM [lib://$(vDataFiles)/Transformation2_PipelineVisits.qvd]
+(qvd)
+Where "Pipeline Visits Is Pipeline Visit" = 1 and "Pipeline Visits Future Visit Classification Flag" = 1
+and "Pipeline Visits Future Visit Active Client Flag" = 1
+and match("Pipeline Visits Future Visit Outstanding Is Contracted",0,1)
+and match("Pipeline Visits Future Visit Classification",'Stage One & Two - Outstanding')
+;
+
+*/
+
+//Load 4 = Auditor working days
+Concatenate([Auditor Visits])
+
+LOAD
+    'AWD' 										as Source,
+    'AWD' 										as "Actual Flag",    
+    "AuditorWD AuditorID" 						as AuditorID,
+    "AuditorWD Auditor Date" 					as Calendar_Key,
+    "AuditorWD Counter Exc Bank Holidays" 		as "Visits Auditor Day Counter",
+    0 											as "Visits BABCOMAuditor",
+    "AuditorWD Auditor Category"				as "Auditor Category",
+    DataType,
+    'Transformation1_AuditorWorkingDays' as SourceOfData
+FROM [lib://$(vDataFiles)/Transformation1_AuditorWorkingDays.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_AuditorWorkingDays.qvd]
+(qvd);
+
+// Concatenate([Auditor Visits])
+
+// //Map_VisitBudget:
+// load
+// 'Budget' 										as Source,
+// 'Budget' 										as "Actual Flag",  
+// Customer_ID	,//									as "Visit Budget Customer_ID",
+// date(BudgetDate,'YYYYMMDD') as Calendar_Key,
+// Budget,
+// Year(BudgetDate) as BudgetYear,
+
+// '8_US' as VisitTypeID
+// FROM [lib://QVD Files:DataFiles/Extract_VisitsBudget.qvd]
+// (qvd);
+
+
+
+
+
+Store [Auditor Visits] INTO [lib://$(vDataFiles)/AuditorVisitsApp_Auditor_Visits_Table.qvd] (qvd);
+Store [Auditor Visits] INTO [lib://$(vDataFilesTest)/AuditorVisitsApp_Auditor_Visits_Table.qvd] (qvd);
+
+
+
+///$tab Calendar
+Calendar:
+LOAD * FROM [lib://$(vDataFiles)/Transformation1_Calendar.qvd]
+(qvd);
+
+
+///$tab Visit Type
+VisitType:
+LOAD
+    "VisitType Description",
+    VisitTypeID,
+    "VisitType Location"
+FROM [lib://$(vDataFiles)/Transformation1_VisitType.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_VisitType.qvd]
+(qvd);
+
+
+///$tab AuditorID
+Auditors:
+
+LOAD
+    Auditor_ID as AuditorID,
+    Au_First,
+    Au_Surname,
+    Au_First &' '& Au_Surname as [Auditor Name],
+    Au_IsFullyActiveStatus,
+    SSIP,
+    Au_SignedOffFor,
+    Au_IsFullyActive,
+    Au_ST1,
+    Au_Type,
+    Au_BigTicket,
+    Au_DiaryDisplay,
+    Au_VisitDiaryDisplay,
+    Au_AssessorOverviewDisplay,
+    Au_NonConform,
+    Au_SubContract,
+    Au_Grouping,
+    Agency_ID,
+    Au_Postcode,
+    Au_GeoPoint,
+    Au_Country,
+    Au_SecurityID,
+
+    ApplyMap('SubbyWorkingDays_SubbyDays',Auditor_ID,'<n/a>') as Au_SubbyDays,
+    ApplyMap('SubbyWorkingDays_Subby?',Auditor_ID,'<n/a>') as Au_Subby?,
+//    Applymap('CustomerRegion_Map',"Pipeline Visits CustomerID",'<missing>') as "Visits RegionID",
+    AuditorType,
+    
+    
+    Au_Address1,
+    Au_Address2,
+    Au_Village,
+    Au_Town,
+    Au_County,
+    Au_location
+FROM [lib://$(vDataFiles)/Transformation1_Auditors.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_Auditors.qvd]
+(qvd);
+
+
+Store Auditors INTO [lib://$(vDataFiles)/AuditorVisitsApp_Auditors_Table.qvd] (qvd);
+Store Auditors INTO [lib://$(vDataFilesTest)/AuditorVisitsApp_Auditors_Table.qvd] (qvd);
+///$tab tblContacts
+let vTableName = 'Contacts_Table';
+
+$(vTableName):
+LOAD
+    ContactID,
+    CustomerID,
+    Title,
+    FirstName,
+    LastName,
+    JobTitle,
+    Tel as [Contact Tel],
+    //Fax,
+    Mobile,
+    Email as [Contact Email],
+    Notes as [Contact Notes],
+    ContactType,
+    FinanceContact,
+    ConsultantContact,
+    SCC,
+    "Password",
+    LastLoggedIn,
+    OptIn,
+    pwdencrypt,
+    vTigerID,
+    IWLicenseHolder,
+    GreenDealContact,
+    //DataType,
+    Contact_ID,
+    Customer_ID
+FROM [lib://$(vDataFiles)/Extract_tblContacts.qvd]
+// FROM [lib://$(vDataFilesTest)/Extract_tblContacts.qvd]
+(qvd);
+///$tab Competence
+let vTableName = 'AuditorCompetence';
+
+
+$(vTableName):
+LOAD
+    Auditor_ID,
+    StandardName,
+    "Standard&Code"
+FROM [lib://$(vDataFiles)/Transformation1_AuditorCompetence_AllCompetenceStandardsConcat.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_AuditorCompetence_AllCompetenceStandardsConcat.qvd]
+(qvd);
+
+
+
+
+///$tab Customer Competence demand
+let vTableName = 'CustomerCompetenceDemand';
+
+
+$(vTableName):
+LOAD
+    Customer_ID,
+    Demand
+FROM [lib://$(vDataFiles)/Transformation1_AuditorCompetence_CustomerDemand.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation1_AuditorCompetence_CustomerDemand.qvd]
+(qvd);
+
+
+
+
+
+///$tab Exit script
+exit script;
+///$tab Auditor Visits v1
+/*
+<<< Load 1 = Actual booked visits >>>
+<<< Load 2 = Future days to be booked >>>
+
+
+*/
+
+/*
+[Auditor Visits]:
+
+LOAD
+    "Actual Flag",
+    Source,
+    "Visits Audit Day Counter",
+    VisitsID,
+    Customer_ID,
+    "Visits RegionID",
+    Calendar_Key,
+    "Visits Day Is In Future",
+    AuditorID,
+    VisitTypeID,
+    "Visits SiteVisitID",
+    "Visits AddressID",
+    "Visits Visit Date Booked",
+    "Visits Visit Reason",
+    "Visits Visit Confirmed",
+    "Visits Auditor Day Counter",
+    0 as [Is Amended Date]
+FROM [lib://$(vDataFiles)/Transformation2_AuditorVisits.qvd]
+(qvd);
+
+Concatenate([Auditor Visits])
+
+Load*,
+	If(Calendar_Key = "Pipeline Visits Date",0,1) as [Is Amended Date]
+    ;
+
+Load
+	If(Calendar_Key < Date(Today())+30, (Date(Today()) + 60),Calendar_Key) as Calendar_Key,
+    Customer_ID,
+	Source,
+    "Actual Flag",
+    AuditorID,
+    "Pipeline Visits Date",
+    "Visits Day Is In Future",
+    "Visits Auditor Day Counter",
+    VisitsID,
+    "Visits RegionID",
+    VisitTypeID
+    //"Pipeline Visits Future Visit Classification"
+;
+
+Load
+	"Pipeline Visits CustomerID" as Customer_ID,
+    'Future' as Source,
+    'Future' as "Actual Flag",
+    'Future' as AuditorID,
+    "Pipeline Visits Date", 
+        
+    If("Pipeline Visits Future Visit Classification" = 'Stage One & Two - Outstanding',("Pipeline Visits Date" + (30*2)), 	//adding 2 months on to the contract day
+    	If("Pipeline Visits Future Visit Classification" = 'Stage Two - Outstanding',("Pipeline Visits Date" + (30*4)), 	//adding 4 months on to the stage 1 visit date
+        	If("Pipeline Visits Future Visit Classification" = 'Surveillance - Outstanding',("Pipeline Visits Date" + 365),
+            	If("Pipeline Visits Future Visit Classification" = 'Surv/Recert - Outstanding',("Pipeline Visits Date" + 365)
+    ))))  as Calendar_Key,    
+    
+    "Pipeline Visits Visit In Future Flag" as "Visits Day Is In Future",
+    "Pipeline Visits Future Visit Outstanding Days" as "Visits Auditor Day Counter",
+    Applymap('CustomerRegion_Map',"Pipeline Visits CustomerID",'<missing>') as "Visits RegionID",
+    'Future' as VisitsID,
+    
+    If("Pipeline Visits Future Visit Classification" = 'Stage One & Two - Outstanding',4,		//Stage 1 and 2's (new business) which are yet to be booked have been lumped under stage 2 visits
+    	If("Pipeline Visits Future Visit Classification" = 'Stage Two - Outstanding',4,
+        	If("Pipeline Visits Future Visit Classification" = 'Surveillance - Outstanding',8,
+            	If("Pipeline Visits Future Visit Classification" = 'Surv/Recert - Outstanding',8
+    )))) as VisitTypeID,
+    
+    //"Pipeline Visits Future Visit Classification",
+    "Pipeline Visits Future Visit Outstanding Is Contracted" as [Future Visit Is Contracted]
+    
+    
+    
+FROM [lib://$(vDataFiles)/Transformation2_PipelineVisits.qvd]
+(qvd)
+Where "Pipeline Visits Is Pipeline Visit" = 1 and "Pipeline Visits Future Visit Classification Flag" = 1
+and "Pipeline Visits Future Visit Active Client Flag" = 1
+and match("Pipeline Visits Future Visit Outstanding Is Contracted",0,1)
+and match("Pipeline Visits Future Visit Classification",'Stage One & Two - Outstanding','Stage Two - Outstanding','Surveillance - Outstanding','Surv/Recert - Outstanding')
+;
+*/
