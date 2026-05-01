@@ -1,0 +1,53 @@
+
+SHEETS
+
+OBJECTS ON SHEETS
+
+DIMENSIONS
+
+MASTER OBJECTS
+
+VARIABLES
+{"qName":"vDataFilesTest","qDefinition":"QVD Test Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"2c41c524-2c38-4b97-b4a6-8247ee4c71ab","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vCurrentMonth","qDefinition":"05","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"ef69bb1a-06e5-45a7-a84f-8d8534527229","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vDataFiles","qDefinition":"QVD Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"2e1a11e8-34d8-4286-b3fb-d025b5963af3","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"TableName","qDefinition":"Transformation2_tblAuditReports","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"a545b2a7-8c19-4ee0-acab-5e9871254028","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vCurrentYear","qDefinition":"2026","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"6cb9d030-090b-4319-9ec2-248066b8b588","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+
+FIELDS
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Field","qCardinal":30,"qTags":["$text","$ascii","$hidden","$system","$key"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Table","qCardinal":1,"qTags":["$text","$ascii","$hidden","$system","$key"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Rows","qCardinal":1,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Fields","qCardinal":1,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$FieldNo","qCardinal":30,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Info","qCardinal":1,"qTags":["$text","$ascii","$hidden","$system"],"qSrcTables":[]}
+{"qName":"DateSubmitted","qCardinal":3832,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"DateSubmittedCheck","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"DateSignedOff","qCardinal":13541,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"DateSignedOffCheck","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"DateEdited","qCardinal":3823,"qTags":["$numeric","$timestamp","$integer","$date"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"DateComplianceReview","qCardinal":2394,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"RecertPerformReview","qCardinal":4675,"qTags":["$text"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"ReviewDate","qCardinal":847,"qTags":["$numeric","$timestamp","$integer","$date"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"TechReviewer","qCardinal":112,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"DateReviewed","qCardinal":2029,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"DateSent","qCardinal":995,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"DateCertificate","qCardinal":7602,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"DataType","qCardinal":4,"qTags":["$text","$ascii"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"AuditReport_ID","qCardinal":135508,"qTags":["$text","$ascii"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"Visits_ID","qCardinal":135370,"qTags":["$text","$ascii"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"CustProcess_ID","qCardinal":4,"qTags":["$text","$ascii"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"Customer_ID","qCardinal":37818,"qTags":["$text","$ascii"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"Compliance Officer","qCardinal":114,"qTags":["$text"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"DateFirstSubmitted","qCardinal":3832,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"Days between firt submission and most recent submission","qCardinal":94,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"ReportOpenDays","qCardinal":12581,"qTags":["$numeric"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"TestRecordsToDelete","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"Calendar_Key","qCardinal":3832,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"CompanyName","qCardinal":24797,"qTags":["$text"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"Customer Certifying Body","qCardinal":35,"qTags":["$text","$ascii"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"RejectedDate","qCardinal":7140,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"createdby","qCardinal":108,"qTags":["$text"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"ReportRejectedCheck1","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"ReportRejectedCheck2","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["Transformation2_tblAuditReports"]}
+{"qName":"ReportRejectedCheck","qCardinal":3,"qTags":["$text","$ascii"],"qSrcTables":["Transformation2_tblAuditReports"]}
