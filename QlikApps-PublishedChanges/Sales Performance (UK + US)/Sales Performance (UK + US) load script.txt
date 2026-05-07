@@ -47,6 +47,25 @@ Let [$(vVariable_Name)] = Peek('Expression',vI,'Expression');
 Next
 
 
+///$tab Mapping - New PAS Days (Seperate T2 app)
+Load_PasInspectionsContractDetails:
+LOAD
+    ProposalID,
+    MCSFlag,
+    "PAS Inspections"
+FROM [lib://QVD Files:DataFiles/Transformation2_PASInspectionsContractTotals.qvd]
+(qvd);
+
+Map_TotalPasInspections:
+Mapping load
+ProposalID,
+"PAS Inspections"
+resident Load_PasInspectionsContractDetails;
+
+
+drop table Load_PasInspectionsContractDetails;
+
+
 ///$tab Mapping - PAS MCS days
 /* James would like to take the number of PAS Inspections products. Specifically for PAS MCS.
 
@@ -438,8 +457,8 @@ LOAD
 //     "Proposal # Days to Sign Contract",
 //     FinanceID,
 //     "Finance Invoice Number"
-// FROM [lib://$(vDataFiles)/Transformation2_SalesPerformance.qvd]
-FROM [lib://$(vDataFilesTest)/Transformation2_SalesPerformance.qvd]
+FROM [lib://$(vDataFiles)/Transformation2_SalesPerformance.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation2_SalesPerformance.qvd]
 // FROM [lib://$(vDataFiles)/Transformation2_SalesPerformance_Agency.qvd]
 // // FROM [lib://$(vDataFilesTest)/Transformation2_SalesPerformance_Agency.qvd]
 (qvd)
@@ -526,12 +545,18 @@ drop field "Surveillance Days", [PAS Inspections];
 
 [Sales Performance]:
 Load *,
-	if(MCSFlag='MCS',
-    // See mapping tab for details.
-    applymap('Map_NumberOfMCSProducts',ProposalID,0),
-    // [#Inspections]+#MeasureCount,
-    [Loaded PAS Inspections]) as [PAS Inspections],
-	"Surveillance Days1" as "Surveillance Days",
+	
+    applymap('Map_TotalPasInspections',ProposalID,0) as [PAS Inspections],
+    
+//     if(MCSFlag='MCS',
+//     // See mapping tab for details.
+//     applymap('Map_NumberOfMCSProducts',ProposalID,0),
+//     // [#Inspections]+#MeasureCount,
+//     [Loaded PAS Inspections]) as [PAS Inspections],
+	
+    
+    
+    "Surveillance Days1" as "Surveillance Days",
     if("Customer has Converted Counter"=0,'Customer has not converted in Calendar Year '&Date(Calendar_Key,'YY'),'Customer has converted in Calendar Year '&Date(Calendar_Key,'YY')) as [Converted Flag],
     /*[#Inspections]+*/#MeasureCount as SumInspectionsMeasure,
     [#Inspections] as MCSInspectionsField,
