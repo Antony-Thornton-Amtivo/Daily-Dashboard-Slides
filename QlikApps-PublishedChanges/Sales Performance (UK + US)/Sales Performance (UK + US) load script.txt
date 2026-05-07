@@ -62,52 +62,17 @@ ProposalID,
 "PAS Inspections"
 resident Load_PasInspectionsContractDetails;
 
+Map_MCS_Flag:
+mapping load 
+ProposalID,
+"PAS Inspections"
+resident Load_PasInspectionsContractDetails;
+
 
 drop table Load_PasInspectionsContractDetails;
 
 
-///$tab Mapping - PAS MCS days
-/* James would like to take the number of PAS Inspections products. Specifically for PAS MCS.
-
-For example 172022_UK has 3 products. Although these are not DAYS so to speak they need to be treated in the SP front end
-as such. 
- 
-SERVICES PROVIDED
-Product
-MCS Heat Pumps Design - MCS Heat Pumps Design
-MCS Heat Pumps Installation - MCS Heat Pumps Installation
-MCS Solar PV - MCS Solar PV
-
-*/
-
-Load_Visits2030:
-load
-"Visits2030 Proposal_ID",
-Sum(CountOfProducts) as NumberOfProducts
-group by "Visits2030 Proposal_ID"
-;
-
-load
-"Visits2030 Proposal_ID",
-"Visits2030 BoltOn",
-Count("Visits2030 Proposal_ID") as CountOfProducts
-FROM [lib://$(vDataFiles)/Transformation2_Visits2030.qvd]
-(qvd)
-group by "Visits2030 Proposal_ID","Visits2030 BoltOn",
-// where DataType<>'AGT'
-;
-
-Map_NumberOfMCSProducts:
-mapping load
-"Visits2030 Proposal_ID",
-NumberOfProducts
-resident Load_Visits2030;
-
-
-drop table Load_Visits2030;
-///$tab Mapping - NetSuite
-
-///$tab Mapping
+///$tab Mapping - Other
 Curr_Map_US:
 Mapping LOAD
    // "Fixed Data Date",
@@ -235,59 +200,6 @@ Industry_Temp
 
 
 
-///$tab Mapping MCS
-MCS_Filter:
-load
-	Customer_ID,
-    Measure,
-    ProposalID,
-    Customer_ID&ProposalID&Measure as Measure_Key,
-    if(left(Measure,3)='MCS','MCS','Other') as MCSFlag,
-    if(isnull(#Inspections),0,#Inspections) as #Inspections,
-    Year(Calendar_Key) as "Converted year"
-
-FROM [lib://$(vDataFiles)/Transformation2_PAS_Proposals.qvd]
-// FROM [lib://$(vDataFilesTest)/Transformation2_PAS_Proposals.qvd]
-(qvd)
-;
-
-
-NoConcatenate
-
-MCS_Temp:
-load
-*
-resident MCS_Filter
-where MCSFlag = 'MCS';
-
-MCS_Flag:
-mapping load 
-ProposalID,
-MCSFlag
-resident MCS_Filter;
-
-
-//NoConcatenate
-
-MCS_Count:
-Mapping load
-	Measure_Key,
-    Count(Measure) as #MeasureCount
-Resident MCS_Temp
-Group By Measure_Key;
-
-Inspections_Count:
-mapping load
-Customer_ID&ProposalID as Inspections_Key,
-sum(#Inspections) as #Inspections
-Resident MCS_Filter
-Group By Customer_ID&ProposalID
-;
-
-
-drop table 
-MCS_Temp, 
-MCS_Filter;
 ///$tab Additional Mapping
 Converted_Count_Load:
 Load
@@ -418,10 +330,10 @@ LOAD
     Date("Calendar_Key" -50,'YYYYMMDD')  as "Contract Date Past",
     ApplyMap('PreviousDayRateAppliedContract',Customer_ID&Calendar_Key,null()) as [Previous Day Rate Applied (Contract)],
     ApplyMap('PreviousDayRateAppliedQuote',Customer_ID&Calendar_Key,null()) as [Previous Day Rate Applied (Quote)],
-    ApplyMap('MCS_Count',Customer_ID&ProposalID&Measure,0) as #MeasureCount,
+    // ApplyMap('MCS_Count',Customer_ID&ProposalID&Measure,0) as #MeasureCount,// Redundant now due to T2 - Pas Inspections contract details app.
     //Customer_ID&ProposalID&Measure as Measure_Key_Check,
     //Right("Proposal PAS BoltOnInspections",3) as NumberofInspections
-    ApplyMap('Inspections_Count',Customer_ID&ProposalID,0) as #Inspections,
+//     ApplyMap('Inspections_Count',Customer_ID&ProposalID,0) as #Inspections,// Redundant now due to T2 - Pas Inspections contract details app.
     ApplyMap('Converted_Count_Map',Customer_ID,0) as "Customer has Converted Counter",
     if(DataType='US','https://connect.us.amtivo.com/company_overview.asp?customerID='&left(Customer_ID,6),
     	If(DataType='IRE','https://connect2.amtivo.com/company_overview.asp?customerID='&left(Customer_ID,6),'https://crm.britishassessmentbureau.org/company_overview.asp?customerID='&left(Customer_ID,6)))
@@ -429,7 +341,7 @@ LOAD
     
     if(ApplyMap('MaxContract',Customer_ID,0)="Calendar_Key",1,0) as [Max Contract Date Flag],
     
-    ApplyMap('MCS_Flag',ProposalID,'Other') as MCSFlag
+    ApplyMap('Map_MCS_Flag',ProposalID,'Other') as MCSFlag
     //ApplyMap('MaxContract',Ca,NULL()) as [Max Contract Date Flag]
  
 
@@ -553,15 +465,16 @@ Load *,
 //     applymap('Map_NumberOfMCSProducts',ProposalID,0),
 //     // [#Inspections]+#MeasureCount,
 //     [Loaded PAS Inspections]) as [PAS Inspections],
-	
+    // Possibly redundant now due to the new logic app. 
+//     /*[#Inspections]+*/#MeasureCount as SumInspectionsMeasure,// Possibly redundant now due to the new logic app. 
+//     [#Inspections] as MCSInspectionsField,	
     
     
     "Surveillance Days1" as "Surveillance Days",
-    if("Customer has Converted Counter"=0,'Customer has not converted in Calendar Year '&Date(Calendar_Key,'YY'),'Customer has converted in Calendar Year '&Date(Calendar_Key,'YY')) as [Converted Flag],
-    /*[#Inspections]+*/#MeasureCount as SumInspectionsMeasure,
-    [#Inspections] as MCSInspectionsField,
+    if("Customer has Converted Counter"=0,'Customer has not converted in Calendar Year '&Date(Calendar_Key,'YY'),'Customer has converted in Calendar Year '&Date(Calendar_Key,'YY')) as [Converted Flag]
     
-    applymap('Map_NumberOfMCSProducts',ProposalID,0) as NumberOfPASMCSDays
+    
+
     
 
 Resident [Sales Performance_Temp2]
@@ -751,8 +664,6 @@ FROM [lib://$(vDataFiles)/Extract_tblContacts.qvd]
 LEFT JOIN THIS ONTO THE CUSTOMERS TABLE?
 
    ************************************ */
-///$tab ***** Exit Script *****
-Exit Script;
 ///$tab tblNotes
 let vTableName = 'Notes_Table';
 
@@ -1116,3 +1027,105 @@ where ComplaintDateOpen=MaxComplaintDateOpen
 
 drop table tblComplaintLogLoad;
 
+
+///$tab ***** Exit Script *****
+Exit Script;
+///$tab (OLD) - Mapping MCS
+// Redundant now due to T2 - Pas Inspections contract details app.
+
+
+
+
+
+
+// MCS_Filter:
+// load
+// 	Customer_ID,
+//     Measure,
+//     ProposalID,
+//     Customer_ID&ProposalID&Measure as Measure_Key,
+//     if(left(Measure,3)='MCS','MCS','Other') as MCSFlag,
+//     if(isnull(#Inspections),0,#Inspections) as #Inspections,
+//     Year(Calendar_Key) as "Converted year"
+
+// FROM [lib://$(vDataFiles)/Transformation2_PAS_Proposals.qvd]
+// // FROM [lib://$(vDataFilesTest)/Transformation2_PAS_Proposals.qvd]
+// (qvd)
+// ;
+
+
+// NoConcatenate
+
+// MCS_Temp:
+// load
+// *
+// resident MCS_Filter
+// where MCSFlag = 'MCS';
+
+// MCS_Flag:
+// mapping load 
+// ProposalID,
+// MCSFlag
+// resident MCS_Filter;
+
+
+// //NoConcatenate
+
+// MCS_Count:
+// Mapping load
+// 	Measure_Key,
+//     Count(Measure) as #MeasureCount
+// Resident MCS_Temp
+// Group By Measure_Key;
+
+// Inspections_Count:
+// mapping load
+// Customer_ID&ProposalID as Inspections_Key,
+// sum(#Inspections) as #Inspections
+// Resident MCS_Filter
+// Group By Customer_ID&ProposalID
+// ;
+
+
+// drop table 
+// MCS_Temp, 
+// MCS_Filter;
+///$tab Mapping - PAS MCS days
+// /* James would like to take the number of PAS Inspections products. Specifically for PAS MCS.
+
+// For example 172022_UK has 3 products. Although these are not DAYS so to speak they need to be treated in the SP front end
+// as such. 
+ 
+// SERVICES PROVIDED
+// Product
+// MCS Heat Pumps Design - MCS Heat Pumps Design
+// MCS Heat Pumps Installation - MCS Heat Pumps Installation
+// MCS Solar PV - MCS Solar PV
+
+// */
+
+// Load_Visits2030:
+// load
+// "Visits2030 Proposal_ID",
+// Sum(CountOfProducts) as NumberOfProducts
+// group by "Visits2030 Proposal_ID"
+// ;
+
+// load
+// "Visits2030 Proposal_ID",
+// "Visits2030 BoltOn",
+// Count("Visits2030 Proposal_ID") as CountOfProducts
+// FROM [lib://$(vDataFiles)/Transformation2_Visits2030.qvd]
+// (qvd)
+// group by "Visits2030 Proposal_ID","Visits2030 BoltOn",
+// // where DataType<>'AGT'
+// ;
+
+// Map_NumberOfMCSProducts:
+// mapping load
+// "Visits2030 Proposal_ID",
+// NumberOfProducts
+// resident Load_Visits2030;
+
+
+// drop table Load_Visits2030;
