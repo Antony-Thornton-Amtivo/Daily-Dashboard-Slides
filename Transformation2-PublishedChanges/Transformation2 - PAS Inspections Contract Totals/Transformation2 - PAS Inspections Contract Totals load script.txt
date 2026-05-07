@@ -186,7 +186,7 @@ This is to bring those days back in on the old logic.
 
 */
 ///$tab Concat
-Let TableName = 'Transformation2_PASInspectionsDetails';
+Let TableName = 'Transformation2_PASInspectionsContractTotals';
 $(TableName):
 LOAD
     ProposalID,
@@ -203,6 +203,10 @@ LOAD
     "PAS Inspections"
 FROM [lib://QVD Files:DataFiles/Transformation2_PASInspectionsDetails_Non_MCS.qvd]
 (qvd);
+
+store $(TableName) INTO [lib://$(vDataFiles)/$(TableName).qvd] (qvd);
+store $(TableName) INTO [lib://$(vDataFilesTest)/$(TableName).qvd] (qvd);
+
 
 
 
