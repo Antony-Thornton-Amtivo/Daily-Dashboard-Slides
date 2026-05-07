@@ -1,0 +1,454 @@
+///$tab Main
+SET ThousandSep=',';
+SET DecimalSep='.';
+SET MoneyThousandSep=',';
+SET MoneyDecimalSep='.';
+SET MoneyFormat='£#,##0.00;-£#,##0.00';
+SET TimeFormat='hh:mm:ss';
+SET DateFormat='DD/MM/YYYY';
+SET TimestampFormat='DD/MM/YYYY hh:mm:ss[.fff]';
+SET FirstWeekDay=0;
+SET BrokenWeeks=0;
+SET ReferenceDay=4;
+SET FirstMonthOfYear=1;
+SET CollationLocale='en-GB';
+SET CreateSearchIndexOnReload=1;
+SET MonthNames='Jan;Feb;Mar;Apr;May;Jun;Jul;Aug;Sep;Oct;Nov;Dec';
+SET LongMonthNames='January;February;March;April;May;June;July;August;September;October;November;December';
+SET DayNames='Mon;Tue;Wed;Thu;Fri;Sat;Sun';
+SET LongDayNames='Monday;Tuesday;Wednesday;Thursday;Friday;Saturday;Sunday';
+SET NumericalAbbreviation='3:k;6:M;9:G;12:T;15:P;18:E;21:Z;24:Y;-3:m;-6:μ;-9:n;-12:p;-15:f;-18:a;-21:z;-24:y';
+
+
+// **************************************LIVE STORE LOCATIONS**************************************
+let vDataFiles = 'QVD Files:DataFiles';
+
+
+// **************************************TEST APP STORE LOCATIONS**************************************
+let vDataFilesTest = 'QVD Test Files:DataFiles';
+
+
+
+
+Let vCurrentMonth = num(Month(today()),'00');
+Let vCurrentYear = Year(today());
+
+
+
+///$tab Mapping - MCS Flag Only
+MCS_Filter:
+load
+	Customer_ID,
+    Measure,
+    ProposalID,
+    Customer_ID&ProposalID&Measure as Measure_Key,
+    if(left(Measure,3)='MCS','MCS','Other') as MCSFlag,
+    if(isnull(#Inspections),0,#Inspections) as #Inspections,
+    Year(Calendar_Key) as "Converted year"
+
+FROM [lib://$(vDataFiles)/Transformation2_PAS_Proposals.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation2_PAS_Proposals.qvd]
+(qvd)
+;
+
+
+NoConcatenate
+
+MCS_Temp:
+load
+*
+resident MCS_Filter
+where MCSFlag = 'MCS';
+
+MCS_Flag:
+mapping load 
+ProposalID,
+MCSFlag
+resident MCS_Filter;
+
+
+drop table 
+MCS_Temp, 
+MCS_Filter
+;
+///$tab MCS Days
+Let TableColumn = 'PASInspectionsDetails';
+Let TableName = 'Transformation2_PASInspectionsDetails_MCS';
+
+// CREATE MCS ONLY TABLE - DISTINCT to prevent source duplicates
+$(TableName)_MCS:
+Load 
+    ProposalID,
+    // "Proposal PAS BoltOnList",
+    SubField("Proposal PAS BoltOnList", ',') AS _SingleEntry,
+    ApplyMap('MCS_Flag', ProposalID, 'Other') as MCSFlag
+FROM [lib://QVD Files:DataFiles/Transformation1_Proposals.qvd]
+(qvd)
+;
+
+
+
+Left Join ($(TableName)_MCS)
+LOAD
+    ProposalID,
+    count(ProposalID) as TotalInspections
+    //Sum(Num(Mid(_SingleEntry, Index(_SingleEntry,'(')+1, Index(_SingleEntry,')')-Index(_SingleEntry,'(')-1))) AS TotalInspections
+RESIDENT $(TableName)_MCS
+where not isnull(_SingleEntry)
+GROUP BY ProposalID;
+
+
+NoConcatenate
+
+$(TableName):
+load 
+ProposalID,
+MCSFlag,
+avg(TotalInspections) as [PAS Inspections]
+resident $(TableName)_MCS
+where MCSFlag='MCS'
+group by ProposalID,MCSFlag
+;
+
+store $(TableName) INTO [lib://$(vDataFiles)/$(TableName).qvd] (qvd);
+store $(TableName) INTO [lib://$(vDataFilesTest)/$(TableName).qvd] (qvd);
+
+
+Drop table 
+$(TableName)_MCS,
+$(TableName)
+;
+
+
+
+///$tab NonMCS Days
+Let TableColumn = 'PASInspectionsDetails';
+Let TableName = 'Transformation2_PASInspectionsDetails_Non_MCS';
+
+//CREATE NON MCS DAYS
+$(TableName)_Non_MCS:
+
+
+Load
+    RowNo() AS _RowID,
+    ProposalID,
+    SubField([Proposal PAS BoltOnInspections], ',') AS _SingleEntry,
+    ApplyMap('MCS_Flag',ProposalID,'Other') as MCSFlag
+
+FROM [lib://QVD Files:DataFiles/Transformation1_Proposals.qvd]
+(qvd)
+;
+
+
+Left Join ($(TableName)_Non_MCS)
+LOAD
+    _RowID,
+    Sum(Num(Mid(_SingleEntry, Index(_SingleEntry,'(')+1, Index(_SingleEntry,')')-Index(_SingleEntry,'(')-1))) AS TotalInspections
+RESIDENT $(TableName)_Non_MCS
+GROUP BY _RowID;
+
+
+
+
+
+NoConcatenate
+
+$(TableName):
+load 
+ProposalID,
+MCSFlag,
+sum(TotalInspections) as [PAS Inspections]
+resident $(TableName)_Non_MCS
+where MCSFlag='Other'
+group by ProposalID,MCSFlag
+;
+
+store $(TableName) INTO [lib://$(vDataFiles)/$(TableName).qvd] (qvd);
+// store $(TableName) INTO [lib://$(vDataFilesTest)/$(TableName).qvd] (qvd);
+
+
+
+
+drop table
+$(TableName)_Non_MCS,
+$(TableName)
+;
+
+
+
+
+
+///$tab NonMCS Days Pre 2023
+/*
+when doing checks of the old vs new inspections I noticed that the inspections pre 2023 fell off to 0. 
+
+This is to bring those days back in on the old logic.
+
+*/
+///$tab Concat
+Let TableName = 'Transformation2_PASInspectionsDetails';
+$(TableName):
+LOAD
+    ProposalID,
+    MCSFlag,
+    "PAS Inspections"
+FROM [lib://QVD Files:DataFiles/Transformation2_PASInspectionsDetails_MCS.qvd]
+(qvd);
+
+// Concatenate($(TableName))
+
+LOAD
+    ProposalID,
+    MCSFlag,
+    "PAS Inspections"
+FROM [lib://QVD Files:DataFiles/Transformation2_PASInspectionsDetails_Non_MCS.qvd]
+(qvd);
+
+
+
+///$tab Exit Script
+Exit Script;
+///$tab (OLD) Mapping - MCS Flag
+MCS_Filter:
+load
+	Customer_ID,
+    Measure,
+    ProposalID,
+    Customer_ID&ProposalID&Measure as Measure_Key,
+    if(left(Measure,3)='MCS','MCS','Other') as MCSFlag,
+    if(isnull(#Inspections),0,#Inspections) as #Inspections,
+    Year(Calendar_Key) as "Converted year"
+
+FROM [lib://$(vDataFiles)/Transformation2_PAS_Proposals.qvd]
+// FROM [lib://$(vDataFilesTest)/Transformation2_PAS_Proposals.qvd]
+(qvd)
+;
+
+
+NoConcatenate
+
+MCS_Temp:
+load
+*
+resident MCS_Filter
+where MCSFlag = 'MCS';
+
+MCS_Flag:
+mapping load 
+ProposalID,
+MCSFlag
+resident MCS_Filter;
+
+
+//NoConcatenate
+
+MCS_Count:
+Mapping load
+	ProposalID,
+    Count(Measure) as #MeasureCount
+Resident MCS_Temp
+Group By ProposalID;
+
+// Inspections_Count:
+// mapping load
+// Customer_ID&ProposalID as Inspections_Key,
+// sum(#Inspections) as #Inspections
+// Resident MCS_Filter
+// Group By Customer_ID&ProposalID
+// ;
+
+Inspections_Count:
+load
+ProposalID as Inspections_Key,
+sum(#Inspections) as #Inspections
+Resident MCS_Filter
+where MCSFlag='MCS'
+Group By ProposalID
+;
+
+
+drop table 
+MCS_Temp, 
+MCS_Filter
+;
+///$tab (OLD) PAS MCS
+/* James would like to take the number of PAS Inspections products. Specifically for PAS MCS.
+
+For example 172022_UK has 3 products. Although these are not DAYS so to speak they need to be treated in the SP front end
+as such. 
+ 
+SERVICES PROVIDED
+Product
+MCS Heat Pumps Design - MCS Heat Pumps Design
+MCS Heat Pumps Installation - MCS Heat Pumps Installation
+MCS Solar PV - MCS Solar PV
+
+*/
+
+Load_Visits2030:
+load
+"Visits2030 Proposal_ID",
+Sum(CountOfProducts) as NumberOfProducts
+group by "Visits2030 Proposal_ID"
+;
+
+load
+"Visits2030 Proposal_ID",
+"Visits2030 BoltOn",
+Count("Visits2030 Proposal_ID") as CountOfProducts
+FROM [lib://$(vDataFiles)/Transformation2_Visits2030.qvd]
+(qvd)
+group by "Visits2030 Proposal_ID","Visits2030 BoltOn",
+// where DataType<>'AGT'
+;
+
+
+Map_NumberOfMCSProducts:
+Mapping load
+"Visits2030 Proposal_ID",
+NumberOfProducts
+resident Load_Visits2030;
+
+
+drop table Load_Visits2030;
+
+
+///$tab (OLD) MCS PAS BoltOnList
+// Load_NewLogicMCS:
+// load
+// Proposal_ID,
+// subfield(BoltOnList,',') as IndividualBoltOn
+
+
+
+// FROM [lib://$(vDataFiles)/Extract_tblProposals.qvd]
+// // FROM [lib://$(vDataFilesTest)/Extract_tblProposals.qvd]
+// (qvd)
+
+// ;
+
+// Map_NewLogicMCS:
+// Mapping load
+// Proposal_ID,
+// IndividualBoltOn
+// resident Load_NewLogicMCS;
+
+// drop table Load_NewLogicMCS;
+
+
+
+
+///$tab (OLD) Main Table
+// Let TableColumn = 'PASInspectionsDetails';
+// Let TableName = 'Transformation2_PASInspectionsDetails';
+
+// //CREATE NON MCS DAYS
+// $(TableName)_Non_MCS:
+// load *
+// where MCSFlag='Other'
+// ;
+
+// Load
+//     RowNo() AS _RowID,
+//     ProposalID,
+//     SubField([Proposal PAS BoltOnInspections], ',') AS _SingleEntry,
+//     ApplyMap('MCS_Flag',ProposalID,'Other') as MCSFlag
+
+// FROM [lib://QVD Files:DataFiles/Transformation2_SalesPerformance.qvd]
+// (qvd)
+// ;
+
+
+// Left Join ($(TableName)_Non_MCS)
+// LOAD
+//     _RowID,
+//     Sum(Num(Mid(_SingleEntry, Index(_SingleEntry,'(')+1, Index(_SingleEntry,')')-Index(_SingleEntry,'(')-1))) AS TotalInspections
+// RESIDENT $(TableName)_Non_MCS
+// GROUP BY _RowID;
+
+// Left Join ($(TableName)_Non_MCS)
+
+
+// load
+// ProposalID,
+// sum(TotalInspections) as SumOfInspections
+// Resident $(TableName)_Non_MCS
+// group by ProposalID;
+
+
+// // CREATE MCS ONLY TABLE
+// $(TableName)_MCS:
+// load *
+// where MCSFlag='MCS'
+// ;
+
+// Load
+//     RowNo() AS _RowID,
+//     ProposalID,
+//     applymap('Map_NumberOfMCSProducts',ProposalID,0) as [MCS PAS Inspections],
+//     ApplyMap('MCS_Flag',ProposalID,'Other') as MCSFlag
+
+// FROM [lib://QVD Files:DataFiles/Transformation2_SalesPerformance.qvd]
+// (qvd)
+// ;
+
+
+
+// NoConcatenate
+
+
+// $(TableName)_ProposalsOnly:
+// load
+// ProposalID,
+// MCSFlag,
+// count(ProposalID)
+// resident $(TableName)_Non_MCS
+// group by ProposalID,MCSFlag;
+
+// Concatenate($(TableName)_ProposalsOnly)
+// load
+// ProposalID,
+// MCSFlag,
+// count(ProposalID)
+// resident $(TableName)_MCS
+// group by ProposalID,MCSFlag;
+
+// left join ($(TableName)_ProposalsOnly)
+
+// OTHER_PASDAYS:
+// load
+// ProposalID,
+// Sum([TotalInspections]) as [Other PAS Inspections]
+// Resident $(TableName)_Non_MCS
+// where MCSFlag='Other'
+// group by ProposalID
+// ;
+
+
+// left join ($(TableName)_ProposalsOnly)
+
+// MCS_DAYS:
+// load
+// ProposalID,
+// Sum([MCS PAS Inspections]) as [MCS PAS Inspections]
+// Resident $(TableName)_MCS
+// where MCSFlag='MCS'
+// group by ProposalID
+// ;
+
+// $(TableName):
+// load *,
+//     If(MCSFlag='MCS', [MCS PAS Inspections], [Other PAS Inspections]) as [PAS Inspections]
+// Resident $(TableName)_ProposalsOnly;
+
+// Drop Fields [MCS PAS Inspections], [Other PAS Inspections] From $(TableName);
+
+
+
+// drop table 
+// $(TableName)_Non_MCS,
+// $(TableName)_MCS,
+// $(TableName)_ProposalsOnly,
+// // $(TableName)
+// ;
+
