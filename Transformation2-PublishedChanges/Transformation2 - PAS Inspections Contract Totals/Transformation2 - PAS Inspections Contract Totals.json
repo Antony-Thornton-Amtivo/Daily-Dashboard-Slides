@@ -13,7 +13,7 @@ VARIABLES
 {"qName":"vCurrentMonth","qDefinition":"05","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"48838e39-0ee7-43dc-abad-66cd3f424ab5","qType":"variable"},"qData":[],"qIsScriptCreated":true}
 {"qName":"vCurrentYear","qDefinition":"2026","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"d90b2df6-f1ef-464b-95b9-e7cbc09b97eb","qType":"variable"},"qData":[],"qIsScriptCreated":true}
 {"qName":"TableColumn","qDefinition":"PASInspectionsDetails","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"aa08f1ff-031f-4275-91f7-8449a40b05fb","qType":"variable"},"qData":[],"qIsScriptCreated":true}
-{"qName":"TableName","qDefinition":"Transformation2_PASInspectionsDetails","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"5f1c160b-3ccf-420b-8057-c7d1c0c5f99c","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"TableName","qDefinition":"Transformation2_PASInspectionsContractTotals","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"5f1c160b-3ccf-420b-8057-c7d1c0c5f99c","qType":"variable"},"qData":[],"qIsScriptCreated":true}
 
 FIELDS
 {"qIsHidden":true,"qIsSystem":true,"qName":"$Field","qCardinal":3,"qTags":["$text","$ascii","$hidden","$system","$key"],"qSrcTables":[]}
@@ -22,6 +22,6 @@ FIELDS
 {"qIsHidden":true,"qIsSystem":true,"qName":"$Fields","qCardinal":1,"qTags":["$hidden","$system","$numeric","$integer"],"qSrcTables":[]}
 {"qIsHidden":true,"qIsSystem":true,"qName":"$FieldNo","qCardinal":3,"qTags":["$hidden","$system","$numeric","$integer"],"qSrcTables":[]}
 {"qIsHidden":true,"qIsSystem":true,"qName":"$Info","qCardinal":1,"qTags":["$text","$ascii","$hidden","$system"],"qSrcTables":[]}
-{"qName":"ProposalID","qCardinal":377308,"qTags":["$text","$ascii"],"qSrcTables":["Transformation2_PASInspectionsDetails"]}
-{"qName":"MCSFlag","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["Transformation2_PASInspectionsDetails"]}
-{"qName":"PAS Inspections","qCardinal":130,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_PASInspectionsDetails"]}
+{"qName":"ProposalID","qCardinal":378054,"qTags":["$text","$ascii"],"qSrcTables":["Transformation2_PASInspectionsContractTotals"]}
+{"qName":"MCSFlag","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["Transformation2_PASInspectionsContractTotals"]}
+{"qName":"PAS Inspections","qCardinal":130,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation2_PASInspectionsContractTotals"]}
