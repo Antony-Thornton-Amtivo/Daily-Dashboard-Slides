@@ -1,12 +1,12 @@
 
 SHEETS
-{"qInfo":{"qId":"7a531d5c-d0df-4403-a6c9-155bb027c11f","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"7a531d5c-d0df-4403-a6c9-155bb027c11f","approved":true,"published":true,"publishTime":"2025-06-20T09:46:17.007Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T09:21:33.314Z","modifiedDate":"2026-04-28T08:30:17.916Z","encrypted":true,"privileges":["read","change_owner"],"title":"tblCustomers All Data","description":""},"qData":[]}
-{"qInfo":{"qId":"CGAxCj","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"CGAxCj","approved":true,"published":true,"publishTime":"2025-06-20T09:29:34.842Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T09:21:33.342Z","modifiedDate":"2026-04-28T08:30:17.906Z","encrypted":true,"privileges":["read","change_owner"],"title":"tblCustomers All Fields as filters","description":""},"qData":[]}
+{"qInfo":{"qId":"7a531d5c-d0df-4403-a6c9-155bb027c11f","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"7a531d5c-d0df-4403-a6c9-155bb027c11f","approved":true,"published":true,"publishTime":"2025-06-20T09:46:17.007Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T09:21:33.314Z","modifiedDate":"2026-05-12T08:11:51.900Z","encrypted":true,"privileges":["read","change_owner"],"title":"tblCustomers All Data","description":""},"qData":[]}
+{"qInfo":{"qId":"CGAxCj","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"CGAxCj","approved":true,"published":true,"publishTime":"2025-06-20T09:29:34.842Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T09:21:33.342Z","modifiedDate":"2026-05-12T08:11:51.932Z","encrypted":true,"privileges":["read","change_owner"],"title":"tblCustomers All Fields as filters","description":""},"qData":[]}
 {"qInfo":{"qId":"a119a66c-b6d7-4d98-a7b6-d934d7f682af","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"a119a66c-b6d7-4d98-a7b6-d934d7f682af","approved":false,"published":false,"owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T09:21:33.420Z","modifiedDate":"2025-10-13T09:21:33.420Z","encrypted":true,"privileges":["read","update","delete","publish","change_owner"],"title":"C","description":""},"qData":[]}
-{"qInfo":{"qId":"b404b2f7-55a2-4478-94be-8844504342cb","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"b404b2f7-55a2-4478-94be-8844504342cb","approved":true,"published":true,"publishTime":"2025-06-20T09:47:10.934Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T09:21:33.429Z","modifiedDate":"2026-04-28T08:30:17.870Z","encrypted":true,"privileges":["read","change_owner"],"title":"tblContacts All Data","description":""},"qData":[]}
-{"qInfo":{"qId":"cwYSmp","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"cwYSmp","approved":true,"published":true,"publishTime":"2025-06-20T09:29:38.044Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T09:21:33.443Z","modifiedDate":"2026-04-28T08:30:17.873Z","encrypted":true,"privileges":["read","change_owner"],"title":"tblContacts All Fields as filters","description":""},"qData":[]}
-{"qInfo":{"qId":"ujyRCPa","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"ujyRCPa","approved":true,"published":true,"publishTime":"2025-06-20T09:48:13.562Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T09:21:33.456Z","modifiedDate":"2026-04-28T08:30:17.908Z","encrypted":true,"privileges":["read","change_owner"],"title":"Ticket Requests","description":""},"qData":[]}
-{"qInfo":{"qId":"yJuFyu","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"yJuFyu","approved":true,"published":true,"publishTime":"2025-06-20T09:29:42.070Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T09:21:33.465Z","modifiedDate":"2026-04-28T08:30:17.919Z","encrypted":true,"privileges":["read","change_owner"],"title":"#216630","description":""},"qData":[]}
+{"qInfo":{"qId":"b404b2f7-55a2-4478-94be-8844504342cb","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"b404b2f7-55a2-4478-94be-8844504342cb","approved":true,"published":true,"publishTime":"2025-06-20T09:47:10.934Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T09:21:33.429Z","modifiedDate":"2026-05-12T08:11:51.935Z","encrypted":true,"privileges":["read","change_owner"],"title":"tblContacts All Data","description":""},"qData":[]}
+{"qInfo":{"qId":"cwYSmp","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"cwYSmp","approved":true,"published":true,"publishTime":"2025-06-20T09:29:38.044Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T09:21:33.443Z","modifiedDate":"2026-05-12T08:11:51.903Z","encrypted":true,"privileges":["read","change_owner"],"title":"tblContacts All Fields as filters","description":""},"qData":[]}
+{"qInfo":{"qId":"ujyRCPa","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"ujyRCPa","approved":true,"published":true,"publishTime":"2025-06-20T09:48:13.562Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T09:21:33.456Z","modifiedDate":"2026-05-12T08:11:51.900Z","encrypted":true,"privileges":["read","change_owner"],"title":"Ticket Requests","description":""},"qData":[]}
+{"qInfo":{"qId":"yJuFyu","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"yJuFyu","approved":true,"published":true,"publishTime":"2025-06-20T09:29:42.070Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T09:21:33.465Z","modifiedDate":"2026-05-12T08:11:51.933Z","encrypted":true,"privileges":["read","change_owner"],"title":"#216630","description":""},"qData":[]}
 {"qInfo":{"qId":"yPKejh","qType":"sheet"},"qMeta":{"_resourcetype":"app.object","_objecttype":"sheet","id":"yPKejh","approved":true,"published":true,"publishTime":"2025-08-07T09:40:05.510Z","owner":"auth0|222f32d48102828e26f97457cf9682e4d80b4310a27de3d44b38d6ccda63b20e","ownerId":"641049befce3b49e1d27d1bc","createdDate":"2025-10-13T09:21:33.474Z","modifiedDate":"2026-04-28T08:30:17.869Z","encrypted":true,"privileges":["read","change_owner"],"title":"#230929","description":""},"qData":[]}
 
 OBJECTS ON SHEETS
@@ -25,160 +25,160 @@ MASTER OBJECTS
 
 VARIABLES
 {"qName":"vDataFiles","qDefinition":"QVD Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"cbac299e-bcc7-4976-badf-dcf35d70aa51","qType":"variable"},"qData":[],"qIsScriptCreated":true}
-{"qName":"vCurrentMonth","qDefinition":"04","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"fd2a17e5-b542-4e7e-8c7f-adf999d005ab","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vCurrentMonth","qDefinition":"05","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"fd2a17e5-b542-4e7e-8c7f-adf999d005ab","qType":"variable"},"qData":[],"qIsScriptCreated":true}
 {"qName":"vCurrentYear","qDefinition":"2026","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"b4af32b6-a0c3-404a-acfc-ddc7f54dd12c","qType":"variable"},"qData":[],"qIsScriptCreated":true}
 {"qName":"TableColumn","qDefinition":"Customer","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"f05b21a2-e362-42a8-a998-780c74121d72","qType":"variable"},"qData":[],"qIsScriptCreated":true}
 {"qName":"vDataFilesTest","qDefinition":"QVD Test Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"713f5415-36a8-4091-8ffc-dfa008ec8efe","qType":"variable"},"qData":[],"qIsScriptCreated":true}
+{"qName":"vSourceSpreadsheets","qDefinition":"DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"90a23e7b-11f1-4655-b894-d31d1b426e22","qType":"variable"},"qData":[]}
 {"qName":"vTrans1QVDLocation","qDefinition":"DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"4724c6f5-3b12-40b9-984c-4bcc5b71dcd3","qType":"variable"},"qData":[]}
 {"qName":"vTrans2QVDLocation","qDefinition":"DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"2c0ba653-cbca-4904-a03b-6b312209e3ce","qType":"variable"},"qData":[]}
 {"qName":"TableName","qDefinition":"Transformation1_Customers","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"f643454c-5cc6-4fc3-9235-39031e843614","qType":"variable"},"qData":[]}
-{"qName":"vSourceSpreadsheets","qDefinition":"DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"90a23e7b-11f1-4655-b894-d31d1b426e22","qType":"variable"},"qData":[]}
 {"qName":"vExtractQVDLocation","qDefinition":"QVD Files:DataFiles","qMeta":{"privileges":["read","update","delete"]},"qInfo":{"qId":"a25157da-94fa-4700-8cc7-2dc4b7cce771","qType":"variable"},"qData":[]}
 
 FIELDS
-{"qIsHidden":true,"qIsSystem":true,"qName":"$Field","qCardinal":355,"qTags":["$text","$ascii","$hidden","$system","$key"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$Field","qCardinal":360,"qTags":["$text","$ascii","$hidden","$system","$key"],"qSrcTables":[]}
 {"qIsHidden":true,"qIsSystem":true,"qName":"$Table","qCardinal":2,"qTags":["$text","$ascii","$hidden","$system","$key"],"qSrcTables":[]}
 {"qIsHidden":true,"qIsSystem":true,"qName":"$Rows","qCardinal":2,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
 {"qIsHidden":true,"qIsSystem":true,"qName":"$Fields","qCardinal":2,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
-{"qIsHidden":true,"qIsSystem":true,"qName":"$FieldNo","qCardinal":326,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
+{"qIsHidden":true,"qIsSystem":true,"qName":"$FieldNo","qCardinal":331,"qTags":["$numeric","$integer","$hidden","$system"],"qSrcTables":[]}
 {"qIsHidden":true,"qIsSystem":true,"qName":"$Info","qCardinal":1,"qTags":["$text","$ascii","$hidden","$system"],"qSrcTables":[]}
-{"qName":"Customer_ID","qCardinal":174480,"qTags":["$text","$ascii","$key"],"qSrcTables":["Transformation1_Customers","tblContacts"]}
-{"qName":"CompanyPIN","qCardinal":98196,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer_ID","qCardinal":174743,"qTags":["$text","$ascii","$key"],"qSrcTables":["Transformation1_Customers","tblContacts"]}
+{"qName":"CompanyPIN","qCardinal":98358,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Customer Audit Frequency","qCardinal":4,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Agency","qCardinal":5,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"CustomerType","qCardinal":3,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"CompanyName","qCardinal":108926,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Address1","qCardinal":86401,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Address2","qCardinal":30066,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Address3","qCardinal":11641,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Town","qCardinal":14441,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"County","qCardinal":3619,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"PostalCode","qCardinal":53886,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"CompanyName","qCardinal":109078,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Address1","qCardinal":86546,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Address2","qCardinal":30110,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Address3","qCardinal":11659,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Town","qCardinal":14454,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"County","qCardinal":3625,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"PostalCode","qCardinal":53932,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Country","qCardinal":133,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"RegionID","qCardinal":16,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"LocalKnowledge","qCardinal":835,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Tel","qCardinal":84095,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Tel","qCardinal":84146,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Ext","qCardinal":10,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Fax","qCardinal":6818,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Email","qCardinal":93640,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Web","qCardinal":64566,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Notes","qCardinal":31686,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"CompanyNumber","qCardinal":33942,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"VATNumber","qCardinal":2278,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Fax","qCardinal":6823,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Email","qCardinal":93795,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Web","qCardinal":64690,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Notes","qCardinal":31825,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"CompanyNumber","qCardinal":33996,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"VATNumber","qCardinal":2284,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"CharityNumber","qCardinal":309,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"MembershipNumber","qCardinal":27,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"MembershipType","qCardinal":4,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer No of Employees","qCardinal":1166,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"ApplicableEmployees","qCardinal":395,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer No of Employees","qCardinal":1172,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"ApplicableEmployees","qCardinal":394,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"NoOfSites","qCardinal":91,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"TotalSites","qCardinal":86,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Turnover","qCardinal":7,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"ProcStat","qCardinal":283,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"ProcStat_ID","qCardinal":573,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer Proc Status","qCardinal":17,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"InitialCertDate","qCardinal":7556,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"ProcStat_ID","qCardinal":568,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer Proc Status","qCardinal":18,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"InitialCertDate","qCardinal":7568,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"InitialCertDate2019","qCardinal":491,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"InitialCertDate2023","qCardinal":228,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"ExpiryDate","qCardinal":5734,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"InitialCertDate2023","qCardinal":230,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"ExpiryDate","qCardinal":5740,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"PrevExpiryDate","qCardinal":2536,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"ExpiryDate2019","qCardinal":310,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"ExpiryDate2023","qCardinal":250,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"CertStartDate","qCardinal":4542,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"ExpiryDate2023","qCardinal":254,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"CertStartDate","qCardinal":4546,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"NextVisitDate","qCardinal":1337,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Scope","qCardinal":83207,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"ScopeJustify","qCardinal":5477,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Scope","qCardinal":83399,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"ScopeJustify","qCardinal":5623,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"LowRisk","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Risk","qCardinal":3,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"IndustrySectors","qCardinal":674,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"BusinessSectors","qCardinal":33,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"NACE","qCardinal":19760,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer 1st NACE","qCardinal":1018,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer 2nd NACE","qCardinal":868,"qTags":["$numeric"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer 3rd NACE","qCardinal":638,"qTags":["$numeric"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer 4th NACE","qCardinal":440,"qTags":["$numeric"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer 5th NACE","qCardinal":260,"qTags":["$numeric"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"NACE","qCardinal":19800,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer 1st NACE","qCardinal":1020,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer 2nd NACE","qCardinal":869,"qTags":["$numeric"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer 3rd NACE","qCardinal":642,"qTags":["$numeric"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer 4th NACE","qCardinal":443,"qTags":["$numeric"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer 5th NACE","qCardinal":261,"qTags":["$numeric"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"TechnicalAreas","qCardinal":144,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"HowHeard","qCardinal":130,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"enquirysource","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer Account Manager","qCardinal":158,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"ProjectManager_ID","qCardinal":198,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"ProjectManager","qCardinal":170,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer Account Manager","qCardinal":160,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"ProjectManager_ID","qCardinal":200,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"ProjectManager","qCardinal":172,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"InitialContact","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"ReferredBy","qCardinal":514,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"OriginalLinkedStandards","qCardinal":23313,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"LinkedStandards","qCardinal":124679,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"MultiAudit","qCardinal":18361,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"EnquiryOwner_ID","qCardinal":407,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer Enquiry Owner","qCardinal":288,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer Enquiry Owner (Sales Advisor in AC)","qCardinal":288,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"CustomerStandards","qCardinal":274,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"ReferredBy","qCardinal":516,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"OriginalLinkedStandards","qCardinal":23424,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"LinkedStandards","qCardinal":124930,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"MultiAudit","qCardinal":18471,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"EnquiryOwner_ID","qCardinal":411,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer Enquiry Owner","qCardinal":290,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer Enquiry Owner (Sales Advisor in AC)","qCardinal":290,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"CustomerStandards","qCardinal":273,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Customer Is PAS Flag","qCardinal":3,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"CorpManagement","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"SameOutputs","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"SampleNo","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"ST2Visits","qCardinal":43,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"ST2Visits","qCardinal":42,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Cust_AuditLength","qCardinal":3,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"UKASAccredited_CertificationStart","qCardinal":4358,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"UKASAccredited_CertificationExpire","qCardinal":3679,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"UKASAccredited_CertificationStart","qCardinal":4366,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"UKASAccredited_CertificationExpire","qCardinal":3682,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"UKASAccredited","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"NonUKASAccredited","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"UKASAccredited_Certificate","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"UKASAccredited_Transfer","qCardinal":497,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"UKASAccredited_Transfer_Amended","qCardinal":497,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer Consultant Name","qCardinal":1613,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"UKASAccredited_Transfer","qCardinal":500,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"UKASAccredited_Transfer_Amended","qCardinal":500,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer Consultant Name","qCardinal":1624,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"ConsultantName","qCardinal":218,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Consultant_ID","qCardinal":1817,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Consultant_ID","qCardinal":1831,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Sampled","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Relationships","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"EnquiryFrom","qCardinal":12,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Overseas","qCardinal":6,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"LatestPO","qCardinal":2012,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"LatestPODate","qCardinal":2172,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Reference","qCardinal":2215,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"CRActivity","qCardinal":73164,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"LatestPO","qCardinal":2047,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"LatestPODate","qCardinal":2209,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Reference","qCardinal":2213,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"CRActivity","qCardinal":73331,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"CRLegal","qCardinal":3,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"CRLegalDetails","qCardinal":224,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"CRCompetency","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"CRCompetencyDetails","qCardinal":32,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"CRUpdateDate","qCardinal":78884,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"CRUpdateUser","qCardinal":361,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"CRUpdateDate","qCardinal":79377,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"CRUpdateUser","qCardinal":364,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"CRAllFields","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"CRAllFieldsReason","qCardinal":7,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"CRUnaccredited","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"CRUnaccreditedKnow","qCardinal":1836,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"CRVerifiedDate","qCardinal":60698,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer Compliance Verified Date","qCardinal":3463,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"CRUnaccreditedKnow","qCardinal":1841,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"CRVerifiedDate","qCardinal":61012,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer Compliance Verified Date","qCardinal":3475,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Customer Compliance Verified Time","qCardinal":1366,"qTags":["$numeric"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"CRVerifiedBy","qCardinal":213,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"CRVerifiedReason","qCardinal":48050,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"CRExclusions","qCardinal":8503,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"CRVerifiedBy","qCardinal":214,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"CRVerifiedReason","qCardinal":48443,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"CRExclusions","qCardinal":8564,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"CRDateAgreement","qCardinal":0,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"CRLogoConfirmed","qCardinal":3219,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"CRUnaccreditedReason","qCardinal":1036,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"CRLogoConfirmed","qCardinal":3232,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"CRUnaccreditedReason","qCardinal":1038,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"AuditorDays","qCardinal":149,"qTags":["$numeric"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Declined","qCardinal":14,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"UKASRequired","qCardinal":3,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"BigTicketAllocate","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"CROutsourced","qCardinal":5617,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"CREnvironmental","qCardinal":108,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"CROutsourced","qCardinal":5656,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"CREnvironmental","qCardinal":118,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"CROffSite","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"CRSiteVisit","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"CRAspects","qCardinal":205,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"SMTRefer","qCardinal":14,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"PDP","qCardinal":142,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"AccreditedCertificate","qCardinal":601,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"AuditorNotes","qCardinal":19556,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"AuditorNotes","qCardinal":19661,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"CRSuggestedDays","qCardinal":23,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"CREnergyConsumption","qCardinal":11,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"CREnergySources","qCardinal":5,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"CREnergyUses","qCardinal":7,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"TransferReason","qCardinal":578,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"TransferReason","qCardinal":584,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"TransferComplaints","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"TransferLegal","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"TransferLegalDetails","qCardinal":115,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"TransferLegalDetails","qCardinal":119,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"TransferReturn","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Emp1","qCardinal":126,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Emp2","qCardinal":134,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Emp1","qCardinal":127,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Emp2","qCardinal":133,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Emp3","qCardinal":159,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Emp4","qCardinal":46,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Emp5","qCardinal":68,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
@@ -186,10 +186,10 @@ FIELDS
 {"qName":"Emp7","qCardinal":226,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Emp8","qCardinal":91,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Emp9","qCardinal":66,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Emp10","qCardinal":476,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Emp20","qCardinal":794,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Emp21","qCardinal":611,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"TransferSignOff","qCardinal":668,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Emp10","qCardinal":474,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Emp20","qCardinal":799,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Emp21","qCardinal":608,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"TransferSignOff","qCardinal":674,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"TransferNextVisit","qCardinal":3,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"CRSubmit","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"CRDontSign","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
@@ -223,27 +223,27 @@ FIELDS
 {"qName":"PackageItems8","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"PackageItems9","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"MigratedPIN","qCardinal":6,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"ReferredByAuditor","qCardinal":217,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"ReferredByAuditor","qCardinal":219,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"LastUser","qCardinal":262,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"LastAccessed","qCardinal":35760,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Emp11","qCardinal":57,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"createcompletionpack","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"MD5Justification","qCardinal":27287,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"HSMSRisk","qCardinal":2735,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"TransCertNumber","qCardinal":37147,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"TransMessageSent","qCardinal":10676,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"MD5Justification","qCardinal":27779,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"HSMSRisk","qCardinal":2792,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"TransCertNumber","qCardinal":37163,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"TransMessageSent","qCardinal":10782,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"ADRedPrep","qCardinal":5,"qTags":["$numeric"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"ADRedWrite","qCardinal":7,"qTags":["$numeric"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"ADRedNCs","qCardinal":7,"qTags":["$numeric"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"AuditorDaysST1","qCardinal":14,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"ABid","qCardinal":11,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"ABid","qCardinal":12,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"AuditorDaysST2","qCardinal":72,"qTags":["$numeric"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"AuditorDaysSurv","qCardinal":74,"qTags":["$numeric"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"AuditorDaysSurv","qCardinal":75,"qTags":["$numeric"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"ActivSystemRevoke","qCardinal":275,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"ActivSystemIsRevokedFlag","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"ActivSystemRemove","qCardinal":8,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"ActivComplyTrialDate","qCardinal":459,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"ActivComplyDate","qCardinal":122,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"ActivComplyTrialDate","qCardinal":456,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"ActivComplyDate","qCardinal":120,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"AccountManReqd","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"ActivComplyTrialReq","qCardinal":193,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"ActivComplyTrialName","qCardinal":97,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
@@ -252,53 +252,53 @@ FIELDS
 {"qName":"LeadStatus","qCardinal":7,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"ReStartStatus","qCardinal":3,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"CorpEnt","qCardinal":4,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"CROffSiteLocations","qCardinal":6192,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"CRAddedServices","qCardinal":159,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"CRAddedServicesName","qCardinal":8710,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"CRNotesForCompliance","qCardinal":27005,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"CorrectSurvDate","qCardinal":1437,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Initial18001","qCardinal":842,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"CROffSiteLocations","qCardinal":6218,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"CRAddedServices","qCardinal":161,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"CRAddedServicesName","qCardinal":8745,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"CRNotesForCompliance","qCardinal":27170,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"CorrectSurvDate","qCardinal":1455,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Initial18001","qCardinal":843,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"CBIntegrated","qCardinal":23,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Rev2017Expiry","qCardinal":46,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"TrustMarkRef","qCardinal":676,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"TrustMarkInitialDate","qCardinal":542,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"TrustMarkRef","qCardinal":679,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"TrustMarkInitialDate","qCardinal":545,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"itTestFlag","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"BoltOns","qCardinal":422,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"BoltOnCountry","qCardinal":533,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"BoltOnDesc","qCardinal":420,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"BoltOns","qCardinal":430,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"BoltOnCountry","qCardinal":543,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"BoltOnDesc","qCardinal":428,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"SiteStructure","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"TMSubLicence","qCardinal":406,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"TMSubLicence","qCardinal":409,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"TMLicenceNumber","qCardinal":613,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"PAS2030Revision","qCardinal":4,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"PAS2030Renewal","qCardinal":703,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"PAS2030Renewal","qCardinal":685,"qTags":["$numeric","$timestamp"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"PASeco2017","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"PAS2030ecoghg","qCardinal":4,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"PASSignedOff","qCardinal":165,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"PASSignedOff","qCardinal":166,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"PASInspecComplete","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"OrbSubLicence","qCardinal":575,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Client_ID","qCardinal":126664,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Client_ID","qCardinal":126784,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"FranchiseID","qCardinal":55,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Customer Date Activ Revoked - Toolkit Issued","qCardinal":40,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"DataType","qCardinal":4,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"HubspotContactID","qCardinal":61992,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"HubspotContactID","qCardinal":62076,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"vTigerProjectID","qCardinal":2975,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"CustomerLeadPin","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer Standard Description (New IT table)","qCardinal":1410,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer Standard Description (New IT table)","qCardinal":1396,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Customer BoltOn Description (New IT table)","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Customer Old FranchiseID","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"SourceOfData i.e. tblCustomers","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer HubSpot DealID","qCardinal":5443,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer HubSpot DealID","qCardinal":5549,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"HasBudget","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"CertificationStructre","qCardinal":6,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"R2V3517","qCardinal":5,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer 1st std","qCardinal":10927,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer 2nd std","qCardinal":49,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer 3rd std","qCardinal":42,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer 1st std","qCardinal":10917,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer 2nd std","qCardinal":48,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer 3rd std","qCardinal":43,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Customer 4th std","qCardinal":25,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer Corrected Surveillance Expiry Date","qCardinal":5737,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer 1st Linked Customer_ID","qCardinal":18612,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer 2nd Linked Customer_ID","qCardinal":7731,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer 3rd Linked Customer_ID","qCardinal":1420,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer Corrected Surveillance Expiry Date","qCardinal":5745,"qTags":["$numeric","$integer","$timestamp","$date"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer 1st Linked Customer_ID","qCardinal":18690,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer 2nd Linked Customer_ID","qCardinal":7763,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer 3rd Linked Customer_ID","qCardinal":1421,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Customer Office","qCardinal":39,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Customer Office Summary","qCardinal":42,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Customer Delivery Type","qCardinal":47,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
@@ -319,14 +319,14 @@ FIELDS
 {"qName":"Customer 2nd Standard","qCardinal":19,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Customer 3rd Standard","qCardinal":16,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Customer 4th Standard","qCardinal":10,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer_Linked_Key","qCardinal":147318,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer_Linked_Key","qCardinal":147482,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"DataType Sub Region","qCardinal":7,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Customer 1st Nace EA Code","qCardinal":46,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer 2nd Nace EA Code","qCardinal":44,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer 2nd Nace EA Code","qCardinal":43,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Customer 3rd Nace EA Code","qCardinal":42,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Customer 4th Nace EA Code","qCardinal":36,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Customer 5th Nace EA Code","qCardinal":36,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer NACE Codes Concat1","qCardinal":3223,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer NACE Codes Concat1","qCardinal":3229,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Customer 1st Std Counter Temp","qCardinal":5,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Customer 2nd Std Counter Temp","qCardinal":5,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Customer 3rd Std Counter Temp","qCardinal":5,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
@@ -338,61 +338,66 @@ FIELDS
 {"qName":"Customer 5th EA Description","qCardinal":1,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"PSAStandardFix","qCardinal":190,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"PSABoltOnFix","qCardinal":1236,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer Standard Description (Old)","qCardinal":1410,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer Standard Description (Old)","qCardinal":1396,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Customer Has ISO Flag","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"ClientStandardDescription","qCardinal":235,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"tblCustomers Enquiry Standard","qCardinal":120,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer NACE Codes Concat","qCardinal":3223,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer NACE Codes Concat","qCardinal":3229,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"CertificateStatus","qCardinal":4,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Customer Preferred Accreditation Body","qCardinal":11,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer Preferred Accreditation Body (Short)","qCardinal":11,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer Preferred Accreditation Body (Short)","qCardinal":12,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Test Database CustomerID","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Test Database FranchiseID","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Test Database CB IntegratedID","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"EACodesNaceRev2","qCardinal":16731,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer 1st NACE Mapped (Rev2)","qCardinal":625,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer 2nd NACE Mapped (Rev2)","qCardinal":569,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer 3rd NACE Mapped (Rev2)","qCardinal":465,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer 4th NACE Mapped (Rev2)","qCardinal":341,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer 5th NACE Mapped (Rev2)","qCardinal":225,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"EACodesNaceRev2","qCardinal":16766,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer 1st NACE Mapped (Rev2)1","qCardinal":625,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer 2nd NACE Mapped (Rev2)1","qCardinal":569,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer 3rd NACE Mapped (Rev2)1","qCardinal":467,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer 4th NACE Mapped (Rev2)1","qCardinal":342,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer 5th NACE Mapped (Rev2)1","qCardinal":226,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Test Database Record (Delete)","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"FranchiseWhereField","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"deleteTestRecord","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Customer Enquiry Standard Bundle","qCardinal":7,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"Main Standards lookup","qCardinal":16,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer Standard Description (lookup for bundle)","qCardinal":1412,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer Standard Description","qCardinal":1396,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"Customer Standard Description (Before PSA)","qCardinal":1411,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer Standard Description (lookup for bundle)","qCardinal":1398,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer Standard Description","qCardinal":1379,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer Standard Description (Before PSA)","qCardinal":1397,"qTags":["$text"],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer 1st NACE Mapped (Rev2)","qCardinal":625,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer 2nd NACE Mapped (Rev2)","qCardinal":569,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer 3rd NACE Mapped (Rev2)","qCardinal":467,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer 4th NACE Mapped (Rev2)","qCardinal":342,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
+{"qName":"Customer 5th NACE Mapped (Rev2)","qCardinal":226,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"CountOfLeadPins","qCardinal":6,"qTags":["$numeric","$integer"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"IATFFlag","qCardinal":2,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"LeadPINCount","qCardinal":3,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"ClientProposalStandardDescription1","qCardinal":242,"qTags":["$text","$ascii"],"qSrcTables":["Transformation1_Customers"]}
 {"qName":"ClientStandardDescription(Proposal)","qCardinal":242,"qTags":[],"qSrcTables":["Transformation1_Customers"]}
-{"qName":"ContactID","qCardinal":210062,"qTags":["$numeric","$integer"],"qSrcTables":["tblContacts"]}
-{"qName":"Title","qCardinal":47,"qTags":["$text"],"qSrcTables":["tblContacts"]}
-{"qName":"FirstName","qCardinal":31413,"qTags":["$text"],"qSrcTables":["tblContacts"]}
-{"qName":"LastName","qCardinal":48880,"qTags":["$text"],"qSrcTables":["tblContacts"]}
-{"qName":"JobTitle","qCardinal":21692,"qTags":["$text"],"qSrcTables":["tblContacts"]}
-{"qName":"tblContacts Tel","qCardinal":71484,"qTags":["$text"],"qSrcTables":["tblContacts"]}
-{"qName":"tblContacts Fax","qCardinal":3525,"qTags":["$text"],"qSrcTables":["tblContacts"]}
-{"qName":"Mobile","qCardinal":34459,"qTags":["$text"],"qSrcTables":["tblContacts"]}
-{"qName":"tblContacts Email","qCardinal":144460,"qTags":["$text"],"qSrcTables":["tblContacts"]}
-{"qName":"tblContacts Notes","qCardinal":13643,"qTags":["$text"],"qSrcTables":["tblContacts"]}
+{"qName":"ContactID","qCardinal":210218,"qTags":["$numeric","$integer"],"qSrcTables":["tblContacts"]}
+{"qName":"Title","qCardinal":48,"qTags":["$text"],"qSrcTables":["tblContacts"]}
+{"qName":"FirstName","qCardinal":31490,"qTags":["$text"],"qSrcTables":["tblContacts"]}
+{"qName":"LastName","qCardinal":48999,"qTags":["$text"],"qSrcTables":["tblContacts"]}
+{"qName":"JobTitle","qCardinal":21778,"qTags":["$text"],"qSrcTables":["tblContacts"]}
+{"qName":"tblContacts Tel","qCardinal":71668,"qTags":["$text"],"qSrcTables":["tblContacts"]}
+{"qName":"tblContacts Fax","qCardinal":3527,"qTags":["$text"],"qSrcTables":["tblContacts"]}
+{"qName":"Mobile","qCardinal":34544,"qTags":["$text"],"qSrcTables":["tblContacts"]}
+{"qName":"tblContacts Email","qCardinal":144919,"qTags":["$text"],"qSrcTables":["tblContacts"]}
+{"qName":"tblContacts Notes","qCardinal":13720,"qTags":["$text"],"qSrcTables":["tblContacts"]}
 {"qName":"ContactType","qCardinal":6,"qTags":["$numeric","$integer"],"qSrcTables":["tblContacts"]}
 {"qName":"FinanceContact","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["tblContacts"]}
 {"qName":"ConsultantContact","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["tblContacts"]}
 {"qName":"SCC","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["tblContacts"]}
-{"qName":"Password","qCardinal":34435,"qTags":["$text"],"qSrcTables":["tblContacts"]}
-{"qName":"LastLoggedIn","qCardinal":27170,"qTags":["$numeric","$timestamp"],"qSrcTables":["tblContacts"]}
+{"qName":"Password","qCardinal":34590,"qTags":["$text"],"qSrcTables":["tblContacts"]}
+{"qName":"LastLoggedIn","qCardinal":27343,"qTags":["$numeric","$timestamp"],"qSrcTables":["tblContacts"]}
 {"qName":"OptIn","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["tblContacts"]}
 {"qName":"pwdencrypt","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["tblContacts"]}
 {"qName":"vTigerID","qCardinal":0,"qTags":[],"qSrcTables":["tblContacts"]}
 {"qName":"IWLicenseHolder","qCardinal":1,"qTags":["$numeric","$integer"],"qSrcTables":["tblContacts"]}
 {"qName":"GreenDealContact","qCardinal":2,"qTags":["$numeric","$integer"],"qSrcTables":["tblContacts"]}
 {"qName":"ClientID","qCardinal":0,"qTags":[],"qSrcTables":["tblContacts"]}
-{"qName":"hubspot_contact_id","qCardinal":10123,"qTags":["$numeric","$integer"],"qSrcTables":["tblContacts"]}
+{"qName":"hubspot_contact_id","qCardinal":10335,"qTags":["$numeric","$integer"],"qSrcTables":["tblContacts"]}
 {"qName":"vTigerContactID","qCardinal":4339,"qTags":["$numeric","$integer"],"qSrcTables":["tblContacts"]}
-{"qName":"Contact_ID","qCardinal":323858,"qTags":["$text","$ascii"],"qSrcTables":["tblContacts"]}
+{"qName":"Contact_ID","qCardinal":324837,"qTags":["$text","$ascii"],"qSrcTables":["tblContacts"]}
 {"qName":"ASR","qCardinal":12,"qTags":["$numeric","$integer"],"qSrcTables":["tblContacts"]}
 {"qName":"ASR_ContactID","qCardinal":13128,"qTags":["$text","$ascii"],"qSrcTables":["tblContacts"]}
 {"qName":"ActivContact","qCardinal":3,"qTags":["$numeric","$integer"],"qSrcTables":["tblContacts"]}
