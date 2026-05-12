@@ -2065,6 +2065,13 @@ Let TableColumn = 'Customer';
 
 
 $(TableName)_temp:
+load *,
+if(len(Mid([$(TableColumn) 1st NACE Mapped (Rev2)1],Index([$(TableColumn) 1st NACE Mapped (Rev2)1],'.',-1)+1 ,len([$(TableColumn) 1st NACE Mapped (Rev2)1])))=1,[$(TableColumn) 1st NACE Mapped (Rev2)1]&'0',[$(TableColumn) 1st NACE Mapped (Rev2)1]) as [$(TableColumn) 1st NACE Mapped (Rev2)],
+if(len(Mid([$(TableColumn) 2nd NACE Mapped (Rev2)1],Index([$(TableColumn) 2nd NACE Mapped (Rev2)1],'.',-1)+1 ,len([$(TableColumn) 2nd NACE Mapped (Rev2)1])))=1,[$(TableColumn) 2nd NACE Mapped (Rev2)1]&'0',[$(TableColumn) 2nd NACE Mapped (Rev2)1]) as [$(TableColumn) 2nd NACE Mapped (Rev2)],
+if(len(Mid([$(TableColumn) 3rd NACE Mapped (Rev2)1],Index([$(TableColumn) 3rd NACE Mapped (Rev2)1],'.',-1)+1 ,len([$(TableColumn) 3rd NACE Mapped (Rev2)1])))=1,[$(TableColumn) 3rd NACE Mapped (Rev2)1]&'0',[$(TableColumn) 3rd NACE Mapped (Rev2)1]) as [$(TableColumn) 3rd NACE Mapped (Rev2)],
+if(len(Mid([$(TableColumn) 4th NACE Mapped (Rev2)1],Index([$(TableColumn) 4th NACE Mapped (Rev2)1],'.',-1)+1 ,len([$(TableColumn) 4th NACE Mapped (Rev2)1])))=1,[$(TableColumn) 4th NACE Mapped (Rev2)1]&'0',[$(TableColumn) 4th NACE Mapped (Rev2)1]) as [$(TableColumn) 4th NACE Mapped (Rev2)],
+if(len(Mid([$(TableColumn) 5th NACE Mapped (Rev2)1],Index([$(TableColumn) 5th NACE Mapped (Rev2)1],'.',-1)+1 ,len([$(TableColumn) 5th NACE Mapped (Rev2)1])))=1,[$(TableColumn) 5th NACE Mapped (Rev2)1]&'0',[$(TableColumn) 5th NACE Mapped (Rev2)1]) as [$(TableColumn) 5th NACE Mapped (Rev2)],
+;
 load
 *,
 if(isnull(ExpiryDate),'Not Certified',
@@ -2083,11 +2090,13 @@ if(ExpiryDate=Date(TODAY(),'YYYYMMDD'),'Expires Today','Live Cert'))) as Certifi
     ApplyMap('Map_NACECode',[$(TableColumn) 4th NACE],'')&', '&
     ApplyMap('Map_NACECode',[$(TableColumn) 5th NACE],'') as EACodesNaceRev2,
     
-    ApplyMap('Map_NACECode',[$(TableColumn) 1st NACE],'') as [$(TableColumn) 1st NACE Mapped (Rev2)],
-    ApplyMap('Map_NACECode',[$(TableColumn) 2nd NACE],'') as [$(TableColumn) 2nd NACE Mapped (Rev2)],
-    ApplyMap('Map_NACECode',[$(TableColumn) 3rd NACE],'') as [$(TableColumn) 3rd NACE Mapped (Rev2)],
-    ApplyMap('Map_NACECode',[$(TableColumn) 4th NACE],'') as [$(TableColumn) 4th NACE Mapped (Rev2)],
-    ApplyMap('Map_NACECode',[$(TableColumn) 5th NACE],'') as [$(TableColumn) 5th NACE Mapped (Rev2)],
+    
+    
+    ApplyMap('Map_NACECode',[$(TableColumn) 1st NACE],'') as [$(TableColumn) 1st NACE Mapped (Rev2)1],
+    ApplyMap('Map_NACECode',[$(TableColumn) 2nd NACE],'') as [$(TableColumn) 2nd NACE Mapped (Rev2)1],
+    ApplyMap('Map_NACECode',[$(TableColumn) 3rd NACE],'') as [$(TableColumn) 3rd NACE Mapped (Rev2)1],
+    ApplyMap('Map_NACECode',[$(TableColumn) 4th NACE],'') as [$(TableColumn) 4th NACE Mapped (Rev2)1],
+    ApplyMap('Map_NACECode',[$(TableColumn) 5th NACE],'') as [$(TableColumn) 5th NACE Mapped (Rev2)1],
     
     if(
     	ApplyMap('TestRecord_Customer_ID_Map',Customer_ID&DataType,'No')='Yes' or
