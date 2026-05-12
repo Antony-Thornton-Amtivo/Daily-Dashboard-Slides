@@ -2954,6 +2954,16 @@ LOAD
 	PASInspecComplete,
 	OrbSubLicence,
     Client_ID,
+    
+   	/*
+    tblCustomers.TemporaryRecord (y/n) - if this is "yes" then the record is  a 2026 version of the 14001 standard 
+ 	This will have the transition gap analysis visit assigned to it
+	Once we are accredited, this record will be set as Withdrawn.
+    tblCustomers.ClonedFrom - this is record of the customerID it was copied from
+	*/
+	TemporaryRecord,
+    ClonedFrom,
+    
     // applymap for FranchiseID
     ApplyMap('US_Franchise_ID',Client_ID,'<missing>') as FranchiseID,    
     Date(Floor(ToolkitSent),'YYYYMMDD') as [$(TableColumn) Date Activ Revoked - Toolkit Issued],
